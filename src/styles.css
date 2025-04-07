@@ -1,0 +1,652 @@
+:root {
+    /* Основные цвета */
+    --book-bg-color: #f5f1e4;
+    --book-text-color: #2c2c2c;
+    --page-bg-color: #fffef7;
+    --page-shadow: rgba(0, 0, 0, 0.12);
+    --title-color: #2b2725;
+    --accent-color: #996a42;
+    --accent-hover: #7a5634;
+    --link-color: #5a6da8;
+    --border-color: #e0d8be;
+    --chapter-bg: #f9f7ef;
+    --tab-active: #996a42;
+    --tab-hover: #f1e9da;
+    --code-bg: #f4f2e6;
+    --demo-bg: #fbf9f0;
+    --button-bg: #996a42;
+    --button-text: #f5f1e4;
+    --highlight-bg: rgba(153, 106, 66, 0.12);
+}
+
+body {
+    background-color: var(--book-bg-color);
+    font-family: 'SF Pro Text', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    color: var(--book-text-color);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+body * {
+    box-sizing: border-box;
+}
+
+pre, p, li {
+    color: var(--book-text-color);
+}
+
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.main-nav {
+    background-color: var(--page-bg-color);
+    box-shadow: 0 2px 8px var(--page-shadow);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    font-family: 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+    letter-spacing: -0.02em;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links a {
+    color: var(--book-text-color);
+    text-decoration: none;
+    padding: 0.5rem 0.8rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.nav-links a:hover {
+    color: var(--accent-color);
+    background-color: var(--tab-hover);
+}
+
+.content {
+    flex: 1;
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+}
+
+/* Эффект страницы книги */
+.home-container,
+.lecture-container,
+.exercise-container {
+    background-color: var(--page-bg-color);
+    border-radius: 8px;
+    padding: 2.5rem;
+    box-shadow:
+        0 1px 3px var(--page-shadow),
+        0 10px 20px var(--page-shadow);
+    position: relative;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border-color);
+}
+
+/* Эффект загнутого уголка */
+.home-container:after,
+.lecture-container:after,
+.exercise-container:after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    bottom: -1px;
+    right: -1px;
+    border-width: 16px;
+    border-style: solid;
+    border-color: transparent var(--book-bg-color) var(--book-bg-color) transparent;
+    border-radius: 0 0 8px 0;
+    box-shadow: -2px -2px 5px rgba(0, 0, 0, 0.08);
+    opacity: 0.7;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    font-size: 1.2rem;
+    color: var(--accent-color);
+}
+
+.main-footer {
+    background-color: var(--page-bg-color);
+    padding: 1rem;
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+    color: var(--book-text-color);
+    font-size: 0.9rem;
+    margin-top: 2rem;
+    box-shadow: 0 -2px 8px var(--page-shadow);
+}
+
+.lecture-section,
+.exercise-section {
+    margin-bottom: 2rem;
+}
+
+h1,
+h2,
+h3 {
+    color: var(--title-color);
+    font-weight: 600;
+    font-family: 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+}
+
+h1 {
+    font-size: 2.2rem;
+    margin-top: 0;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+
+h2 {
+    font-size: 1.8rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+h3 {
+    font-size: 1.4rem;
+    margin-top: 1.8rem;
+    margin-bottom: 0.8rem;
+}
+
+p {
+    margin: 1rem 0;
+    line-height: 1.7;
+}
+
+code {
+    background-color: var(--code-bg);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+    font-size: 0.9em;
+    border: 1px solid var(--border-color);
+}
+
+pre {
+    background-color: var(--code-bg);
+    padding: 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    border: 1px solid var(--border-color);
+    font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+
+pre code {
+    background-color: transparent;
+    padding: 0;
+    border: none;
+}
+
+button {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: var(--accent-hover);
+}
+
+.demo-area {
+    background-color: var(--demo-bg);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    border: 1px solid var(--border-color);
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 1.5rem;
+    gap: 0.3rem;
+}
+
+.tab {
+    padding: 0.7rem 1.2rem;
+    cursor: pointer;
+    border-radius: 6px 6px 0 0;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    color: var(--book-text-color);
+    border: 1px solid transparent;
+    border-bottom: none;
+    margin-bottom: -1px;
+}
+
+.tab:hover {
+    background-color: var(--tab-hover);
+    color: var(--accent-color);
+}
+
+.tab.active {
+    border-color: var(--border-color);
+    border-bottom: 1px solid var(--page-bg-color);
+    background-color: var(--page-bg-color);
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+.tab-content {
+    padding: 1.5rem 0;
+}
+
+.resource-links {
+    margin-top: 2rem;
+    padding: 1.2rem;
+    background-color: var(--demo-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.resource-links ul {
+    padding-left: 1.5rem;
+}
+
+.resource-links a {
+    color: var(--link-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.resource-links a:hover {
+    text-decoration: underline;
+}
+
+.tip-box {
+    background-color: var(--highlight-bg);
+    border-left: 4px solid var(--accent-color);
+    padding: 1.2rem;
+    margin: 1.5rem 0;
+    border-radius: 0 8px 8px 0;
+}
+
+/* Стили для главной страницы */
+.home-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.course-overview {
+    margin-bottom: 2.5rem;
+}
+
+.lecture-cards,
+.exercise-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.lecture-card,
+.exercise-card {
+    background-color: var(--chapter-bg);
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.lecture-card:hover,
+.exercise-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.lecture-card h3,
+.exercise-card h3 {
+    margin-top: 0;
+    font-size: 1.2rem;
+}
+
+.lecture-card a,
+.exercise-card a {
+    display: inline-block;
+    margin-top: 1.2rem;
+    color: var(--link-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.lecture-card a:hover,
+.exercise-card a:hover {
+    text-decoration: underline;
+}
+
+/* Стили для формы */
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.7rem;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background-color: var(--page-bg-color);
+    color: var(--book-text-color);
+    font-size: 0.95rem;
+    font-family: inherit;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(153, 106, 66, 0.2);
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.success-message {
+    background-color: rgba(0, 128, 0, 0.1);
+    border-left: 4px solid green;
+    padding: 1.2rem;
+    border-radius: 0 8px 8px 0;
+}
+
+.event-log {
+    margin-top: 1.2rem;
+    background-color: var(--code-bg);
+    padding: 1.2rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.event-log h4 {
+    margin-top: 0;
+    margin-bottom: 0.8rem;
+}
+
+.event-log ul {
+    margin: 0.5rem 0 1rem;
+    padding-left: 1.5rem;
+}
+
+/* Добавим стиль книжной закладки */
+.home-container h1::before,
+.lecture-container h1::before,
+.exercise-container h1::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    right: 40px;
+    width: 30px;
+    height: 60px;
+    background-color: var(--accent-color);
+    border-radius: 0 0 5px 5px;
+    z-index: 1;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Стили для упражнений студента */
+.code-editor {
+    background-color: var(--code-bg);
+    border-radius: 8px;
+    padding: 0;
+    margin: 1.5rem 0;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+}
+
+.code-editor pre {
+    margin: 0;
+    border: none;
+    border-radius: 0;
+}
+
+.live-preview {
+    background-color: var(--demo-bg);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    border: 1px solid var(--border-color);
+}
+
+.live-preview h3 {
+    margin-top: 0;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+/* Имитация кода книжного вида */
+.code-block-title {
+    background-color: var(--accent-color);
+    color: var(--page-bg-color);
+    padding: 0.6rem 1rem;
+    font-family: 'SF Pro Text', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Стиль для списков */
+ul,
+ol {
+    padding-left: 1.8rem;
+    margin: 1rem 0 1.5rem;
+}
+
+ul li,
+ol li {
+    margin-bottom: 0.5rem;
+}
+
+/* Стиль для цитат */
+blockquote {
+    border-left: 3px solid var(--accent-color);
+    margin-left: 0;
+    padding-left: 1.5rem;
+    font-style: italic;
+    color: #555;
+}
+
+/* Улучшенные стили для Todo списка */
+.todo-list {
+    background-color: var(--page-bg-color);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.todo-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.todo-item:last-child {
+    border-bottom: none;
+}
+
+.todo-checkbox-container {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.todo-item input[type="checkbox"] {
+    margin-right: 1rem;
+}
+
+.todo-item label {
+    flex: 1;
+    transition: all 0.2s;
+}
+
+.todo-item label.completed {
+    text-decoration: line-through;
+    color: #888;
+}
+
+.delete-btn {
+    background-color: transparent;
+    color: #999;
+    border: none;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.delete-btn:hover {
+    color: #d9534f;
+    background-color: transparent;
+}
+
+.todo-form {
+    display: flex;
+    margin-top: 1rem;
+    gap: 0.5rem;
+}
+
+.todo-form input {
+    flex: 1;
+    padding: 0.7rem;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    font-size: 0.95rem;
+}
+
+.todo-form button {
+    white-space: nowrap;
+}
+
+/* Контекстное меню */
+.context-menu {
+    background-color: var(--page-bg-color);
+    border-radius: 6px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    z-index: 100;
+}
+
+.context-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.context-menu li {
+    padding: 0.7rem 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin: 0;
+}
+
+.context-menu li:hover {
+    background-color: var(--tab-hover);
+    color: var(--accent-color);
+}
+
+.context-menu li:not(:last-child) {
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Стили для предстоящих лекций и упражнений */
+.coming-soon {
+    padding: 2rem;
+    background-color: var(--demo-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.coming-soon ul {
+    text-align: left;
+    max-width: 500px;
+    margin: 1.5rem auto;
+}
+
+/* Стилизация элементов "Перетащи меня" */
+.draggable-playground {
+    background: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e0d8be' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 5v1H5v-1H1z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+@media (max-width: 768px) {
+    .main-nav {
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .nav-links {
+        margin-top: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .content {
+        padding: 1rem;
+    }
+
+    .home-container,
+    .lecture-container,
+    .exercise-container {
+        padding: 1.5rem;
+    }
+
+    .lecture-cards,
+    .exercise-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .tabs {
+        flex-wrap: wrap;
+    }
+}

@@ -1,42 +1,251 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+:root {
+    --primary-color: #646cff;
+    --primary-hover: #535bf2;
+    --bg-color: #242424;
+    --text-color: rgba(255, 255, 255, 0.87);
+    --nav-bg: #1a1a1a;
+    --card-bg: #1a1a1a;
+    --border-color: #333;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    color: var(--text-color);
+}
+
+.main-nav {
+    background-color: var(--nav-bg);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.nav-links a {
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: all 0.3s;
 }
 
-.card {
-  padding: 2em;
+.nav-links a:hover {
+    color: var(--primary-hover);
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
-.read-the-docs {
-  color: #888;
+.content {
+    flex: 1;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    font-size: 1.2rem;
+}
+
+.lecture-container,
+.exercise-container {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+}
+
+.lecture-section,
+.exercise-section {
+    margin-bottom: 2rem;
+}
+
+h1,
+h2,
+h3 {
+    color: var(--primary-color);
+}
+
+code {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'Fira Code', monospace;
+}
+
+button:hover {
+    background-color: var(--primary-hover);
+}
+
+.demo-area {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 1rem;
+}
+
+.tab {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+}
+
+.tab.active {
+    border-bottom: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.tab-content {
+    padding: 1rem 0;
+}
+
+.resource-links {
+    margin-top: 2rem;
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.resource-links ul {
+    padding-left: 1.5rem;
+}
+
+.resource-links a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.resource-links a:hover {
+    text-decoration: underline;
+}
+
+.tip-box {
+    background-color: rgba(100, 108, 255, 0.1);
+    border-left: 4px solid var(--primary-color);
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+}
+
+/* Стили для главной страницы */
+.home-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.course-overview {
+    margin-bottom: 2rem;
+}
+
+.lecture-cards,
+.exercise-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.lecture-card,
+.exercise-card {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s ease;
+}
+
+.lecture-card:hover,
+.exercise-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.lecture-card h3,
+.exercise-card h3 {
+    margin-top: 0;
+}
+
+.lecture-card a,
+.exercise-card a {
+    display: inline-block;
+    margin-top: 1rem;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.lecture-card a:hover,
+.exercise-card a:hover {
+    text-decoration: underline;
+}
+
+/* Стили для формы */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.success-message {
+    background-color: rgba(0, 255, 0, 0.1);
+    border-left: 4px solid green;
+    padding: 1rem;
+    border-radius: 0 4px 4px 0;
+}
+
+.event-log {
+    margin-top: 1rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 4px;
+}
+
+.event-log ul {
+    margin: 0.5rem 0 1rem;
+    padding-left: 1.5rem;
 }
