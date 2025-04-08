@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState } from 'react'
 
 // Упражнение 1: Продвинутые хуки и обработка событий
 const Exercise1: React.FC = () => {
@@ -100,6 +100,35 @@ function useDraggable() {
   // 3. Применяйте useCallback для обработчиков событий
   // 4. Не забудьте про useEffect для регистрации и очистки глобальных обработчиков
 }`}
+                                </pre>
+                                <pre>
+                                    {`
+// Пример интерфейса хука или можно описать свой                                
+interface Position {
+    x: number;
+    y: number;
+}
+
+interface DragStartPosition {
+    x: number;
+    y: number;
+    elementX: number;
+    elementY: number;
+}
+
+interface UseDraggableReturn {
+    position: Position;
+    ref: React.RefObject<HTMLElement | null>;
+    isDragging: boolean;
+    props: {
+        onMouseDown: (e: React.MouseEvent) => void;
+        style?: React.CSSProperties;
+    };
+}
+
+// пример использования
+const { position, ref, isDragging, props } = useDraggable({ x: 50, y: 50 });
+                                    `}
                                 </pre>
                             </div>
 
