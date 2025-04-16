@@ -410,54 +410,6 @@ function SearchBar({ onSearch, debounceTime = 500 }) {
                                 <li>Добавьте поддержку нескольких предустановленных тем (светлая, темная, синяя, зеленая и т.д.)</li>
                             </ol>
 
-                            <div className="code-editor">
-                                <div className="code-block-title">Пример базового хука useThemeColor из лекции</div>
-                                <pre>
-                                    {`// Базовый вариант хука useThemeColor из лекции
-const ThemeContext = createContext({ 
-  isDark: false, 
-  colors: { 
-    background: '#ffffff', 
-    text: '#000000' 
-  },
-  toggleTheme: () => {}
-});
-
-const useThemeColor = () => {
-  const context = useContext(ThemeContext);
-  
-  if (!context) {
-    throw new Error('useThemeColor должен использоваться внутри ThemeProvider');
-  }
-  
-  return context;
-};
-
-const ThemeProvider = ({ children }) => {
-  const [isDark, setIsDark] = useState(false);
-  
-  const colors = useMemo(() => {
-    return isDark 
-      ? { background: '#1a1a1a', text: '#ffffff' } 
-      : { background: '#ffffff', text: '#000000' };
-  }, [isDark]);
-
-  const toggleTheme = useCallback(() => {
-    setIsDark(prev => !prev);
-  }, []);
-
-  const value = useMemo(() => {
-    return { isDark, colors, toggleTheme };
-  }, [isDark, colors, toggleTheme]);
-
-  return (
-    <ThemeContext.Provider value={value}>
-      {children}
-    </ThemeContext.Provider>
-  );
-};`}
-                                </pre>
-                            </div>
 
                             <h3>Пример использования CSS переменных для темы</h3>
                             <div className="code-editor">
