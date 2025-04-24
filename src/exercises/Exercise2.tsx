@@ -1,4 +1,9 @@
 import React, { useState } from 'react';
+import { useLocalStorage } from '../hooks/useLocalStorage';
+import { TestLocalStorage } from '../utils/testLocalStorage';
+import { SearchBar, searchBar } from '../components/SearchBar';
+import { TaskList } from '../components/TaskList';
+import { SearchPage } from '../pages/SearchPage';
 
 const Homework: React.FC = () => {
     const [activeTab, setActiveTab] = useState('overview');
@@ -168,6 +173,7 @@ useEffect(() => {
   };
 }, [key]);`}
                                 </pre>
+                                <TestLocalStorage/>
                             </div>
                         </div>
                     )}
@@ -220,6 +226,8 @@ useEffect(() => {
     </div>
   );
 }`}
+                                    
+                                    {/*<TaskList/>*/}
                                 </pre>
                             </div>
 
@@ -371,6 +379,7 @@ function SearchBar({ onSearch, debounceTime = 500 }) {
   // 2. Примените useDebounce для отложенного обновления значения поиска
   // 3. Используйте useEffect для вызова onSearch при изменении отложенного значения
 }`}
+                                    <SearchPage />
                                 </pre>
                             </div>
 
