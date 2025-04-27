@@ -1,4 +1,5 @@
-import { useDraggable } from '../../utils/hooks/useDraggable';
+import { useDraggable } from '../hooks/useDraggable';
+import React from 'react';
 
 export function DraggableBox() {
     // TODO: Используйте хук useDraggable

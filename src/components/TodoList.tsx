@@ -1,17 +1,29 @@
 import React, { useState } from 'react';
 
+ type StyleType = {
+     textDecoration: string
+ }
+
 type TodoList = {
     id: string;
     text: string;
     completed: boolean;
+    style: StyleType;
 };
+
+
+interface ContextMenuI {
+    visible: string;
+    positionX: string;
+    positionY: string;
+}
 
 // TODO: Реализуйте компонент TodoList с оптимизированной обработкой событий
 export function TodoList() {
     const [todos, setTodos] = useState<TodoList[]>([
-                                                       { id: '1', text: 'Изучить продвинутые хуки', completed: false },
-                                                       { id: '2', text: 'Освоить делегирование событий', completed: false },
-                                                       { id: '3', text: 'Практиковать оптимизацию производительности', completed: false }
+                                                       { id: '1', text: 'Изучить продвинутые хуки', completed: false, style: {textDecoration: 'none'} },
+                                                       { id: '2', text: 'Освоить делегирование событий', completed: false, style: {textDecoration: 'none'} },
+                                                       { id: '3', text: 'Практиковать оптимизацию производительности', completed: false, style: {textDecoration: 'none'} }
                                                    ]);
     
     // TODO: Реализуйте обработчики с учетом делегирования событий
@@ -19,8 +31,10 @@ export function TodoList() {
     // - Используйте атрибуты data-* для определения действия
     // - Примените useCallback для оптимизации
     
-    const [completedTask, setCompletedTask] = useState<Record<string, boolean>>({ first: false ,  second: false , third: false});
-    let styleCompleted = { textDecoration: "underline"};
+    const [newTitleTask, setNewTitleTask] = useState<string>("");
+    
+    
+    
     
     const handleClick = (e) => {
         let currentElement = e.target;
@@ -30,7 +44,6 @@ export function TodoList() {
         
         const id = item.dataset.id;
         
-        console.log(currentElement);
         const actionElement = currentElement.closest('[data-action]');
         
         if(!actionElement) return;
@@ -41,7 +54,13 @@ export function TodoList() {
             case 'toggle':
                 setTodos((todos) => {
                     return todos.map((todo) => {
-                        return id === todo.id ? {...todo, completed: !todo.completed} : todo;
+                        
+                        if (id === todo.id) {
+                            let style = !todo.completed ? { textDecoration: "line-through"} : { textDecoration: "none"};
+                            return {...todo, completed: !todo.completed, style}
+                        } else {
+                            return todo
+                        }
                     })
                 })
                 break;
@@ -63,19 +82,13 @@ export function TodoList() {
         e.preventDefault();
     };
     
-    const addItem = (e) => {
-        setTodos((prev) => [...prev, { id: `${Math.random()}`, text: e.target.value || '', completed: false }]);
-    }
+    const changeTitleTask = (e) => {
+        setNewTitleTask(e.target.value);
+    };
     
-    const deleteItem = (id: number) => {
-        let currentElement = e.target;
-        
-        
-        let updatedList = todos.filter((item) => {
-            return item.id !== currentElement.id;
-        });
-        console.log('updatedList', updatedList);
-        // setTodos(updatedList);
+    const addItem = () => {
+        setTodos((prev) => [...prev, { id: `${Math.random()}`, text: newTitleTask || '', completed: false, style: {textDecoration: "none"} }]);
+        setNewTitleTask('');
     };
     
     
@@ -103,11 +116,11 @@ export function TodoList() {
                                     <input
                                         id={`todoItem-${item.id}`}
                                         type="checkbox"
-                                        style={{...styleCompleted, marginRight: '10px'}}
+                                        style={{marginRight: '10px'}}
                                         data-action={'toggle'}
                                         checked={item.completed}
                                     />
-                                    <label data-action={'toggle'} htmlFor={`todoItem-${item.id}`}>{item.text}</label>
+                                    <label data-action={'toggle'} style={item.style}>{item.text}</label>
                                 </div>
                                 <button
                                     data-action='close'
@@ -117,7 +130,6 @@ export function TodoList() {
                                         color: '#999',
                                         cursor: 'pointer'
                                     }}
-                                    onClick={() => deleteItem(item.id)}
                                 >✕
                                 </button>
                             </li>
@@ -136,7 +148,7 @@ export function TodoList() {
                     <form style={{color: 'var(--book-text-color)'}} onSubmit={handleSubmit}>
                         <label>Введите название задачи:</label>
                         <input type='text' style={{display: 'block'}}
-                               onChange={addItem}
+                               onChange={changeTitleTask} value={newTitleTask}
                         />
                         <button style={{
                             background: 'var(--page-bg-color)',
@@ -146,6 +158,7 @@ export function TodoList() {
                             marginTop: '20px'
                         }}
                                 type="submit"
+                                onClick={addItem}
                         >
                             Добавить
                         </button>
