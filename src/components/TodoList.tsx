@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { ContextMenu } from './ContextMenu';
 
  type StyleType = {
      textDecoration: string
@@ -32,7 +33,8 @@ export function TodoList() {
     // - Примените useCallback для оптимизации
     
     const [newTitleTask, setNewTitleTask] = useState<string>("");
-    
+
+    const [contextMenuState, setContextMenu] = useState<ContextMenuI>({visible: "hidden", positionX: "0", positionY: "0"});
     
     
     
@@ -90,13 +92,37 @@ export function TodoList() {
         setTodos((prev) => [...prev, { id: `${Math.random()}`, text: newTitleTask || '', completed: false, style: {textDecoration: "none"} }]);
         setNewTitleTask('');
     };
+
+    const handleContextMenu = (e) => {
+        e.preventDefault();
+        
+        const item = e.target.closest('[data-id]');
+     
+        const itemRect = item.getBoundingClientRect();
+        const absoluteTop = itemRect.top + window.scrollY;
+        const absoluteLeft = itemRect.left + window.scrollX;
+        
+        setContextMenu((prev: ContextMenuI) => ({...prev, visible: "visible", positionX: `${ absoluteLeft }`, positionY: `${ absoluteTop }`}));
+    };
     
+    const handleGlobalClick = () => {
+        setContextMenu((prev: ContextMenuI) => ({...prev, visible: "hidden"}));
+    };
+    
+    useEffect(() => {
+        document.addEventListener('click', handleGlobalClick);
+        
+        return () => {
+            document.removeEventListener('click', handleGlobalClick);
+        }
+    }, [contextMenuState.visible])
     
     return (
         <div className="todo-app">
             <h3>Список задач</h3>
             
-            <ul className="todo-list" data-id="todoList" onClick={handleClick}>
+            <ul className="todo-list" data-id="todoList" onClick={handleClick}
+                onContextMenu={handleContextMenu}>
                 {/* TODO: Рендер списка задач с делегированием событий */
                     todos?.map((item) => {
                         return (
@@ -167,6 +193,8 @@ export function TodoList() {
             </div>
             
             {/* TODO: Добавьте контекстное меню, появляющееся по правому клику */}
+            
+            <ContextMenu contextMenuParams={contextMenuState}/>
         </div>
     );
 }
