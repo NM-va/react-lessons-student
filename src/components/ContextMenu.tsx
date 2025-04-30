@@ -1,3 +1,5 @@
+
+
 export const ContextMenu = ({contextMenuParams}) => {
   
     const {visible, positionX, positionY} = contextMenuParams;
@@ -6,17 +8,17 @@ export const ContextMenu = ({contextMenuParams}) => {
     
     return (
         <ul style={{
-            visibility: `${visible}`,
+            opacity: visible ? '1' : '0',
             width: "300px",
             position: "absolute",
-            top: `${positionY}px`,
-            left: `${positionX}px`,
+            top: visible ? `${positionY}px`: '-2000px',
+            left: visible ? `${positionX}px`: '-2000px',
             listStyleType: "none",
             zIndex: "10",
             border: "1px solid var(--border-color)",
             backgroundColor: "var(--accent-color)",
             borderRadius: "8px",
-            padding: "1.5rem"
+            padding: "1.5rem",
     
         }}>
             {

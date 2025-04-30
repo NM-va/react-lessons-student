@@ -14,9 +14,9 @@ type TodoList = {
 
 
 interface ContextMenuI {
-    visible: string;
-    positionX: string;
-    positionY: string;
+    visible: boolean;
+    positionX: number;
+    positionY: number;
 }
 
 // TODO: Реализуйте компонент TodoList с оптимизированной обработкой событий
@@ -34,7 +34,7 @@ export function TodoList() {
     
     const [newTitleTask, setNewTitleTask] = useState<string>("");
 
-    const [contextMenuState, setContextMenu] = useState<ContextMenuI>({visible: "hidden", positionX: "0", positionY: "0"});
+    const [contextMenuState, setContextMenu] = useState<ContextMenuI>({ visible: false, positionX: 0, positionY: 0 });
     
     
     
@@ -102,11 +102,11 @@ export function TodoList() {
         const absoluteTop = itemRect.top + window.scrollY;
         const absoluteLeft = itemRect.left + window.scrollX;
         
-        setContextMenu((prev: ContextMenuI) => ({...prev, visible: "visible", positionX: `${ absoluteLeft }`, positionY: `${ absoluteTop }`}));
+        setContextMenu((prev: ContextMenuI) => ({ ...prev, visible: true, positionX: absoluteLeft, positionY: absoluteTop}));
     };
     
     const handleGlobalClick = () => {
-        setContextMenu((prev: ContextMenuI) => ({...prev, visible: "hidden"}));
+        setContextMenu((prev: ContextMenuI) => ({...prev, visible: false }));
     };
     
     useEffect(() => {
