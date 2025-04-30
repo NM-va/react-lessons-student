@@ -1,5 +1,5 @@
 import { useDebounce } from '../hooks/useDebounce';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 interface searchBarProps {
     onSearch: any;
@@ -8,22 +8,23 @@ interface searchBarProps {
 
 export const SearchBar = ({ onSearch, debounceTime = 500 }: searchBarProps) => {
     const [value, setValue] = useState<string>('');
-    let changeSearchValue = (e) => {
-        setValue(e.target.value);
-   };
-    
     const updatedValue = useDebounce(value, debounceTime);
     
+    
+    let onChangeHandler = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        setValue(e.target.value);
+    }, []);
+    
     useEffect(() => {
+        console.log(new Date().getSeconds())
         onSearch(updatedValue);
-        
     }, [updatedValue]);
     
     return (
         <div>
             <div style={{ display: 'flex' }}>
                 <label htmlFor=""></label>
-                <input onChange={changeSearchValue} value={value} type="text"/>
+                <input onChange={onChangeHandler} value={value} type="text"/>
             </div>
         </div>
     );
