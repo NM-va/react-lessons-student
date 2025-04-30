@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { TodoList } from '../components/TodoList';
 
 // Упражнение 1: Продвинутые хуки и обработка событий
 const Exercise1: React.FC = () => {
@@ -277,6 +278,11 @@ function TodoList() {
                                         </li>
                                     </ul>
                                 </div>
+                            </div>
+    
+    
+                            <div>
+                                <TodoList />
                             </div>
                         </div>
                     )}
