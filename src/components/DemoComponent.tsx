@@ -3,7 +3,8 @@ import { UniversalInput } from './UniversalInput';
 
 export const DemoComponent: React.FC = () => {
     // Состояние для контролируемого режима
-    const [controlledValue, setControlledValue] = useState('');
+    const [controlledValue, setControlledValue] = useState('23');
+    const [isControlledMode, setIsControlledMode] = useState<boolean>(false);
     
     // Ref для доступа к неконтролируемому инпуту
     const uncontrolledInputRef = useRef(null);
@@ -11,20 +12,22 @@ export const DemoComponent: React.FC = () => {
     // Ref для доступа к универсальному инпуту в неконтролируемом режиме
     const universalUncontrolledRef = useRef(null);
     
-    const [attributes, setAttributes] = useState({});
-    const onChangeValue = (value) => {
+    const onChangeValue = (value: string) => {
         setControlledValue(value);
     }
+
     
     const handleControl = () => {
-        setAttributes((prev) => {
-            return {...prev, value: `${controlledValue}`, onChange: onChangeValue}
-        });
+        setIsControlledMode(true);
     };
     
     const handleUncontrol = () => {
-        setAttributes({})
+        setIsControlledMode(false);
     };
+
+    const attrs = {
+        ...(isControlledMode ? { value: controlledValue, onChange: onChangeValue} : {})
+    }
     
     return (
         <div className="demo-container">
@@ -34,7 +37,7 @@ export const DemoComponent: React.FC = () => {
             <div className="input-section">
                 <h3>Контролируемый режим</h3>
                 {/* TODO: Добавьте UniversalInput в контролируемом режиме */}
-                <UniversalInput value="23" onChange={onChangeValue} />
+                <UniversalInput value={controlledValue} onChange={onChangeValue} />
                 <div></div>
             </div>
         
@@ -42,13 +45,13 @@ export const DemoComponent: React.FC = () => {
             <div className="input-section">
                 <h3>Неконтролируемый режим</h3>
                 {/* TODO: Добавьте UniversalInput в неконтролируемом режиме */}
-                <UniversalInput />
+                <UniversalInput  defaultValue='777'/>
             </div>
     
             <div className="input-section">
                 <h3>Универсальный режим</h3>
                 {/* TODO: Добавьте UniversalInput в неконтролируемом режиме */}
-                <UniversalInput {...attributes} />
+                <UniversalInput {...attrs }/>
             </div>
             
             {/* Элементы управления */}
