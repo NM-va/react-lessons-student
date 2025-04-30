@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { DemoComponent } from '../components/DemoComponent';
 
 // Базовый пример контролируемого компонента
 const SimpleControlledInput: React.FC = () => {
@@ -76,6 +77,7 @@ const ComboComponent: React.FC = () => {
         </div>
     );
 };
+
 
 const Exercise3: React.FC = () => {
     const [activeTab, setActiveTab] = useState('overview');
@@ -757,6 +759,7 @@ export default DemoComponent;`}
 
                             <h3>Пример работы готового решения:</h3>
                             <ComboComponent />
+                            <DemoComponent />
 
                             <div className="tip-box">
                                 <h3>Подсказка</h3>
