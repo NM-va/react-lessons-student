@@ -30,6 +30,10 @@ const Home: React.FC = () => {
                         <p>Выявление и устранение узких мест производительности в React-приложениях</p>
                         <Link to="/exercise3">Начать упражнение</Link>
                     </div>
+                    <div className="exercise-card">
+                        <h3>Упражнение 4: Слоты и useImperative</h3>
+                        <Link to="/exercise4">Начать упражнение</Link>
+                    </div>
                 </div>
             </div>
 

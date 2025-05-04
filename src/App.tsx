@@ -8,6 +8,7 @@ const Home = lazy(() => import('./modules/Home'))
 const Exercise1 = lazy(() => import('./exercises/Exercise1'))
 const Exercise2 = lazy(() => import('./exercises/Exercise2'))
 const Exercise3 = lazy(() => import('./exercises/Exercise3'))
+const Exercise4 = lazy(() => import('./exercises/Exercise4'))
 // Добавьте больше упражнений по мере необходимости
 
 function App() {
@@ -18,9 +19,10 @@ function App() {
           <div className="logo">React Advanced</div>
           <ul className="nav-links">
             <li><Link to="/">Главная</Link></li>
-            <li><Link to="/exercise1">Упражнение 1: Хуки и События</Link></li>
-            <li><Link to="/exercise2">Упражнение 2</Link></li>
-            <li><Link to="/exercise3">Упражнение 3</Link></li>
+            <li><Link to="/exercise1">Упр 1: Хуки и События</Link></li>
+            <li><Link to="/exercise2">Упр 2</Link></li>
+            <li><Link to="/exercise3">Упр 3</Link></li>
+            <li><Link to="/exercise4">Упр 4</Link></li>
           </ul>
         </nav>
 
@@ -31,6 +33,7 @@ function App() {
               <Route path="/exercise1" element={<Exercise1 />} />
               <Route path="/exercise2" element={<Exercise2 />} />
               <Route path="/exercise3" element={<Exercise3 />} />
+              <Route path="/exercise4" element={<Exercise4 />} />
             </Routes>
           </Suspense>
         </main>
