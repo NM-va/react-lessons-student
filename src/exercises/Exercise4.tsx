@@ -1,4 +1,5 @@
 import React from 'react';
+import {DataDetailDemo} from "../components/DataDetail/DataDetailDemo.tsx";
 
 const HomeworkAssignment: React.FC = () => {
   return (
@@ -146,6 +147,10 @@ const HomeworkAssignment: React.FC = () => {
           <li>Тестируемость компонентов</li>
           <li>Доступность (a11y) компонентов для пользователей с ограниченными возможностями</li>
         </ul>
+      </div>
+      <div>
+        <h2>Демо</h2>
+        <DataDetailDemo />
       </div>
     </div>
   );
