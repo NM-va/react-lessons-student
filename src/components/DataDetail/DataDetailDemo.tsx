@@ -21,14 +21,16 @@ export const DataDetailDemo = () => {
 
   return (
     <>
-      <button onClick={open}>Open</button>
-      <button onClick={close}>Close</button>
-      <button onClick={toggle}>Toggle</button>
 
       <DataDetail ref={inputRef} title={"Page Title"}>
-        <DataDetail.Header></DataDetail.Header>
-        <DataDetail.Body></DataDetail.Body>
-        <DataDetail.Footer></DataDetail.Footer>
+        <DataDetail.Header onClose={() => console.log('onClose')}>header</DataDetail.Header>
+        <DataDetail.Body>body</DataDetail.Body>
+        <DataDetail.Footer>footer</DataDetail.Footer>
+        <DataDetail.Actions>
+          <button onClick={open}>Open</button>
+          <button onClick={close}>Close</button>
+          <button onClick={toggle}>Toggle</button>
+        </DataDetail.Actions>
       </DataDetail>
     </>
   )
