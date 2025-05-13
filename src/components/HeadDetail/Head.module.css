@@ -1,0 +1,19 @@
+.head {
+  border: 1px solid var(--border-color);
+  background-color: var(--highlight-bg);
+  padding: 20px;
+  border-radius: 8px;
+  position: relative;
+}
+
+.controls {
+
+}
+
+.close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px 10px;
+  border-radius: 8px;
+}

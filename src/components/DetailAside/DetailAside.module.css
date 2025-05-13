@@ -1,0 +1,13 @@
+.detailAside {
+  color: #000;
+}
+
+.asideContent {
+  padding: 20px;
+  margin: 20px 0;
+  max-height: 300px;
+  overflow: auto;
+  background-color: var(--page-bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}

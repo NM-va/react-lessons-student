@@ -847,7 +847,7 @@ const DataDetail = forwardRef<DataDetailHandles, DataDetailProps>(({
 
   // Проверка наличия компонентов
   const hasHeader = React.Children.toArray(children).some(
-    child => React.isValidElement(child) && child.type === DataDetail.Header
+    child => React.isValidElement(child) && child.type === DataDetail.HeadDetail
   );
 
   return (
@@ -865,7 +865,7 @@ const DataDetail = forwardRef<DataDetailHandles, DataDetailProps>(({
         }}
       >
         {title && !hasHeader && (
-          <DataDetail.Header>{title}</DataDetail.Header>
+          <DataDetail.HeadDetail>{title}</DataDetail.HeadDetail>
         )}
         {children}
       </div>
@@ -896,7 +896,7 @@ interface ActionsProps {
 }
 
 // Компонент заголовка
-const Header: React.FC<HeaderProps> = ({ children, className = '', actions }) => {
+const HeadDetail: React.FC<HeaderProps> = ({ children, className = '', actions }) => {
   const { expanded, toggleExpand } = useDataDetail();
   const { colors } = useThemeColor();
 
@@ -1012,7 +1012,7 @@ const Actions: React.FC<ActionsProps> = ({ children, className = '' }) => {
 };
 
 // Присоединение подкомпонентов к основному компоненту
-DataDetail.Header = Header;
+DataDetail.HeadDetail = HeadDetail;
 DataDetail.Body = Body;
 DataDetail.Footer = Footer;
 DataDetail.Actions = Actions;
@@ -1079,7 +1079,7 @@ function ExamplePage() {
       
       {/* Альтернативный вариант с кастомным заголовком */}
       <DataDetail ref={dataDetailRef}>
-        <DataDetail.Header>
+        <DataDetail.HeadDetail>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span>📝</span>
             <span>Мои заметки</span>
@@ -1088,7 +1088,7 @@ function ExamplePage() {
             <button>Печать</button>
             <button>Поделиться</button>
           </DataDetail.Actions>
-        </DataDetail.Header>
+        </DataDetail.HeadDetail>
         <DataDetail.Body>
           <p>Содержимое компонента...</p>
         </DataDetail.Body>
