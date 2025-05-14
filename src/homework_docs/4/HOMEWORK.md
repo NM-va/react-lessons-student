@@ -20,7 +20,7 @@
 
 1. **Структура составного компонента**:
    - `DataDetail` - основной компонент
-   - `DataDetail.Header` - заголовок с возможностью сворачивания/разворачивания
+   - `DataDetail.HeadDetail` - заголовок с возможностью сворачивания/разворачивания
    - `DataDetail.Body` - основное содержимое
    - `DataDetail.Footer` - нижняя часть с действиями
    - `DataDetail.Actions` - дополнительные действия в заголовке
@@ -124,12 +124,12 @@ const handleCancel = () => {
 
 // Использование с DataForm
 <DataDetail ref={dataDetailRef} title="Редактирование профиля">
-  <DataDetail.Header>
+  <DataDetail.HeadDetail>
     <span>Редактирование профиля пользователя</span>
     <DataDetail.Actions>
       <button onClick={() => dataDetailRef.current.resetForm()}>Сбросить</button>
     </DataDetail.Actions>
-  </DataDetail.Header>
+  </DataDetail.HeadDetail>
   
   <DataDetail.Body>
     <DataForm onSubmit={handleSubmit} id="profileForm">
@@ -231,7 +231,7 @@ const DataDetail = forwardRef<DataDetailHandles, DataDetailProps>((props, ref) =
 });
 
 // Подкомпоненты
-DataDetail.Header = /* TODO */;
+DataDetail.HeadDetail = /* TODO */;
 DataDetail.Body = /* TODO */;
 DataDetail.Footer = /* TODO */;
 DataDetail.Actions = /* TODO */;
@@ -245,7 +245,7 @@ export default DataDetail;
 
 1. **Структура компонента (20%)**:
    - Корректно реализованы все подкомпоненты
-   - Поддерживается использование заголовка через `title` или через `DataDetail.Header`
+   - Поддерживается использование заголовка через `title` или через `DataDetail.HeadDetail`
    - Компоненты корректно отображаются в зависимости от состояния развернутости
 
 2. **Контекст и связь компонентов (15%)**:
