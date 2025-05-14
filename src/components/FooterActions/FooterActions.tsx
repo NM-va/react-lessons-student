@@ -19,6 +19,8 @@ export const FooterActions: FC<FooterActionsProps> = (props) =>  {
     if (actions?.length === 0) {
         return null;
     }
+
+    //todo сделать primary
     
     return (
         <div className={`${cls.footer}`} >

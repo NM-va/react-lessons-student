@@ -1,56 +1,51 @@
-import React, { FC, SVGProps } from 'react';
-// import CloseIcon  from '../../assets/close.svg'
+import { JSX } from 'react';
 import cls from './Head.module.css'
 
-export interface HeadDetailProps<T = string> {
+export interface HeadDetailProps<T = string, K = string> {
     title?: string;
     description?: string;
     onClose?: () => void;
-    menuActions?: HeadDetailAction[];
+    menuActions?: HeadDetailAction<T>[];
+
+    tabs?: any[]; // todo создать интерфейс для Action
+    selectedTab?: K;
+    onTabChange?: (tab: K) => void;
+    content?: JSX.Element | React.ReactNode;
 }
 
-export interface HeadDetailAction {
-    key: string;
+export interface HeadDetailAction<T = string> {
+    key: T;
     label: string;
     icon?: string;
+    onAction?: (value: T) => void;
 }
 
-type IconComponent = (props: SVGProps<SVGSVGElement>) => JSX.Element;
-
-// const closeIcon: IconComponent = CloseIcon;
-
-export const HeadDetail: FC<HeadDetailProps> = (props) => {
+export function HeadDetail<T = string>(props: HeadDetailProps<T>){
     const {title, description, onClose, menuActions} = props;
-    
-    //заменить этот компонент на компонент из любой библиотеки иконок
-    // const Icon = ({ name }: string) => {
-    //
-    //     switch (name){
-    //         case 'close':
-    //             return closeIcon;
-    //         default:
-    //             return null;
-    //     }
-    //
-    // }
-    
+
     return (
         <div className={`${cls.head}`}>
             <div className={`${cls.controls}`}>
                 {
                     menuActions?.map((item) => {
-                        const btnClass = item.label.toLowerCase();
-                        console.log('btnClass', btnClass)
-                        
                         return (
-                            <button onClick={onClose} key={item.key} className={`${cls[btnClass]}`}>
-                                {/*{item?.icon ? <Icon path={item?.icon}/> : item.label}*/}
-                                {/*<Icon name={item?.icon}/>*/}
-                                x
+                            <button onClick={() => item?.onAction?.(item.key)} key={`${item.key}`}>
+                                {item.label}
                             </button>
                         )
                     })
+                    //todo сделать menu по клику на три точки
                 }
+
+                //todo вставить content
+
+                <button>Открыть меню ...</button>
+
+                {onClose && (
+                    <button onClick={onClose} key={`close-head`} className={`${cls.close}`}>
+                        <img src={'/close.svg'} style={{ width: 20 }} />
+                    </button>
+                )}
             </div>
             <h2>{title}</h2>
             <h4>{description}</h4>

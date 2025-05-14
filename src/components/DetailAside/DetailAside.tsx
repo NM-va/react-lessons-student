@@ -1,19 +1,19 @@
 import cls from './DetailAside.module.css';
 import { FooterActions, FooterActionsProps } from '../FooterActions/FooterActions';
 import { HeadDetail, HeadDetailProps } from '../HeadDetail/HeadDetail';
-
+import { JSX } from 'react';
 
 
 export interface DetailAsideProps<T = string> {
     headProps?: HeadDetailProps<T>;
-    children?: JSX.Element;
+    children?: JSX.Element | React.ReactElement | React.ReactNode;
     footerProps?: FooterActionsProps;
 }
 
-export const DetailAside = ({ headProps, children, footerProps }: DetailAsideProps) => {
+export function DetailAside<T = string>({ headProps, children, footerProps }: DetailAsideProps<T>): JSX.Element {
     return (
         <div className={cls.detailAside}>
-            {headProps && <HeadDetail {...headProps} />}
+            {headProps && <HeadDetail<T> {...headProps} />}
             
             <div className={cls.asideContent}>{children}</div>
     
