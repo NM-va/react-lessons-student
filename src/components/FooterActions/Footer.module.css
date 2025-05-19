@@ -5,6 +5,26 @@
   border-radius: 8px;
 }
 
+.btn {
+  background-color: var(--button-bg);
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
 .btn:not(:last-child) {
   margin-right: 10px;
+}
+
+.primary {
+  background-color: transparent;
+  color: var(--accent-color);
+  box-shadow: inset 0 0 0 1px var(--accent-color);
+}
+
+.primary:hover {
+  color: var(--button-text);
 }

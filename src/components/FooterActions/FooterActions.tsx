@@ -27,7 +27,7 @@ export const FooterActions: FC<FooterActionsProps> = (props) =>  {
             {
                 actions?.map((item) => {
                     return (
-                        <button className={`${cls.btn}`} key={item.key} disabled={item.disabled} onClick={() => onAction?.(item.key)}>{item.label}</button>
+                        <button className={`${ item.primary ? cls.primary: '' } ${cls.btn}`} key={item.key} disabled={item.disabled} onClick={() => onAction?.(item.key)}>{item.label}</button>
                     )
                 })
             }
