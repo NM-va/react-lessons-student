@@ -1,5 +1,7 @@
-import { JSX } from 'react';
+import { JSX, useEffect, useState } from 'react';
 import cls from './Head.module.css'
+import { Tabs } from '../Tabs/Tabs';
+import { TabContent } from '../Tabs/TabContent';
 
 export interface HeadDetailProps<T = string, K = string> {
     title?: string;
@@ -7,7 +9,7 @@ export interface HeadDetailProps<T = string, K = string> {
     onClose?: () => void;
     menuActions?: HeadDetailAction<T>[];
 
-    tabs?: any[]; // todo создать интерфейс для Action
+    tabs?: TabItem[]; // todo создать интерфейс для Action
     selectedTab?: K;
     onTabChange?: (tab: K) => void;
     content?: JSX.Element | React.ReactNode;
@@ -20,32 +22,56 @@ export interface HeadDetailAction<T = string> {
     onAction?: (value: T) => void;
 }
 
-export function HeadDetail<T = string>(props: HeadDetailProps<T>){
-    const {title, description, onClose, menuActions} = props;
+export interface TabItem<K = string> {
+    key: K;
+    label: string;
+    icon: string;
+    disabled?: boolean;
+}
 
+export function HeadDetail<T = string>(props: HeadDetailProps<T>){
+    const {title, description, onClose, menuActions, tabs, selectedTab, onTabChange, content} = props;
+    
+    const [isShowMenu, setShowMenu] = useState<boolean>(false);
+    
+    
+    const toggleMenu = () => {
+        setShowMenu(!isShowMenu);
+    };
+    
     return (
         <div className={`${cls.head}`}>
             <div className={`${cls.controls}`}>
-                {
-                    menuActions?.map((item) => {
-                        return (
-                            <button onClick={() => item?.onAction?.(item.key)} key={`${item.key}`}>
-                                {item.label}
-                            </button>
-                        )
-                    })
-                    //todo сделать menu по клику на три точки
-                }
+                {isShowMenu && <ul className={cls.dropdown}>
+                    {
+                        menuActions?.map((item) => {
+                            return (
+                                <li>
+                                    <button onClick={() => item?.onAction?.(item.key)} key={`${item.key}`}>
+                                        {item.label}
+                                    </button>
+                                </li>
+                            )
+                        })
+                        //todo сделать menu по клику на три точки
+                    }
+                </ul>}
+            
 
                 //todo вставить content
-
-                <button>Открыть меню ...</button>
+                
+                <div>
+                    <button onClick={toggleMenu}>Открыть меню ...</button>
+                </div>
 
                 {onClose && (
                     <button onClick={onClose} key={`close-head`} className={`${cls.close}`}>
                         <img src={'/close.svg'} style={{ width: 20 }} />
                     </button>
                 )}
+    
+                {tabs && <Tabs tabs={tabs} selectedTab={selectedTab} onTabChange={onTabChange} />}
+               <TabContent content={content} selectedTab={selectedTab} />
             </div>
             <h2>{title}</h2>
             <h4>{description}</h4>

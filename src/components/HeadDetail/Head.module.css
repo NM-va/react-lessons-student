@@ -17,3 +17,58 @@
   padding: 5px 10px;
   border-radius: 8px;
 }
+
+
+.dropdown {
+  position: absolute;
+  width: 300px;
+  top: 20px;
+  left: 20px;
+  background-color: var(--page-bg-color);
+  list-style-type: none;
+  margin: 0;
+  padding: 10px;
+  border-radius: 8px;
+  z-index: 100,
+}
+
+.dropdown button {
+  background-color: transparent;
+  border-radius: 0;
+  color: #000;
+}
+
+.tabList {
+  display: flex;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.tabItem {
+  margin-bottom: 0;
+}
+
+.tab {
+  padding: 5px 10px;
+  background-color: var(--highlight-bg);
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  color: var(--accent-color);
+
+}
+
+.tab:hover {
+  color: var(--button-text);
+}
+
+.tab.active {
+  background-color: var(--page-bg-color);
+  color: var(--button-text);
+}
+
+.tabContent {
+  border: 1px solid var(--accent-color);
+  padding: 20px;
+  border-radius: 6px;
+}
