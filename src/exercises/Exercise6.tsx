@@ -1,4 +1,4 @@
-import React, { JSX, useState } from 'react'
+import React, { JSX, useMemo, useState } from 'react'
 import { DetailAside } from '../components/DetailAside/DetailAside';
 import { TabContent } from '../components/Tabs/TabContent';
 
@@ -25,6 +25,7 @@ const Exercise6: React.FC = () => {
     //todo selected tab
     const  [activeTab, setActiveTab] = useState<string>(TabsList.DETAILS);
     const onTabChange = (tab: string) => {
+        console.log('%csrc/exercises/Exercise6.tsx:28 tab', 'color: #007acc;', tab);
         setActiveTab(tab);
     }
     
@@ -50,24 +51,23 @@ const Exercise6: React.FC = () => {
     
     
     
+    // const Content1 = useMemo(() => {
+    //     return (
+    //         <>
+    //             <div data-id={TabsList.DETAILS}>Content tab 1 Content tab 1 Content tab 1 Content tab 1 Content tab 1 Content tab 1 Content tab 1 </div>
+    //         </>
+    //     )
+    // }, [])
     
-    const Content1 = () => {
-        return (
-            <>
-                <div data-id={TabsList.DETAILS}>Content tab 1 Content tab 1 Content tab 1 Content tab 1 Content tab 1 Content tab 1 Content tab 1 </div>
-            </>
-        )
-    }
+    // const Content2 = useMemo(() => {
+    //     return (
+    //         <>
+    //             <div data-id={TabsList.PARAMS}>Content tab 2</div>
+    //         </>
+    //     )
+    // }, [])
     
-    const Content2 = () => {
-        return (
-            <>
-                <div data-id={TabsList.PARAMS}>Content tab 2</div>
-            </>
-        )
-    }
-    
-    const tabsContent = [{ id: TabsList.DETAILS, content: Content1}, { id: TabsList.PARAMS, content: Content2}];
+    // const tabsContent = [{ id: TabsList.DETAILS, content: Content1 }, { id: TabsList.PARAMS, content: Content2 }];
     
     
     return (
@@ -86,8 +86,8 @@ const Exercise6: React.FC = () => {
                         menuActions: [{ key: HeaderActions.OPEN_MODAL, label: 'Открыть окно', onAction: onMenuActionHandler }],
                         tabs: [{key: TabsList.DETAILS, label: TabsList.DETAILS, icon: '', disabled: false}, {key: TabsList.PARAMS, label: TabsList.PARAMS, icon: '', disabled: false}],
                         selectedTab: activeTab,
-                        onTabChange: () => onTabChange(activeTab),
-                        content: tabsContent
+                        onTabChange,
+                        content: <>Статус активный</>
                     }}
                     footerProps={{
                         actions: [
@@ -98,20 +98,11 @@ const Exercise6: React.FC = () => {
                         onAction: onActionHandler,
                     }}
                 >
-                    {/*//todo отрисуем содержимое первого таба*/}
-                    {/*<div>tab(1)1</div>*/}
-                    {/*<div>tab(1)2</div>*/}
-                    {/*<div>tab(1)3</div>*/}
-                    {/*<div>tab(1)1</div>*/}
-                    {/*<div>tab(1)2</div>*/}
-                    {/*//todo отрисуем содержимое второго таба*/}
-                    {/*<div>tab(2)3</div>*/}
-                    {/*<div>tab(2)1</div>*/}
-                    {/*<div>tab(2)2</div>*/}
-                    {/*<div>tab(2)3</div>*/}
-                    {/*<div>tab(2)1</div>*/}
-                    {/*<div>tab(2)2</div>*/}
-                    {/*<div>tab(2)3</div>*/}
+                    {/* {tabsContent.map((item) => {
+                        return item.id === activeTab ? item.content : null
+                    })} */}
+                    {activeTab === TabsList.DETAILS && (<>Контент DETAILS</>)}
+                    {activeTab === TabsList.PARAMS && (<>Контент PARAMS</>)}
                 </DetailAside>
             )}
         </div>

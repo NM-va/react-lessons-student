@@ -62,9 +62,13 @@
   color: var(--button-text);
 }
 
-.tab.active {
+.tabActive {
   background-color: var(--page-bg-color);
   color: var(--button-text);
+}
+
+.tabActive:hover {
+  background-color: var(--page-bg-color);
 }
 
 .tabContent {

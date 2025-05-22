@@ -1,17 +1,16 @@
-import { JSX, useEffect, useState } from 'react';
+import { JSX,  useState } from 'react';
 import cls from './Head.module.css'
 import { Tabs } from '../Tabs/Tabs';
-import { TabContent } from '../Tabs/TabContent';
 
-export interface HeadDetailProps<T = string, K = string> {
+export interface HeadDetailProps<T = string> {
     title?: string;
     description?: string;
     onClose?: () => void;
     menuActions?: HeadDetailAction<T>[];
 
     tabs?: TabItem[]; // todo создать интерфейс для Action
-    selectedTab?: K;
-    onTabChange?: (tab: K) => void;
+    selectedTab?: string;
+    onTabChange?: (tab: string) => void;
     content?: JSX.Element | React.ReactNode;
 }
 
@@ -59,6 +58,7 @@ export function HeadDetail<T = string>(props: HeadDetailProps<T>){
             
 
                 //todo вставить content
+                {content}
                 
                 <div>
                     <button onClick={toggleMenu}>Открыть меню ...</button>
@@ -70,8 +70,7 @@ export function HeadDetail<T = string>(props: HeadDetailProps<T>){
                     </button>
                 )}
     
-                {tabs && <Tabs tabs={tabs} selectedTab={selectedTab} onTabChange={onTabChange} />}
-               <TabContent content={content} selectedTab={selectedTab} />
+                {tabs && <Tabs tabs={tabs} selectedTab={selectedTab || ''} onTabChange={onTabChange} />}
             </div>
             <h2>{title}</h2>
             <h4>{description}</h4>
