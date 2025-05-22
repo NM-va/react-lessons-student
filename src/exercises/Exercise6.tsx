@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { JSX, useState } from 'react'
 import { DetailAside } from '../components/DetailAside/DetailAside';
+import { TabContent } from '../components/Tabs/TabContent';
 
 enum HeaderActions {
     OPEN_MODAL = 'OPEN_MODAL'
@@ -12,10 +13,20 @@ enum FooterActions {
 
 //todo добавить enum Tabs
 
+export enum TabsList {
+    DETAILS= 'Details',
+    PARAMS = 'Parameters'
+}
+
+
 // Упражнение 6:
 const Exercise6: React.FC = () => {
     const [showDetail, setShowDetail] = useState<boolean>(true);
     //todo selected tab
+    const  [activeTab, setActiveTab] = useState<string>(TabsList.DETAILS);
+    const onTabChange = (tab: string) => {
+        setActiveTab(tab);
+    }
     
     const onActionHandler = (action: string) => {
         switch (action) {
@@ -37,6 +48,28 @@ const Exercise6: React.FC = () => {
         }
     }
     
+    
+    
+    
+    const Content1 = () => {
+        return (
+            <>
+                <div data-id={TabsList.DETAILS}>Content tab 1 Content tab 1 Content tab 1 Content tab 1 Content tab 1 Content tab 1 Content tab 1 </div>
+            </>
+        )
+    }
+    
+    const Content2 = () => {
+        return (
+            <>
+                <div data-id={TabsList.PARAMS}>Content tab 2</div>
+            </>
+        )
+    }
+    
+    const tabsContent = [{ id: TabsList.DETAILS, content: Content1}, { id: TabsList.PARAMS, content: Content2}];
+    
+    
     return (
         <div className="wrap-container">
             <h1>Упражнение 6</h1>
@@ -50,7 +83,11 @@ const Exercise6: React.FC = () => {
                             console.log('MY CLOSE');
                             setShowDetail(false);
                         },
-                        menuActions: [{ key: HeaderActions.OPEN_MODAL, label: 'Открыть окно', onAction: onMenuActionHandler }]
+                        menuActions: [{ key: HeaderActions.OPEN_MODAL, label: 'Открыть окно', onAction: onMenuActionHandler }],
+                        tabs: [{key: TabsList.DETAILS, label: TabsList.DETAILS, icon: '', disabled: false}, {key: TabsList.PARAMS, label: TabsList.PARAMS, icon: '', disabled: false}],
+                        selectedTab: activeTab,
+                        onTabChange: () => onTabChange(activeTab),
+                        content: tabsContent
                     }}
                     footerProps={{
                         actions: [
@@ -61,20 +98,20 @@ const Exercise6: React.FC = () => {
                         onAction: onActionHandler,
                     }}
                 >
-                    //todo отрисуем содержимое первого таба
-                    <div>tab(1)1</div>
-                    <div>tab(1)2</div>
-                    <div>tab(1)3</div>
-                    <div>tab(1)1</div>
-                    <div>tab(1)2</div>
-                    //todo отрисуем содержимое второго таба
-                    <div>tab(2)3</div>
-                    <div>tab(2)1</div>
-                    <div>tab(2)2</div>
-                    <div>tab(2)3</div>
-                    <div>tab(2)1</div>
-                    <div>tab(2)2</div>
-                    <div>tab(2)3</div>
+                    {/*//todo отрисуем содержимое первого таба*/}
+                    {/*<div>tab(1)1</div>*/}
+                    {/*<div>tab(1)2</div>*/}
+                    {/*<div>tab(1)3</div>*/}
+                    {/*<div>tab(1)1</div>*/}
+                    {/*<div>tab(1)2</div>*/}
+                    {/*//todo отрисуем содержимое второго таба*/}
+                    {/*<div>tab(2)3</div>*/}
+                    {/*<div>tab(2)1</div>*/}
+                    {/*<div>tab(2)2</div>*/}
+                    {/*<div>tab(2)3</div>*/}
+                    {/*<div>tab(2)1</div>*/}
+                    {/*<div>tab(2)2</div>*/}
+                    {/*<div>tab(2)3</div>*/}
                 </DetailAside>
             )}
         </div>

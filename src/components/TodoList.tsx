@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ContextMenu } from './ContextMenu';
+import { UseThemeColor } from '../hooks/useThemeColor';
 
  type StyleType = {
      textDecoration: string
@@ -35,8 +36,7 @@ export function TodoList() {
     const [newTitleTask, setNewTitleTask] = useState<string>("");
 
     const [contextMenuState, setContextMenu] = useState<ContextMenuI>({ visible: false, positionX: 0, positionY: 0 });
-    
-    
+    const themeColor = UseThemeColor();
     
     const handleClick = (e) => {
         let currentElement = e.target;
