@@ -6,8 +6,8 @@ export function ThemeProvider ({children}) {
     const theme = 'light';
     
     return (
-        <ThemeProvider.Provider value={theme}>
+        <ThemeContext.Provider value={theme}>
             {children}
-        </ThemeProvider.Provider>
+        </ThemeContext.Provider>
     )
 }
