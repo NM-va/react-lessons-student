@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { UniversalInput } from '../UniversalInput';
 import { Highlight } from './Highlight';
 import { useDebounce } from '../../hooks/useDebounce';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 type SearchProps = {
     listData: string[];
@@ -14,8 +15,14 @@ export const HighlightSearch = (props: SearchProps) => {
     const debounceSearchValue = useDebounce(searchValue, 3000);
     const onChangeValue = (newValue) => {
         setSearchValue(newValue);
+        setFirstLoadedData(newValue);
     };
+    const [firstLoadedData, setFirstLoadedData] = useLocalStorage('searchValue', '');
 
+    useEffect(() => {
+        setSearchValue(firstLoadedData);
+    }, []);
+    
     useEffect(() => {
     
         if (!debounceSearchValue && setFilteredArr.length !== 0) {
