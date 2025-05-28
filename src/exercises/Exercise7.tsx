@@ -30,7 +30,7 @@ const Exercise7: React.FC = () => {
         <div className="wrap-container">
             <h1>Упражнение 7</h1>
             
-           <HighlightSearch listData={mockData} />
+            <HighlightSearch listData={mockData} />
         </div>
     );
 };

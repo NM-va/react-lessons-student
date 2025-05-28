@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { useMemo } from 'react';
-import cls from './HighlightSearch.module.css';
+import { useEffect, useMemo } from 'react';
 
 type HighlightProps = {
     text: string;
     searchValue: string;
+    bgSelectedText: string;
 };
 
 export const Highlight = (props: HighlightProps) => {
-    const {text, searchValue} = props;
+    const {text, searchValue, bgSelectedText} = props;
     
     const regex = useMemo(() => new RegExp(`${searchValue}`, "i"), [searchValue]);
     
@@ -21,7 +21,7 @@ export const Highlight = (props: HighlightProps) => {
         <React.Fragment key={i}>
             {part}
             {matchStr[i] && (
-                <span className={cls.highlight}>{matchStr[i]}</span>
+                <span style={{'backgroundColor': bgSelectedText} as React.CSSProperties}>{matchStr[i]}</span>
             )}
         </React.Fragment>
     ));
