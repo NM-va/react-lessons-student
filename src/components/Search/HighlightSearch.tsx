@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { UniversalInput } from '../UniversalInput';
 import { Highlight } from './Highlight';
 import { useDebounce } from '../../hooks/useDebounce';
@@ -10,28 +10,20 @@ type SearchProps = {
 
 export const HighlightSearch = (props: SearchProps) => {
     const {listData} = props;
-    const [searchValue, setSearchValue] = useState<string>('');
-    const [filteredArr, setFilteredArr] = useState<string[]>([]);
-    const [isFullString, setIsFullString] = useState<boolean>(false);
+    const [initSearchValue, setInitSearchValue] = useLocalStorage('searchValue', '');
+    const [searchValue, setSearchValue] = useState<string>(initSearchValue);
+    const [filteredArr, setFilteredArr] = useState<string[]>(listData);
     const [bgSelected, setBgSelected] = useState<string>('white');
-    
-    const debounceSearchValue = useDebounce(searchValue, 3000);
-    const [firstLoadedData, setFirstLoadedData] = useLocalStorage('searchValue', '');
+
+    const debounceSearchValue = useDebounce(searchValue, 1000);
     
     const onChangeValue = (newValue: string) => {
         setSearchValue(newValue);
-        setFirstLoadedData(newValue);
+        setInitSearchValue(newValue);
     };
     
-    const regexFullString = useMemo(() => new RegExp(`\\b${debounceSearchValue}\\b`, "gi"), [debounceSearchValue]);
-    const regexSubstring = useMemo(() => new RegExp(`${debounceSearchValue}`, "i"), [debounceSearchValue]);
-    const regex = isFullString ? regexFullString : regexSubstring;
     
-    const onToggleTypeStringSearch = (e:React.MouseEvent) => {
-        e.target.checked ? setIsFullString(true) : setIsFullString(false);
-    };
-    
-    const onSelectBg = (e:React.MouseEvent) => {
+    const onSelectBg = (e: ChangeEvent<HTMLSelectElement>) => {
         setBgSelected(e.target.value);
     };
     
@@ -69,35 +61,23 @@ export const HighlightSearch = (props: SearchProps) => {
     ];
     
     useEffect(() => {
-        setSearchValue(firstLoadedData);
-    }, []);
-    
-    useEffect(() => {
-    
-        if (!debounceSearchValue && setFilteredArr.length !== 0) {
-            setFilteredArr([]);
-        }
-        
-        const regFilteredArr = listData.filter((item: string) => {
-            return regex.test(item);
-        });
-        
-        if (debounceSearchValue) {
-            setFilteredArr(regFilteredArr);
+        if (!debounceSearchValue) {
+            setFilteredArr(listData);
+            return;
         }
 
-    }, [debounceSearchValue]);
-    
-    
+        const regFilteredArr = listData.filter((item: string) => {
+            return item.toLowerCase().includes(debounceSearchValue?.toLowerCase());
+        });
+        
+        setFilteredArr(regFilteredArr);
+
+    }, [debounceSearchValue, listData]);
     
     return (
         <div style={{ 'color': '#000' }}>
             <h3>Настройки поиска:</h3>
             <div style={{"display": "flex", "marginBottom": "20px"}}>
-                <div style={{"marginRight": "20px"}}>
-                    <label htmlFor="typeStringSearch">Поиск строки</label>
-                    <input type="checkbox" form="typeStringSearch" onClick={onToggleTypeStringSearch}/>
-                </div>
                 <div>
                     <label htmlFor="bgSelectedString">Цвет подсветки: </label>
                     <select name="bgSelectedString" form="bgSelectedString" id="bgSelectedString" value={bgSelected} onChange={onSelectBg}>

@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { HighlightSearch } from '../components/Search/HighlightSearch';
 
 const mockData:string[] = [
+    'Демо текст',
+    'Hello 777',
+    '@mail.ru',
+    'очень длинный текст',
     "Apple",
     "Banana",
     "Cherry",
@@ -26,11 +30,23 @@ const mockData:string[] = [
 // Упражнение 7:
 const Exercise7: React.FC = () => {
 
+    const [data, setData] = useState(mockData);
+
+    useEffect(() => {
+        //fetch data;
+
+/* The `setTimeout` function in the code snippet is setting a timer to delay the execution of the
+provided function by 4000 milliseconds (4 seconds). */
+        // setTimeout(() => {
+        //     setData(['Полученные с сервера данные', 'New data from server 777']);
+        // }, 4000);
+    }, [])
+
     return (
         <div className="wrap-container">
             <h1>Упражнение 7</h1>
             
-            <HighlightSearch listData={mockData} />
+            <HighlightSearch listData={data} />
         </div>
     );
 };
