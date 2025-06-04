@@ -1,15 +1,15 @@
-import React, { ChangeEvent, useState } from 'react'
-import { MonoSelect } from '../components/LiveSearchSelect/MonoSelect';
-import { SearchField } from '../components/LiveSearchSelect/SearchField';
+import React, { useState } from 'react'
 import { LiveSearchSelect } from '../components/LiveSearchSelect/LiveSearchSelect';
 import { BaseItem } from '../components/LiveSearchSelect/types';
+
+import "../components/LiveSearchSelect/styles/LiveSearchSelect.css";
 
 export interface Category {
     value: string;
     label: string;
 }
 
-export const sampleProducts: BaseItem[] = [
+export const sampleProducts = [
     { id: 1, name: 'iPhone 14', category: 'electronics', price: 999, description: 'Смартфон Apple', tags: ['телефон', 'apple'] },
     { id: 2, name: 'Samsung Galaxy S23', category: 'electronics', price: 899, description: 'Смартфон Samsung', tags: ['телефон', 'samsung'] },
     { id: 3, name: 'MacBook Pro', category: 'electronics', price: 1999, description: 'Ноутбук Apple', tags: ['ноутбук', 'apple'] },
@@ -28,6 +28,7 @@ export const sampleProducts: BaseItem[] = [
 ];
 
 export const monoSelectOptions: Category[] = [
+    { value: 'all', label: 'все' },
     { value: 'name', label: 'по названию' },
     { value: 'description', label: 'по описанию' },
     { value: 'price', label: 'по цене' },
@@ -37,43 +38,43 @@ export const monoSelectOptions: Category[] = [
 
 // Упражнение 8:
 const Exercise8: React.FC = () => {
-    const [option, setOption] = useState<string>('');
+    const [option, setOption] = useState<string>('all');
+    const [searchValue, setSearchValue] = useState<string>('');
+    
     const onChangeMonoSelect = (value: string) => {
         setOption(value);
     };
     
-    const [searchValue, setSearchValue] = useState<string>('');
-    const onChange = (newValue) => {
-        setSearchValue(newValue)
-    };
-    const categorySlot = <div>hi</div>;
-    const placeholder = 'поиск';
-    const onClear = () => {
-        setSearchValue('');
+    const onSearchChange = (newValue) => {
+        setSearchValue(newValue);
     };
     
-    const renderItem = (renderProp) => {
-        return <div>renderProp</div>
+    const renderItem = (renderData) => {
+        if (React.isValidElement(renderData)) {
+            return renderData;
+        }
+        
+        if (typeof renderData === 'object') {
+            return renderData.map((item) => {
+                return <span className="tag">{item}</span>
+            })
+        }
+        
+        return String(renderData);
     }
-    
     return (
         <div className="wrap-container" style={{"color": "#000"}}>
             <h1>Упражнение 8</h1>
             
-            <MonoSelect options={monoSelectOptions} value={option} onChange={onChangeMonoSelect} />
-            <SearchField value={searchValue} onChange={onChange} categorySlot={categorySlot} placeholder={placeholder} onClear={onClear}/>
             <LiveSearchSelect
-                            id={}
-                            name={}
-                            category={}
-                            data={}
+                            data={sampleProducts}
                             searchQuery={searchValue}
                             selectedCategory={option}
-                            onSearchChange={}
-                            onCategoryChange={}
-                            categoryOptions={}
+                            onSearchChange={onSearchChange}
+                            onCategoryChange={onChangeMonoSelect}
+                            categoryOptions={monoSelectOptions}
                             renderItem={renderItem}
-                            gridColumns={}/>
+                            />
         </div>
     );
 };
