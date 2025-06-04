@@ -13,7 +13,7 @@ const Exercise4 = lazy(() => import('./exercises/Exercise4'));
 const Exercise5 = lazy(() => import('./exercises/Exercise5'));
 const Exercise6 = lazy(() => import('./exercises/Exercise6'));
 const Exercise7 = lazy(() => import('./exercises/Exercise7'));
-const Exercise8 = lazy(() => import('./exercises/Exercise8'));
+const Exercise8 = lazy(() => import('./exercises/Exercise8/Exercise8'));
 
 // Добавьте больше упражнений по мере необходимости
 

@@ -11,15 +11,6 @@ export interface CategoryOption {
     count?: number; // количество элементов в категории
 }
 
-export interface MonoSelectProps {
-    options: CategoryOption[];
-    value: string;
-    onChange: (value: string) => void;
-    placeholder?: string;
-    disabled?: boolean;
-    showCount?: boolean; // показывать ли количество элементов
-}
-
 export interface SearchFieldProps {
     value: string;
     onChange: (value: string) => void;

@@ -1,16 +1,17 @@
 import React, { useState } from 'react'
-import { LiveSearchSelect } from '../components/LiveSearchSelect/LiveSearchSelect';
-import { BaseItem } from '../components/LiveSearchSelect/types';
+import { LiveSearchSelect } from '../../components/LiveSearchSelect/LiveSearchSelect';
 
-import "../components/LiveSearchSelect/styles/LiveSearchSelect.css";
+import "../../components/LiveSearchSelect/styles/LiveSearchSelect.css";
+import { ProductGrid } from './ProductGrid';
+import { Product } from './types';
 
 export interface Category {
     value: string;
     label: string;
 }
 
-export const sampleProducts = [
-    { id: 1, name: 'iPhone 14', category: 'electronics', price: 999, description: 'Смартфон Apple', tags: ['телефон', 'apple'] },
+export const sampleProducts: Product[] = [
+    { id: 1, name: 'iPhone 14', category: 'electronics', price: 999, description: 'Смартфон Apple', tags: ['телефон', 'apple']},
     { id: 2, name: 'Samsung Galaxy S23', category: 'electronics', price: 899, description: 'Смартфон Samsung', tags: ['телефон', 'samsung'] },
     { id: 3, name: 'MacBook Pro', category: 'electronics', price: 1999, description: 'Ноутбук Apple', tags: ['ноутбук', 'apple'] },
     { id: 4, name: 'Красное платье', category: 'clothing', price: 89, description: 'Элегантное платье', tags: ['платье', 'красное'] },
@@ -27,6 +28,8 @@ export const sampleProducts = [
     { id: 15, name: 'Учебник JavaScript', category: 'books', price: 35, description: 'Современный учебник программирования', tags: ['учебник', 'программирование'] }
 ];
 
+
+
 export const monoSelectOptions: Category[] = [
     { value: 'all', label: 'все' },
     { value: 'name', label: 'по названию' },
@@ -38,43 +41,41 @@ export const monoSelectOptions: Category[] = [
 
 // Упражнение 8:
 const Exercise8: React.FC = () => {
-    const [option, setOption] = useState<string>('all');
     const [searchValue, setSearchValue] = useState<string>('');
+    const [data, setData] = useState<Product[]>(sampleProducts);
+    const [filteredData, setFilteredData] = useState<Product[]>(sampleProducts);
+    const [selectedOption, setSelectedOption] = useState<Category>(monoSelectOptions[0]);
     
-    const onChangeMonoSelect = (value: string) => {
-        setOption(value);
+    const onChangeMonoSelect = (value: Category) => {
+        setSelectedOption(value);
     };
     
-    const onSearchChange = (newValue) => {
+    const onSearchChange = (newValue: string) => {
+        // todo фильтрацию делать тут по категории
         setSearchValue(newValue);
+        // для категории name
+        console.log(selectedOption);
+        const filtered = data.filter((v) => {
+            return v.name?.toLowerCase().includes(newValue.toLowerCase());
+        });
+        setFilteredData(filtered);
     };
-    
-    const renderItem = (renderData) => {
-        if (React.isValidElement(renderData)) {
-            return renderData;
-        }
-        
-        if (typeof renderData === 'object') {
-            return renderData.map((item) => {
-                return <span className="tag">{item}</span>
-            })
-        }
-        
-        return String(renderData);
-    }
+
     return (
         <div className="wrap-container" style={{"color": "#000"}}>
             <h1>Упражнение 8</h1>
             
-            <LiveSearchSelect
-                            data={sampleProducts}
-                            searchQuery={searchValue}
-                            selectedCategory={option}
-                            onSearchChange={onSearchChange}
-                            onCategoryChange={onChangeMonoSelect}
-                            categoryOptions={monoSelectOptions}
-                            renderItem={renderItem}
-                            />
+            <LiveSearchSelect<Category>
+                data={monoSelectOptions}
+                searchQuery={searchValue}
+                selectedCategory={selectedOption}
+                onSearchChange={onSearchChange}
+                onCategoryChange={onChangeMonoSelect}
+                fieldName='value'
+                labelName='label'
+            />
+
+            <ProductGrid data={filteredData} />
         </div>
     );
 };

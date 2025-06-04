@@ -28,6 +28,9 @@ export const SearchField = (props: SearchFieldProps) => {
             <div>
                 {categorySlot}
             </div>
+            {/* Обработчик по ENTER */}
+            {/* Очистить сделать X внутри input */}
+            {/* Поиск по enter и по клику на кнопку найти */}
             <label><input type="text" ref={inputRef} value={value} onChange={changeSearchValue} placeholder={placeholder}/></label>
             <button type="button" onClick={onClear}>Очистить поисковый запрос</button>
         </div>
