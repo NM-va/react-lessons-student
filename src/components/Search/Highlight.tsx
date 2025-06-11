@@ -15,7 +15,7 @@ export const Highlight = (props: HighlightProps) => {
         <span>
             {parts.map((part: string, index: number) => {
                 return part?.toLowerCase() === searchValue.toLowerCase() ? (
-                    <mark style={{ 'backgroundColor': bgSelectedText } as React.CSSProperties}>{part}</mark>
+                    <mark style={{ 'backgroundColor': bgSelectedText, 'color': "white" } as React.CSSProperties}>{part}</mark>
                 ) : (
                     <span key={index}>{part}</span>
                 )
