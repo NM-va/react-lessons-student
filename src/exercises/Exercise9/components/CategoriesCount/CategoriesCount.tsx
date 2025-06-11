@@ -1,12 +1,15 @@
-interface CategoriesCountProps<T extends Record<string, any> = Record<string, any>> {
+import React from "react";
+
+interface Props<T extends Record<string, any> = Record<string, any>> {
     data: T[];
-    categoryName: string;
+    categoryName: keyof T;
 }
 
-export const CategoriesCount = ({data, categoryName}: CategoriesCountProps) => {
+export function CategoriesCount<T extends Record<string, any> = Record<string, any>>(props: Props<T>): React.JSX.Element {
+    const { data, categoryName } = props;
     
-    const categoriesCount = (data || [])?.reduce((acc, categoryItem) => {
-        const key = categoryItem[categoryName];
+    const categoriesCount = (data || [])?.reduce((acc: Record<string, any>, categoryItem) => {
+        const key: string  = categoryItem[categoryName];
         acc[key] = (acc[key] || 0) + 1;
         return acc;
     }, {});

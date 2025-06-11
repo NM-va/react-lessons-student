@@ -4,7 +4,7 @@ import { LiveSearchSelect } from '../../components/LiveSearchSelect/LiveSearchSe
 import "../../components/LiveSearchSelect/styles/LiveSearchSelect.css";
 import { ProductGrid } from './ProductGrid';
 import { Product } from './types';
-import _ from 'lodash';
+import _cloneDeep from 'lodash/cloneDeep';
 
 export interface Category {
     value: string;
@@ -43,13 +43,13 @@ export const monoSelectOptions: Category[] = [
 // Упражнение 9:
 const Exercise9: React.FC = () => {
     const [searchValue, setSearchValue] = useState<string>('');
-    const [data, setData] = useState<Product[]>(sampleProducts);
+    const [data] = useState<Product[]>(sampleProducts);
     const [filteredData, setFilteredData] = useState<Product[]>(sampleProducts);
     const [selectedOption, setSelectedOption] = useState<Category>(monoSelectOptions[0]);
     
     const onChangeMonoSelect = (value: Category) => {
         console.log('value', value)
-        setSelectedOption(_.cloneDeep(value));
+        setSelectedOption(_cloneDeep(value));
     };
     
     useEffect(() => {
@@ -57,7 +57,6 @@ const Exercise9: React.FC = () => {
     }, [selectedOption]);
     
     const onSearchChange = (newValue: string) => {
-        // DONE фильтрацию делать тут по категории
         
         setSearchValue(newValue);
     
@@ -73,11 +72,12 @@ const Exercise9: React.FC = () => {
                 })
             }
             
-            return item[selectedOption.value]?.toLowerCase().includes(newValue.toLowerCase());;
+            return `${item[selectedOption.value]}`?.toLowerCase().includes(newValue.toLowerCase());;
         });
         
         setFilteredData(filtered);
     };
+
 
     return (
         <div className="wrap-container" style={{"color": "#000"}}>
