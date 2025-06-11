@@ -67,8 +67,6 @@ const Exercise9: React.FC = () => {
         }
 
         const filtered = data.filter((item) => {
-            console.log('selectedOption', selectedOption)
-            console.log('selectedOption.value', selectedOption.value)
             if (selectedOption.value === 'all') {
                 return Object.values(item).some((value) => {
                     return String(value).toLowerCase().includes(newValue.toLowerCase());
@@ -95,7 +93,7 @@ const Exercise9: React.FC = () => {
                 labelName='label'
             />
 
-            <ProductGrid data={filteredData} />
+            <ProductGrid data={filteredData} selectedCategory={selectedOption.value} searchValue={searchValue} />
         </div>
     );
 };

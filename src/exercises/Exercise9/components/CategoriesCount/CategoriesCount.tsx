@@ -1,13 +1,12 @@
 interface CategoriesCountProps<T extends Record<string, any> = Record<string, any>> {
     data: T[];
-    fieldName: keyof T;
-    labelName: keyof T;
+    categoryName: string;
 }
 
-export const CategoriesCount = ({data, fieldName, labelName}: CategoriesCountProps) => {
+export const CategoriesCount = ({data, categoryName}: CategoriesCountProps) => {
     
     const categoriesCount = (data || [])?.reduce((acc, categoryItem) => {
-        const key = categoryItem.category;
+        const key = categoryItem[categoryName];
         acc[key] = (acc[key] || 0) + 1;
         return acc;
     }, {});
