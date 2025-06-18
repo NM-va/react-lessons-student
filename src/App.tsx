@@ -15,6 +15,7 @@ const Exercise6 = lazy(() => import('./exercises/Exercise6'));
 const Exercise7 = lazy(() => import('./exercises/Exercise7'));
 const Exercise8 = lazy(() => import('./exercises/Exercise8/Exercise8'));
 const Exercise9 = lazy(() => import('./exercises/Exercise9/Exercise9'));
+const Exercise10 = lazy(() => import('./exercises/Exercise10/Exercise10'));
 
 // Добавьте больше упражнений по мере необходимости
 
@@ -36,6 +37,7 @@ function App() {
                             <li><Link to="/exercise7">Упр 7</Link></li>
                             <li><Link to="/exercise8">Упр 8</Link></li>
                             <li><Link to="/exercise9">Упр 9</Link></li>
+                            <li><Link to="/exercise10">Упр 10</Link></li>
                         </ul>
                     </nav>
                     
@@ -52,6 +54,7 @@ function App() {
                                 <Route path="/exercise7" element={<Exercise7/>}/>
                                 <Route path="/exercise8" element={<Exercise8/>}/>
                                 <Route path="/exercise9" element={<Exercise9/>}/>
+                                <Route path="/exercise10" element={<Exercise10/>}/>
                             </Routes>
                         </Suspense>
                     </main>
