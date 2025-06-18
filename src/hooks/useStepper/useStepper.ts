@@ -1,29 +1,33 @@
-import { CheckoutSteps, StepperConfig } from '../exercises/Exercise10/types/checkout.ts';
+import { Stepper, StepperConfig } from './types';
 import { useState } from 'react';
 
-export const useStepper = (config: StepperConfig<any>) => {
+function useStepper<T extends string = string>(config: StepperConfig<T>): Stepper<T> {
     const {steps, onStepChange, onComplete, initialStep } = config;
     const defaultStep = initialStep ? initialStep : steps[0];
     
-    const [stepChecked, setStepChecked] = useState<CheckoutSteps>(CheckoutSteps.CART);
+    const [stepChecked, setStepChecked] = useState<T>(defaultStep);
+    const [currentStepIndexCheck, setCurrentStepIndexCheck] = useState<number>(steps.indexOf(stepChecked));
     
     const isFirstStepCheck = stepChecked === steps[0];
     const isLastStepCheck = stepChecked === steps[steps.length - 1];
-    const currentStepIndexCheck = steps.indexOf(stepChecked);
     const totalSteps = steps.length;
     const progressCheck = ((currentStepIndexCheck + 1) / totalSteps) * 100;
     
-    const changeStep = (step) => {
+    const changeStep = (step: T) => {
         setStepChecked(step);
+        onStepChange?.(step);
+        setCurrentStepIndexCheck(steps.indexOf(step));
 
-        return onStepChange?.(step);
+        if (isLastStepCheck) {
+            onComplete?.();
+        }
     }
     
     return {
         currentStep: stepChecked,
         nextStep: () => changeStep(steps[currentStepIndexCheck + 1]),
         previousStep: () => changeStep(steps[currentStepIndexCheck - 1]),
-        goToStep: () => changeStep(steps[defaultStep]),
+        goToStep: (step: T) => changeStep(step),
         reset: () => changeStep(steps[0]),
         currentStepIndex: currentStepIndexCheck,
         totalSteps: totalSteps,
@@ -32,3 +36,5 @@ export const useStepper = (config: StepperConfig<any>) => {
         progress: progressCheck
     }
 }
+
+export default useStepper;

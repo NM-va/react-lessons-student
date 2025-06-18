@@ -1,5 +1,5 @@
 import { CheckoutSteps } from './types/checkout';
-import { useStepper } from '../../hooks/useStepper';
+import useStepper from '../../hooks/useStepper';
 import { ProgressBar } from './components/ProgressBar';
 import { StepIndicator } from './components/StepIndicator';
 import { CartForm } from './steps/CartForm';
@@ -9,9 +9,11 @@ import { ConfirmationForm } from './steps/ConfirmationForm';
 
 export const CheckoutStepper = () => {
     const steps = Object.values(CheckoutSteps);
-    const stepper = useStepper({steps,
-                                   onStepChange: (step) => console.log('Переход на:', step),
-                                   onComplete: () => console.log('Заказ оформлен!')});
+    const stepper = useStepper<CheckoutSteps>({
+        steps,
+        onStepChange: (step: CheckoutSteps) => console.log('Переход на:', step),
+        onComplete: () => console.log('Заказ оформлен!')
+    });
     
     const totalSteps = steps.length;
     
@@ -38,9 +40,9 @@ export const CheckoutStepper = () => {
         <>
             {renderStepContent()}
             <ProgressBar progress={stepper.progress}/>
-            <StepIndicator totalSteps={totalSteps} currentStepIndex={stepper.currentStepIndex} />
+            <StepIndicator totalSteps={totalSteps} currentStepIndex={stepper.currentStepIndex} indicatorWidth={20} />
             <div style={{marginTop: '30px'}}>
-                <button onClick={() => stepper.goToStep}>Перейти шагу</button>
+                <button onClick={() => stepper.goToStep(CheckoutSteps.CONFIRMATION)}>Пропустить все этапы</button>
                 {!stepper.isFirstStep && <button onClick={stepper.previousStep}>Предыдущий шаг</button>}
                 {!stepper.isLastStep && <button onClick={stepper.nextStep}>Следующий шаг</button>}
                 <button onClick={stepper.reset}>Сбросить</button>
