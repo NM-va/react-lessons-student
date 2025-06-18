@@ -1,30 +1,34 @@
-import {Stepper, StepperConfig} from "../exercises/Exercise10/types/checkout.ts";
-import {ProgressBar} from "../exercises/Exercise10/components/ProgressBar.tsx";
-import {StepIndicator} from "../exercises/Exercise10/components/StepIndicator.tsx";
+import { CheckoutSteps, StepperConfig } from '../exercises/Exercise10/types/checkout.ts';
+import { useState } from 'react';
 
 export const useStepper = (config: StepperConfig<any>) => {
+    const {steps, onStepChange, onComplete, initialStep } = config;
+    const defaultStep = initialStep ? initialStep : steps[0];
+    
+    const [stepChecked, setStepChecked] = useState<CheckoutSteps>(CheckoutSteps.CART);
+    
+    const isFirstStepCheck = stepChecked === steps[0];
+    const isLastStepCheck = stepChecked === steps[steps.length - 1];
+    const currentStepIndexCheck = steps.indexOf(stepChecked);
+    const totalSteps = steps.length;
+    const progressCheck = ((currentStepIndexCheck + 1) / totalSteps) * 100;
+    
+    const changeStep = (step) => {
+        setStepChecked(step);
 
-
-  const Stepper = (props: Stepper<string>) => {
-    const {
-      currentStep, nextStep, previousStep,
-      goToStep, reset, currentStepIndex
-      , totalSteps, isFirstStep, isLastStep
-      , progress
-    } = props;
-    const step: number = 2;
-    return (
-      <>
-        <ProgressBar progress={progress}/>
-        <StepIndicator totalSteps={totalSteps} currentStep={currentStep} />
-
-        <button onClick={() => goToStep(step: number)}>Перейти шагу</button>
-        {isLastStep && <button onClick={nextStep}>Следующий шаг</button>}
-        {isFirstStep && <button onClick={previousStep}>Предыдущий шаг</button>}
-        <button onClick={reset}>Сбросить</button>
-      </>
-    )
-  }
-
-  return <Stepper currentStep={} nextStep={} previousStep={} goToStep={} reset={} currentStepIndex={} totalSteps={} isFirstStep={} isLastStep={} progress={} />
+        return onStepChange?.(step);
+    }
+    
+    return {
+        currentStep: stepChecked,
+        nextStep: () => changeStep(steps[currentStepIndexCheck + 1]),
+        previousStep: () => changeStep(steps[currentStepIndexCheck - 1]),
+        goToStep: () => changeStep(steps[defaultStep]),
+        reset: () => changeStep(steps[0]),
+        currentStepIndex: currentStepIndexCheck,
+        totalSteps: totalSteps,
+        isFirstStep: isFirstStepCheck,
+        isLastStep: isLastStepCheck,
+        progress: progressCheck
+    }
 }

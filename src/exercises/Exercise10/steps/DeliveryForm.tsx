@@ -2,7 +2,7 @@ import {DeliveryMethods} from "../types/checkout.ts";
 import {UniversalInput} from "../../../components/UniversalInput.tsx";
 import {useState} from "react";
 
-export const Step2 = () => {
+export const DeliveryForm = () => {
   const [addressDelivery, setAddressDelivery] = useState<string>('');
   const onChangeAddress = (newValue: string) => {
     setAddressDelivery(newValue);
@@ -10,6 +10,7 @@ export const Step2 = () => {
 
   return (
     <>
+        <div>DELIVERY</div>
       <div>Выберите способ доставки:</div>
       <select>
         {

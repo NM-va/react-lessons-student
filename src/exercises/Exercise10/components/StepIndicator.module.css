@@ -1,0 +1,30 @@
+.stepsList {
+    position: relative;
+    margin-top: -35px;
+    height: 20px;
+}
+
+.step {
+    height: 20px;
+    width: 20px;
+    font-size: 16px;
+    text-align: center;
+    line-height: 16px;
+    background-color: var(--page-bg-color);
+    border-radius: 50%;
+    border: 1px solid var(--accent-color);
+    position: absolute;
+    transform: translateX(-50%);
+}
+
+.step:first-child {
+    margin-left: 0;
+}
+.step:last-child {
+    margin-right: 0;
+}
+
+.currentStep {
+    background-color: var(--tab-active);
+    color: var(--button-text);
+}

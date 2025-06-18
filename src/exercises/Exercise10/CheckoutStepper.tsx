@@ -1,16 +1,53 @@
-import {Step1} from "./steps/Step1.tsx";
-import {Step2} from "./steps/Step2.tsx";
-import {Step3} from "./steps/Step3.tsx";
-import {Step4} from "./steps/Step4.tsx";
+import { CheckoutSteps } from './types/checkout';
+import { useStepper } from '../../hooks/useStepper';
+import { ProgressBar } from './components/ProgressBar';
+import { StepIndicator } from './components/StepIndicator';
+import { CartForm } from './steps/CartForm';
+import { DeliveryForm } from './steps/DeliveryForm';
+import { PaymentForm } from './steps/PaymentForm';
+import { ConfirmationForm } from './steps/ConfirmationForm';
 
 export const CheckoutStepper = () => {
+    const steps = Object.values(CheckoutSteps);
+    const stepper = useStepper({steps,
+                                   onStepChange: (step) => console.log('Переход на:', step),
+                                   onComplete: () => console.log('Заказ оформлен!')});
+    
+    const totalSteps = steps.length;
+    
+    const renderStepContent = () => {
+        switch (stepper.currentStep) {
+            case CheckoutSteps.CART:
+                return <CartForm />;
+            case CheckoutSteps.DELIVERY:
+                return <DeliveryForm />;
+            case CheckoutSteps.PAYMENT:
+                return <PaymentForm />;
+            case CheckoutSteps.CONFIRMATION:
+                return <ConfirmationForm />;
+            default:
+                return null;
+        }
+    };
+    
+    
+    return (
+    
+        //todo: валидация
+        //todo: сохранение в localstorage
+        <>
+            {renderStepContent()}
+            <ProgressBar progress={stepper.progress}/>
+            <StepIndicator totalSteps={totalSteps} currentStepIndex={stepper.currentStepIndex} />
+            <div style={{marginTop: '30px'}}>
+                <button onClick={() => stepper.goToStep}>Перейти шагу</button>
+                {!stepper.isFirstStep && <button onClick={stepper.previousStep}>Предыдущий шаг</button>}
+                {!stepper.isLastStep && <button onClick={stepper.nextStep}>Следующий шаг</button>}
+                <button onClick={stepper.reset}>Сбросить</button>
+            </div>
 
-  return (
-    <>
-      <Step1/>
-      <Step2/>
-      <Step3/>
-      <Step4/>
-    </>
-  )
+        </>
+    )
+    
+    
 }

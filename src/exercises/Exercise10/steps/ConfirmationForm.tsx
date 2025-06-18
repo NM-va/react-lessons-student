@@ -1,8 +1,9 @@
-export const Step4 = () => {
+export const ConfirmationForm = () => {
     return (
       <>
-        <div>Номер заказа:</div>
-        <button type="submit">Оформить заказ</button>
-      </>
+          <div>CONFIRMATION</div>
+          <div>Номер заказа:</div>
+          <button type="submit">Оформить заказ</button>
+        </>
     )
 }

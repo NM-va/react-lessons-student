@@ -2,7 +2,7 @@ import {PaymentMethods} from "../types/checkout.ts";
 import {UniversalInput} from "../../../components/UniversalInput.tsx";
 import {useState} from "react";
 
-export const Step3 = () => {
+export const PaymentForm = () => {
   const [numberCard, setNumberCard] = useState<string>('000');
   const onChangeNumberCard = (newNumber: string) => {
     setNumberCard(newNumber);
@@ -10,6 +10,7 @@ export const Step3 = () => {
 
   return (
     <div>
+        <div>PAYMENT</div>
       <div>Выберите способ оплаты:</div>
       <select>
         {
