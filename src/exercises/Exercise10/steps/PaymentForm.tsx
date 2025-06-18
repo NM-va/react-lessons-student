@@ -15,7 +15,7 @@ export const Step3 = () => {
         {
           Object.values(PaymentMethods).map((item) => {
             return (
-              <option>{item}</option>
+              <option key={item}>{item}</option>
             )
           })
         }

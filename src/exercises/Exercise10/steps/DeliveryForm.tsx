@@ -15,7 +15,7 @@ export const Step2 = () => {
         {
           Object.values(DeliveryMethods).map((item) => {
             return (
-              <option>{item}</option>
+              <option key={item}>{item}</option>
             )
           })
         }
