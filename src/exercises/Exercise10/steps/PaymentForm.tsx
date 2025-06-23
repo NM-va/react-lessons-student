@@ -1,18 +1,24 @@
 import {PaymentMethods} from "../types/checkout.ts";
 import {UniversalInput} from "../../../components/UniversalInput.tsx";
-import {useState} from "react";
+import { ChangeEvent, useState } from 'react';
 
 export const PaymentForm = () => {
   const [numberCard, setNumberCard] = useState<string>('000');
+  const [selectedPayment, setSelectedPayment] = useState<string>(PaymentMethods.CASH);
+  
   const onChangeNumberCard = (newNumber: string) => {
     setNumberCard(newNumber);
   }
 
+  const onSelectPayment = (e: ChangeEvent<HTMLSelectElement>) => {
+      setSelectedPayment(e.target.value);
+  }
+  
   return (
     <div>
-        <div>PAYMENT</div>
+      <div>PAYMENT</div>
       <div>Выберите способ оплаты:</div>
-      <select>
+      <select onChange={onSelectPayment} value={selectedPayment}>
         {
           Object.values(PaymentMethods).map((item) => {
             return (
@@ -21,10 +27,10 @@ export const PaymentForm = () => {
           })
         }
       </select>
-      { PaymentMethods.CARD &&
+      { selectedPayment === PaymentMethods.CARD &&
         <div>
           <div>Номер карты:</div>
-          <UniversalInput value={numberCard} onChange={onChangeNumberCard}/>
+          <UniversalInput value={numberCard} onChange={onChangeNumberCard} />
         </div>
       }
     </div>
