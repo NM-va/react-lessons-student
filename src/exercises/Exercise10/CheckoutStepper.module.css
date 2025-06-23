@@ -1,0 +1,9 @@
+.productItem {
+    border: 1px solid var( --button-bg);
+    padding: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: space-between;
+}
