@@ -1,49 +1,47 @@
 import { DeliveryMethods } from '../types/checkout.ts';
-import { UniversalInput } from '../../../components/UniversalInput.tsx';
-import { ChangeEvent, useCallback, useContext, useEffect, useState } from 'react';
+import UniversalInput from '../components/UniversalInput.tsx';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { StepperContext } from '../CheckoutStepper';
+import cls from '../CheckoutStepper.module.css'
 
 export const DeliveryForm = () => {
     const [addressDelivery, setAddressDelivery] = useState<string>('');
-    const [selectedDelivery, setSelectedDelivery] = useState('')
-    const {data, setData} = useContext(StepperContext);
-    
+    const [selectedDelivery, setSelectedDelivery] = useState<string>(DeliveryMethods.COURIER)
+    const {data, setData, errors} = useContext(StepperContext);
+
     useEffect(() => {
         setAddressDelivery(data.delivery.address);
         setSelectedDelivery(data.delivery.method);
     }, []);
     
-    const onSelectDelivery = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
-        setSelectedDelivery(e.target.value);
-        setData({...data, delivery: {...data.delivery, method: e.target.value }});
+    const onSelectDelivery = useCallback((value) => {
+        setSelectedDelivery(value);
+        setData({...data, delivery: {...data.delivery, value}});
     }, [])
     
-    const onChangeAddress = (newValue: string) => {
+    const onChangeAddress = useCallback((newValue: string) => {
         setAddressDelivery(newValue);
         setData({...data, delivery: {...data.delivery, address: newValue }});
-    }
+    },[])
     
-    
+    const result = Object.values(DeliveryMethods).map(value => ({value, label: value}));
     
     return (
         <>
-            <div>DELIVERY</div>
-            <div>Выберите способ доставки:</div>
-            <select onChange={onSelectDelivery} value={selectedDelivery}>
-                {
-                    Object.values(DeliveryMethods).map((item) => {
-                        return (
-                            <option key={item}>{item}</option>
-                        )
-                    })
-                }
-            </select>
-            
-            {selectedDelivery === DeliveryMethods.COURIER && <div>+200</div>}
-            {selectedDelivery === DeliveryMethods.PICKUP && <div>
-              <div>Адрес доставки:</div>
-              <UniversalInput value={addressDelivery} onChange={onChangeAddress}/>
-            </div>}
+            <h2>Доставка</h2>
+            <UniversalInput type="radio" label="Выберите способ доставки:" options={result} value={selectedDelivery} onChange={(value) => onSelectDelivery(value)} />
+            <div className={cls.deliveryPriceBlock}>
+                <div>Стоимость доставки:</div>
+    
+                {selectedDelivery === DeliveryMethods.COURIER && <span className={cls.deliveryPrice}>200</span>}
+                {selectedDelivery === DeliveryMethods.PICKUP && <span className={cls.deliveryPriceFree}>Бесплатно</span>}
+            </div>
+            {selectedDelivery === DeliveryMethods.PICKUP && (
+                <div>
+                  <div></div>
+                  <UniversalInput label="Адрес доставки:" value={addressDelivery} onChange={(value) => onChangeAddress(value)} required error={errors?.delivery} />
+                </div>
+            )}
         </>
     )
 }

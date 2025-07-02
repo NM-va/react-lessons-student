@@ -15,6 +15,7 @@
     --code-bg: #f4f2e6;
     --demo-bg: #fbf9f0;
     --button-bg: #996a42;
+    --disabled-bg: #c59f78;
     --button-text: #f5f1e4;
     --highlight-bg: rgba(153, 106, 66, 0.12);
 }
@@ -226,6 +227,15 @@ button {
 
 button:hover {
     background-color: var(--accent-hover);
+}
+
+button[disabled] {
+    background-color: var(--disabled-bg);
+    cursor: default;
+}
+
+button[disabled]:hover {
+    background-color: var(--disabled-bg);
 }
 
 .demo-area {

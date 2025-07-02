@@ -3,76 +3,85 @@ import { Product } from '../types/checkout.ts';
 import { useContext, useEffect, useState } from 'react';
 import cls from '../CheckoutStepper.module.css'
 import { StepperContext } from '../CheckoutStepper';
+import { QuantityProduct } from '../components/QuantityProduct';
 
 export const CartForm = () => {
     const [productList, setProductList] = useState<Product[]>(mockProducts);
-    const totalSum = productList?.reduce(
+    const totalPriceBasket = productList?.reduce(
         (sum, product) => sum + product.price * product.quantity, 0
     );
     const {data, setData} = useContext(StepperContext);
+
+    const removeProducts = (id) => {
+        const updatedProductList  = productList?.filter((item) => {return item.id !== id})
+        setProductList(updatedProductList);
+        setData({...data, products: updatedProductList});
+    };
+    
+    const updateProductQuantity = (productId, newQuantity) => {
+        const updatedProducts = productList.map(product => {
+            if (product.id === productId) {
+                return {
+                    ...product,
+                    quantity: newQuantity
+                };
+            }
+            return product;
+        });
+        
+        setProductList(updatedProducts);
+        setData({...data, products: updatedProducts});
+    };
+    
+    const addedProduct = (productId) => {
+        const product = productList.find((item) => item.id === productId);
+        if (!product) return;
+        
+        const currentQuantity = product.quantity;
+        if (currentQuantity >= product.availableQuantity) return;
+
+        updateProductQuantity(productId, currentQuantity + 1);
+    };
+    
+    const removeProduct = (productId) => {
+        const product = productList.find((item) => item.id === productId);
+        if (!product) return;
+    
+        const currentQuantity = product.quantity;
+        if (currentQuantity <= 0 ) return;
+    
+        updateProductQuantity(productId, currentQuantity - 1);
+    };
     
     useEffect(() => {
         setProductList(data.products);
     }, []);
     
-    const removeProducts = (id) => {
-        const updatedProductList  = productList?.filter((item) => {return item.id !== id})
-        setProductList(updatedProductList);
-        setData({...data, products: updatedProductList});
-    }
-    
-    const QuantityProduct = ({ product }: Product) => {
-        const { price, availableQuantity } = product;
-        const [quantity, setQuantity] = useState<number>(0);
-        const [availableQuantityItem, setAvailableQuantityItem] = useState<number>(Number(availableQuantity));
-        const [totalPrice, setTotalPrice] = useState<number>(Number(price));
-        
-        const addedProduct = () => {
-            if ((availableQuantityItem < 1) || quantity > availableQuantity) return;
-            setQuantity(quantity + 1);
-            setAvailableQuantityItem(availableQuantityItem - 1);
-        }
-    
-        const removeProduct = () => {
-            if (quantity < 1) return;
-            setQuantity(quantity - 1);
-            if (availableQuantityItem > availableQuantity) return;
-            setAvailableQuantityItem(availableQuantityItem + 1);
-        }
-        
-        useEffect(() => {
-            setTotalPrice(quantity * price);
-        }, [quantity, price])
-        
-        return (
-            <div style={{width: '40%'}}>
-                <button type="button" onClick={addedProduct}>+</button>
-                <span>{quantity}</span>
-                <button type="button" onClick={removeProduct}>-</button>
-                <span>{totalPrice}</span>
-                <span>осталось: {availableQuantityItem}</span>
-            </div>
-        )
-    }
-    
     return (
         <>
-            <div>CART</div>
+            <h2>Корзина</h2>
             {productList.map((item: Product) => {
                 return (
                     <div key={item.id} className={cls.productItem}>
-                        <span>{item.name}</span>
-                        <span>{item.price}</span>
-                        <QuantityProduct product={item} />
-                        <button
+                        <div>
+                            <div className={cls.productName}>{item.name}</div>
+                            <div className={cls.productPrice}>{item.price}</div>
+                        </div>
+
+                        <QuantityProduct addedProduct={() => addedProduct(item.id)}
+                                         removeProduct={() => removeProduct(item.id)}
+                                         price={item.price}
+                                         quantity={item.quantity}
+                                         availableQuantityItem={item.availableQuantity - item.quantity} />
+                        <button className={cls.removeBtn}
                             onClick={() => removeProducts(item.id)}
                         >x</button>
                     </div>
                 )
             })}
             
-            <div>Итого:</div>
-            <div>{totalSum}</div>
+            <div className={cls.totalPriceTitle}>Итого:</div>
+            <div className={cls.totalPriceBasket}>{totalPriceBasket}</div>
         </>
     )
 }

@@ -1,30 +1,80 @@
 .stepsList {
+    display: flex;
+    justify-content: space-between;
     position: relative;
-    margin-top: -35px;
-    height: 20px;
+    margin-bottom: 30px;
 }
+
+.stepper-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Заголовок */
+.stepper-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* Контейнер шагов */
 
 .step {
-    height: 20px;
-    width: 20px;
-    font-size: 16px;
-    text-align: center;
-    line-height: 16px;
-    background-color: var(--page-bg-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 3;
+}
+
+.stepNumber {
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
+    border: 1px solid var(--highlight-bg);
+    background-color: var(--highlight-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #999;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.fillStep .stepNumber {
+    background-color: var(--page-bg-color);
     border: 1px solid var(--accent-color);
-    position: absolute;
-    transform: translateX(-50%);
+    color: var(--accent-color);
 }
 
-.step:first-child {
-    margin-left: 0;
-}
-.step:last-child {
-    margin-right: 0;
+.fillStep .stepNumber:after {
+
 }
 
-.currentStep {
+.fillStep .stepLabel,
+.activeStep .stepLabel{
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+.activeStep .stepNumber {
     background-color: var(--tab-active);
     color: var(--button-text);
+}
+
+.stepLabel {
+    font-size: 14px;
+    color: #999;
+    text-align: center;
+}
+
+.stepNumber.completed {
+    background-color: #4CAF50;
+}
+.stepLabel.completed {
+    color: #4CAF50;
 }

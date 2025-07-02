@@ -47,3 +47,11 @@ export interface Order {
   payment: PaymentData;
   total: number;
 }
+
+export type ValidationErrors = Record<string, any>
+
+export enum ErrorsList {
+  EMPTYBUSKET = "Корзина не может быть пустой",
+  ADDRESSEMPTY = "Укажите адрес доставки",
+  CARDEMPTY = "Укажите номер карты"
+}
