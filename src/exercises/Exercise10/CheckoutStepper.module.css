@@ -88,3 +88,25 @@
 .controls button:not(:last-child) {
     margin-right: 20px;
 }
+
+.productItemOrder {
+    border-bottom: 1px solid var( --button-bg);
+    padding: 10px;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 1fr 50px 100px; /* соотношение ширины колонок */
+    align-items: center;
+    gap: 16px;
+}
+
+.orderItemBlock {
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    background-color: var(--highlight-bg);
+}
+
+.orderItemBlock h4 {
+    margin-top: 0;
+}

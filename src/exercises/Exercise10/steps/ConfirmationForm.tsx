@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { StepperContext } from '../CheckoutStepper';
+import cls from '../CheckoutStepper.module.css';
 
 export const ConfirmationForm = () => {
     const { data, setData } = useContext(StepperContext);
@@ -18,27 +19,27 @@ export const ConfirmationForm = () => {
                 {
                     data.products.map((product) => {
                         return (
-                            <div>
+                            <div className={cls.productItemOrder}>
                                 <span>{product.name}</span>
                                 <span>{product.quantity}</span>
-                                <span>{product.price}</span>
+                                <span>{product.price}р.</span>
                             </div>
                         )
                     })
                 }
             </div>
-            <div>
+            <div className={cls.orderItemBlock}>
                 <h4>Доставка</h4>
                 <div>{data.delivery.method}</div>
                 <div>{data.delivery.address}</div>
             </div>
-            <div>
+            <div className={cls.orderItemBlock}>
                 <h4>Оплата</h4>
                 <div>{data.payment.method}</div>
             </div>
             <div>
-                <div>Стоимость товаров {}</div>
-                <div>Доставка {}</div>
+                <div>Стоимость товаров: {}</div>
+                <div>Доставка: {}</div>
                 <div>Итого: {}</div>
             </div>
             
