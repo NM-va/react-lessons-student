@@ -10,15 +10,15 @@ export const CartForm = () => {
     const totalPriceBasket = productList?.reduce(
         (sum, product) => sum + product.price * product.quantity, 0
     );
-    const {data, setData} = useContext(StepperContext);
+    const { data, setData } = useContext(StepperContext);
 
-    const removeProducts = (id) => {
+    const removeProducts = (id: number) => {
         const updatedProductList  = productList?.filter((item) => {return item.id !== id})
         setProductList(updatedProductList);
         setData({...data, products: updatedProductList});
     };
     
-    const updateProductQuantity = (productId, newQuantity) => {
+    const updateProductQuantity = (productId: number , newQuantity: number) => {
         const updatedProducts = productList.map(product => {
             if (product.id === productId) {
                 return {
@@ -33,7 +33,7 @@ export const CartForm = () => {
         setData({...data, products: updatedProducts});
     };
     
-    const addedProduct = (productId) => {
+    const addedProduct = (productId: number) => {
         const product = productList.find((item) => item.id === productId);
         if (!product) return;
         
@@ -43,7 +43,7 @@ export const CartForm = () => {
         updateProductQuantity(productId, currentQuantity + 1);
     };
     
-    const removeProduct = (productId) => {
+    const removeProduct = (productId: number) => {
         const product = productList.find((item) => item.id === productId);
         if (!product) return;
     
@@ -68,11 +68,13 @@ export const CartForm = () => {
                             <div className={cls.productPrice}>{item.price}</div>
                         </div>
 
-                        <QuantityProduct addedProduct={() => addedProduct(item.id)}
-                                         removeProduct={() => removeProduct(item.id)}
-                                         price={item.price}
-                                         quantity={item.quantity}
-                                         availableQuantityItem={item.availableQuantity - item.quantity} />
+                        <QuantityProduct 
+                            addedProduct={() => addedProduct(item.id)}
+                            removeProduct={() => removeProduct(item.id)}
+                            price={item.price}
+                            quantity={item.quantity}
+                            availableQuantityItem={item.availableQuantity - item.quantity}
+                        />
                         <button className={cls.removeBtn}
                             onClick={() => removeProducts(item.id)}
                         >x</button>

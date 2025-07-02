@@ -19,8 +19,10 @@ import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { createContext, useCallback, useEffect, useState } from 'react';
 import { mockProducts } from './data/mockData';
 import cls from './CheckoutStepper.module.css';
+import { isNumber } from 'lodash';
+import { validateBankCard } from './validators';
 
-interface initialStepperData {
+interface InitialStepperData {
     products: Product[];
     delivery: DeliveryData;
     payment: PaymentData;
@@ -30,7 +32,7 @@ interface initialStepperData {
 export const StepperContext = createContext<any | null>(null);
 
 export const CheckoutStepper = () => {
-    const initialState: initialStepperData = {
+    const initialState: InitialStepperData = {
         products: mockProducts,
         delivery: { method: DeliveryMethods.PICKUP, address: '' },
         payment: { method: PaymentMethods.CASH },
@@ -47,10 +49,19 @@ export const CheckoutStepper = () => {
     
     const [data, setData] = useLocalStorage('stepperData', initialState);
     const [errors, setErrors] = useState<ValidationErrors>({});
-    const [isValidValue, setIsValidValue] = useState<boolean>(false);
+    const [isValidValue, setIsValidValue] = useState<boolean>(true);
+
+    useEffect(() => {
+        setIsValidValue(Object.keys(errors).length === 0);
+    }, [errors]);
     
     const validateStep = useCallback((step: CheckoutSteps): { isValid: boolean; errors: ValidationErrors } => {
         const newErrors:ValidationErrors = {};
+        //todo проверить кейс когда у нас выбрано 0 товаров и не дать перейти на следующий шаг
+        // todo проверка если удалили все товары
+
+        // debugger;
+
         
         switch (step) {
             case CheckoutSteps.CART:
@@ -62,18 +73,22 @@ export const CheckoutStepper = () => {
             case CheckoutSteps.DELIVERY:
                 if (data.delivery.address === '') {
                     newErrors.delivery = ErrorsList.ADDRESSEMPTY
+                    // todo добавить валидатор по аналогии с validateBankCard
                 }
                 break;
 
             case CheckoutSteps.PAYMENT:
-                if (data.payment.method === PaymentMethods.CARD && data.payment.cardNumber === '') {
-                    newErrors.payment = ErrorsList.CARDEMPTY
+                if (data.payment.method === PaymentMethods.CARD) {
+                    const { errors: paymentErrors, isValid } = validateBankCard(data.payment.cardNumber);
+                    if (!isValid) {
+                        newErrors.payment = paymentErrors.join(', ');
+                    }
                 }
                 break;
             //
-            // case CheckoutSteps.CONFIRMATION:
-            //
-            //     break;
+            case CheckoutSteps.CONFIRMATION:
+                //todo обработку платежа, ты 
+                break;
         }
         
         return {
@@ -94,18 +109,18 @@ export const CheckoutStepper = () => {
         }
     };
     
-    useEffect(() => {
-        const valid = validateStep(stepper.currentStep);
-        setIsValidValue(valid.isValid);
-        setErrors(valid.errors);
-    }, [data.products.length, stepper.currentStep, data.delivery.address, data.delivery.method, data.payment.method, data.payment.cardNumber]);
+    // useEffect(() => {
+    //     const valid = validateStep(stepper.currentStep);
+    //     setIsValidValue(valid.isValid);
+    //     setErrors(valid.errors);
+    // }, [data.products.length, stepper.currentStep, data.delivery.address, data.delivery.method, data.payment.method, data.payment.cardNumber]);
     
     const renderStepContent = () => {
         switch (stepper.currentStep) {
             case CheckoutSteps.CART:
                 return <CartForm />;
             case CheckoutSteps.DELIVERY:
-                return <DeliveryForm validateHandler={validateStep} />;
+                return <DeliveryForm />;
             case CheckoutSteps.PAYMENT:
                 return <PaymentForm />;
             case CheckoutSteps.CONFIRMATION:
@@ -119,7 +134,8 @@ export const CheckoutStepper = () => {
         //todo: валидация
         //DONE: сохранение в localstorage
         <>
-            <StepperContext.Provider value={{ data, setData, errors }}>
+            {/* //todo Затипизировать контекст */}
+            <StepperContext.Provider value={{ data, setData, errors, setErrors }}>
                 {renderStepContent()}
                 <ProgressBar progress={stepper.progress}/>
                 <StepIndicator totalSteps={totalSteps} steps={steps} currentStepIndex={stepper.currentStepIndex} indicatorWidth={20} />

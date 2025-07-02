@@ -44,7 +44,7 @@ function App() {
                     <main className="content">
                         <Suspense fallback={<div className="loading">Загрузка...</div>}>
                             <Routes>
-                                <Route path="/" element={<Home/>}/>
+                                <Route path="/" element={<Home/>}  />
                                 <Route path="/exercise1" element={<Exercise1/>}/>
                                 <Route path="/exercise2" element={<Exercise2/>}/>
                                 <Route path="/exercise3" element={<Exercise3/>}/>

@@ -30,28 +30,34 @@ export interface Product {
 
 // Данные доставки с enum
 export interface DeliveryData {
-  method: DeliveryMethods;
-  address: string;
+    method: DeliveryMethods;
+    address: string;
 }
 
 // Данные оплаты с enum
 export interface PaymentData {
-  method: PaymentMethods;
-  cardNumber?: string;
+    method: PaymentMethods;
+    cardNumber?: string;
 }
 
 // Заказ
 export interface Order {
-  products: Product[];
-  delivery: DeliveryData;
-  payment: PaymentData;
-  total: number;
+    products: Product[];
+    delivery: DeliveryData;
+    payment: PaymentData;
+    total: number;
 }
 
 export type ValidationErrors = Record<string, any>
 
 export enum ErrorsList {
-  EMPTYBUSKET = "Корзина не может быть пустой",
-  ADDRESSEMPTY = "Укажите адрес доставки",
-  CARDEMPTY = "Укажите номер карты"
+    EMPTYBUSKET = "EMPTYBUSKET",
+    ADDRESSEMPTY = "ADDRESSEMPTY",
+    CARDEMPTY = "CARDEMPTY",
+}
+
+export const ErrorDict: Record<ErrorsList, string> = {
+    [ErrorsList.EMPTYBUSKET]: "Корзина не может быть пустой",
+    [ErrorsList.ADDRESSEMPTY]: "Укажите адрес доставки",
+    [ErrorsList.CARDEMPTY]: "Укажите номер карты"
 }

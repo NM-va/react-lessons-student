@@ -38,6 +38,7 @@ export const ConfirmationForm = () => {
                 <div>{data.payment.method}</div>
             </div>
             <div>
+                {/* сделать независимый универсальный компонент и скормить итоговые значения */}
                 <div>Стоимость товаров: {}</div>
                 <div>Доставка: {}</div>
                 <div>Итого: {}</div>

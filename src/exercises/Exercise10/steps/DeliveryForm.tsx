@@ -1,4 +1,4 @@
-import { DeliveryMethods } from '../types/checkout.ts';
+import { DeliveryMethods  } from '../types/checkout.ts';
 import UniversalInput from '../components/UniversalInput.tsx';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { StepperContext } from '../CheckoutStepper';
@@ -7,14 +7,14 @@ import cls from '../CheckoutStepper.module.css'
 export const DeliveryForm = () => {
     const [addressDelivery, setAddressDelivery] = useState<string>('');
     const [selectedDelivery, setSelectedDelivery] = useState<string>(DeliveryMethods.COURIER)
-    const {data, setData, errors} = useContext(StepperContext);
+    const {data, setData, errors, setErrors} = useContext(StepperContext);
 
     useEffect(() => {
         setAddressDelivery(data.delivery.address);
         setSelectedDelivery(data.delivery.method);
     }, []);
     
-    const onSelectDelivery = useCallback((value) => {
+    const onSelectDelivery = useCallback((value: string) => {
         setSelectedDelivery(value);
         setData({...data, delivery: {...data.delivery, value}});
     }, [])
@@ -22,6 +22,7 @@ export const DeliveryForm = () => {
     const onChangeAddress = useCallback((newValue: string) => {
         setAddressDelivery(newValue);
         setData({...data, delivery: {...data.delivery, address: newValue }});
+        setErrors({});
     },[])
     
     const result = Object.values(DeliveryMethods).map(value => ({value, label: value}));
@@ -38,8 +39,8 @@ export const DeliveryForm = () => {
             </div>
             {selectedDelivery === DeliveryMethods.PICKUP && (
                 <div>
-                  <div></div>
-                  <UniversalInput label="Адрес доставки:" value={addressDelivery} onChange={(value) => onChangeAddress(value)} required error={errors?.delivery} />
+                    {/* убрать ошибки TS */}
+                    <UniversalInput label="Адрес доставки:" value={addressDelivery} onChange={(value) => onChangeAddress(value)} required error={errors?.delivery} />
                 </div>
             )}
         </>

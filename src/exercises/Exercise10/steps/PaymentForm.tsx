@@ -1,19 +1,20 @@
-import { DeliveryMethods, PaymentMethods } from '../types/checkout.ts';
+import { PaymentMethods } from '../types/checkout.ts';
 import UniversalInput from '../components/UniversalInput.tsx';
-import { ChangeEvent, useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { StepperContext } from '../CheckoutStepper';
 
 export const PaymentForm = () => {
     const [numberCard, setNumberCard] = useState<string>('');
     const [selectedPayment, setSelectedPayment] = useState<string>(PaymentMethods.CASH);
-    const { data, setData, errors } = useContext(StepperContext);
+    const { data, setData, errors, setErrors } = useContext(StepperContext);
     console.log('errors pay', errors)
     const onChangeNumberCard = useCallback((newNumber: string) => {
         setNumberCard(newNumber);
         setData({...data, payment: {...data.payment, cardNumber: newNumber}});
+        setErrors({});
     }, [])
     
-    const onSelectPayment = useCallback((value) => {
+    const onSelectPayment = useCallback((value: string) => {
         setSelectedPayment(value);
         setData({...data, payment: {...data.payment, method: value}});
     }, [])
@@ -28,7 +29,7 @@ export const PaymentForm = () => {
             {selectedPayment === PaymentMethods.CARD &&
              <div>
                <div>Номер карты:</div>
-               <UniversalInput type="number" value={numberCard} onChange={onChangeNumberCard} error={errors?.payment}/>
+                    <UniversalInput type="number" value={numberCard} onChange={onChangeNumberCard} error={errors?.payment} />
              </div>
             }
         </div>

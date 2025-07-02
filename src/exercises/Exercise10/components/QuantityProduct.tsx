@@ -4,6 +4,8 @@ interface QuantityProductProps {
     addedProduct: () => void;
     removeProduct: () => void;
     price: number;
+    quantity: number;
+    availableQuantityItem: number;
 }
 
 export const QuantityProduct = (props: QuantityProductProps) => {
