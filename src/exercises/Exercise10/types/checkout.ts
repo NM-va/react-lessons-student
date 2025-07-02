@@ -25,6 +25,7 @@ export interface Product {
   name: string;
   price: number;
   quantity: number;
+  availableQuantity: number;
 }
 
 // Данные доставки с enum
@@ -45,4 +46,12 @@ export interface Order {
   delivery: DeliveryData;
   payment: PaymentData;
   total: number;
+}
+
+export type ValidationErrors = Record<string, any>
+
+export enum ErrorsList {
+  EMPTYBUSKET = "Корзина не может быть пустой",
+  ADDRESSEMPTY = "Укажите адрес доставки",
+  CARDEMPTY = "Укажите номер карты"
 }

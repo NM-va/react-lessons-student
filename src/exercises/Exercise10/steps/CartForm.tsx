@@ -1,51 +1,87 @@
-import {mockProducts} from "../data/mockData.ts";
-import {Product} from "../types/checkout.ts";
-import {useState} from "react";
+import { mockProducts } from '../data/mockData.ts';
+import { Product } from '../types/checkout.ts';
+import { useContext, useEffect, useState } from 'react';
+import cls from '../CheckoutStepper.module.css'
+import { StepperContext } from '../CheckoutStepper';
+import { QuantityProduct } from '../components/QuantityProduct';
 
 export const CartForm = () => {
-  const [productQuantities, setProductQuantities] = useState<Product[]>(mockProducts);
-  
-  const addedProduct = (productId: number) => {
+    const [productList, setProductList] = useState<Product[]>(mockProducts);
+    const totalPriceBasket = productList?.reduce(
+        (sum, product) => sum + product.price * product.quantity, 0
+    );
+    const {data, setData} = useContext(StepperContext);
 
-    setProductQuantities((prevState: Product[]) => {
-      console.log('prevState', prevState)
-      prevState?.find((product) => {
+    const removeProducts = (id) => {
+        const updatedProductList  = productList?.filter((item) => {return item.id !== id})
+        setProductList(updatedProductList);
+        setData({...data, products: updatedProductList});
+    };
+    
+    const updateProductQuantity = (productId, newQuantity) => {
+        const updatedProducts = productList.map(product => {
+            if (product.id === productId) {
+                return {
+                    ...product,
+                    quantity: newQuantity
+                };
+            }
+            return product;
+        });
         
-        product.id === productId
-        console.log('product.id === productId', product.id === productId)
-      })
-    })
-  }
-  
-  const totalSum = mockProducts.reduce(
-      (sum, product) => sum + product.price * product.quantity, 0
-  );
+        setProductList(updatedProducts);
+        setData({...data, products: updatedProducts});
+    };
+    
+    const addedProduct = (productId) => {
+        const product = productList.find((item) => item.id === productId);
+        if (!product) return;
+        
+        const currentQuantity = product.quantity;
+        if (currentQuantity >= product.availableQuantity) return;
 
-  const removeProduct = () => {
-    setProductQuantities((prevState: Product[]) => {
-      return prevState;
-    })
-  }
-  return (
-    <>
-      <div>CART</div>
-      {mockProducts.map((item:Product) => {
-        console.log('item.id', item.id)
-        return (
-          <div key={item.id}>
-            <span>{item.name}</span>
-            <span>{item.price}</span>
-            <div>
-              <button type="button" onClick={() => addedProduct(item.id)}>+</button>
-              <span>{item.quantity}</span>
-              <button type="button" onClick={removeProduct}>-</button>
-            </div>
-          </div>
-        )
-      })}
+        updateProductQuantity(productId, currentQuantity + 1);
+    };
+    
+    const removeProduct = (productId) => {
+        const product = productList.find((item) => item.id === productId);
+        if (!product) return;
+    
+        const currentQuantity = product.quantity;
+        if (currentQuantity <= 0 ) return;
+    
+        updateProductQuantity(productId, currentQuantity - 1);
+    };
+    
+    useEffect(() => {
+        setProductList(data.products);
+    }, []);
+    
+    return (
+        <>
+            <h2>Корзина</h2>
+            {productList.map((item: Product) => {
+                return (
+                    <div key={item.id} className={cls.productItem}>
+                        <div>
+                            <div className={cls.productName}>{item.name}</div>
+                            <div className={cls.productPrice}>{item.price}</div>
+                        </div>
 
-      <div>Общая сумма:</div>
-      <div>{totalSum}</div>
-    </>
-  )
+                        <QuantityProduct addedProduct={() => addedProduct(item.id)}
+                                         removeProduct={() => removeProduct(item.id)}
+                                         price={item.price}
+                                         quantity={item.quantity}
+                                         availableQuantityItem={item.availableQuantity - item.quantity} />
+                        <button className={cls.removeBtn}
+                            onClick={() => removeProducts(item.id)}
+                        >x</button>
+                    </div>
+                )
+            })}
+            
+            <div className={cls.totalPriceTitle}>Итого:</div>
+            <div className={cls.totalPriceBasket}>{totalPriceBasket}</div>
+        </>
+    )
 }

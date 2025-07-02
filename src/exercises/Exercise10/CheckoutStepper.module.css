@@ -1,0 +1,112 @@
+.productItem {
+    border: 1px solid var( --button-bg);
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 40px; /* соотношение ширины колонок */
+    align-items: center;
+    gap: 16px;
+}
+
+.productName {
+    font-weight: bold;
+}
+
+.productPrice:after {
+    content: 'р.';
+}
+
+.quantityItem {
+    display: inline-block;
+    text-align: center;
+    width: 20px;
+    margin: 0 10px;
+}
+
+.totalPriceItem {
+    display: inline-block;
+    width: 50px;
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+.totalPriceItem:after {
+    content: 'р.';
+}
+
+.removeBtn {
+    width: 30px;
+    justify-self: end;
+    padding: .3rem;
+    border: 1px solid var(--accent-color);
+    background-color: transparent;
+    color: var(--accent-color);
+}
+
+.removeBtn:hover {
+    color: var(--button-text);
+}
+
+.availableQuantityItem {
+    font-weight: bold;
+}
+
+.totalPriceTitle {
+    font-size: 20px;
+}
+
+.totalPriceBasket {
+    font-weight: bold;
+}
+
+.deliveryPriceBlock {
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    background-color: var(--highlight-bg);
+}
+
+.deliveryPrice {
+    font-weight: bold;
+}
+
+.deliveryPrice:after {
+    content: 'р.';
+}
+
+.deliveryPriceFree {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.controls {
+    margin-top: 30px;
+}
+
+.controls button:not(:last-child) {
+    margin-right: 20px;
+}
+
+.productItemOrder {
+    border-bottom: 1px solid var( --button-bg);
+    padding: 10px;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 1fr 50px 100px; /* соотношение ширины колонок */
+    align-items: center;
+    gap: 16px;
+}
+
+.orderItemBlock {
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    background-color: var(--highlight-bg);
+}
+
+.orderItemBlock h4 {
+    margin-top: 0;
+}

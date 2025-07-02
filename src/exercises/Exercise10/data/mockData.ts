@@ -2,11 +2,11 @@
 import {DeliveryMethods, PaymentMethods} from "../types/checkout.ts";
 
 export const mockProducts = [
-  { id: 1, name: 'iPhone 14', price: 999, quantity: 1 },
-  { id: 2, name: 'MacBook Pro', price: 1999, quantity: 1 },
-  { id: 3, name: 'AirPods', price: 199, quantity: 2 },
-  { id: 4, name: 'iPad', price: 599, quantity: 1 },
-  { id: 5, name: 'Apple Watch', price: 399, quantity: 1 }
+  { id: 1, name: 'iPhone 14', price: 999, quantity: 1, availableQuantity: 1 },
+  { id: 2, name: 'MacBook Pro', price: 1999, quantity: 1, availableQuantity: 2 },
+  { id: 3, name: 'AirPods', price: 199, quantity: 2, availableQuantity: 3 },
+  { id: 4, name: 'iPad', price: 599, quantity: 1, availableQuantity: 2 },
+  { id: 5, name: 'Apple Watch', price: 399, quantity: 1, availableQuantity: 4 }
 ];
 
 // Способы доставки с enum
