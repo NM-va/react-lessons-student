@@ -1,17 +1,20 @@
 import { mockProducts } from '../data/mockData.ts';
 import { Product } from '../types/checkout.ts';
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import cls from '../CheckoutStepper.module.css'
 import { StepperContext } from '../CheckoutStepper';
 import { QuantityProduct } from '../components/QuantityProduct';
 
 export const CartForm = () => {
     const [productList, setProductList] = useState<Product[]>(mockProducts);
-    const totalPriceBasket = productList?.reduce(
+
+    const { data, setData, errors } = useContext(StepperContext);
+    
+    const error = errors?.cart;
+    
+    const totalPriceBasket = data.products?.reduce(
         (sum, product) => sum + product.price * product.quantity, 0
     );
-    const { data, setData } = useContext(StepperContext);
-
     const removeProducts = (id: number) => {
         const updatedProductList  = productList?.filter((item) => {return item.id !== id})
         setProductList(updatedProductList);
@@ -28,6 +31,8 @@ export const CartForm = () => {
             }
             return product;
         });
+    
+        console.log('updatedProducts', updatedProducts)
         
         setProductList(updatedProducts);
         setData({...data, products: updatedProducts});
@@ -60,7 +65,7 @@ export const CartForm = () => {
     return (
         <>
             <h2>Корзина</h2>
-            {productList.map((item: Product) => {
+            {data.products.map((item: Product) => {
                 return (
                     <div key={item.id} className={cls.productItem}>
                         <div>
@@ -81,7 +86,16 @@ export const CartForm = () => {
                     </div>
                 )
             })}
-            
+            {error && (
+                <div style={{
+                    marginTop: '10px',
+                    marginBottom: '10px',
+                    fontSize: '14px',
+                    color: '#ef4444'
+                }}>
+                    {error}
+                </div>
+            )}
             <div className={cls.totalPriceTitle}>Итого:</div>
             <div className={cls.totalPriceBasket}>{totalPriceBasket}</div>
         </>

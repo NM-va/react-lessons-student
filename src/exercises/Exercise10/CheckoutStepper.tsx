@@ -2,7 +2,8 @@ import {
     CheckoutSteps,
     DeliveryData,
     DeliveryMethods,
-    ErrorsList,
+    ErrorDict,
+    Order,
     PaymentData,
     PaymentMethods,
     Product,
@@ -19,24 +20,30 @@ import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { createContext, useCallback, useEffect, useState } from 'react';
 import { mockProducts } from './data/mockData';
 import cls from './CheckoutStepper.module.css';
-import { isNumber } from 'lodash';
-import { validateBankCard } from './validators';
+import { validateBankCard, validateDelivery } from './validators';
 
 interface InitialStepperData {
     products: Product[];
     delivery: DeliveryData;
     payment: PaymentData;
-    total: number;
+    orderNumber?: string;
 }
 
-export const StepperContext = createContext<any | null>(null);
+interface Context {
+    data: Order;
+    setData: (data: InitialStepperData | ((prevData: InitialStepperData) => InitialStepperData)) => void;
+    errors: ValidationErrors;
+    setErrors: (prevState: ValidationErrors) => void;
+}
+
+export const StepperContext = createContext<Context | null>(null);
 
 export const CheckoutStepper = () => {
     const initialState: InitialStepperData = {
         products: mockProducts,
         delivery: { method: DeliveryMethods.PICKUP, address: '' },
         payment: { method: PaymentMethods.CASH },
-        total: 0
+        orderNumber: '0'
     };
     
     const steps = Object.values(CheckoutSteps);
@@ -57,23 +64,32 @@ export const CheckoutStepper = () => {
     
     const validateStep = useCallback((step: CheckoutSteps): { isValid: boolean; errors: ValidationErrors } => {
         const newErrors:ValidationErrors = {};
-        //todo проверить кейс когда у нас выбрано 0 товаров и не дать перейти на следующий шаг
-        // todo проверка если удалили все товары
+        //Done проверить кейс когда у нас выбрано 0 товаров и не дать перейти на следующий шаг
+        // Done проверка если удалили все товары
 
         // debugger;
 
         
         switch (step) {
             case CheckoutSteps.CART:
+                let zeroItem = data.products.find((item) => item.quantity !== 0);
+                console.log('data ch', data)
                 if (data.products.length === 0) {
-                    newErrors.cart = ErrorsList.EMPTYBUSKET
+                    newErrors.cart = ErrorDict.EMPTYBUSKET;
+                } else if (!zeroItem) {
+                    newErrors.cart = ErrorDict.QUANTITYZERO;
                 }
+
+                
                 break;
 
             case CheckoutSteps.DELIVERY:
-                if (data.delivery.address === '') {
-                    newErrors.delivery = ErrorsList.ADDRESSEMPTY
-                    // todo добавить валидатор по аналогии с validateBankCard
+                // Done добавить валидатор по аналогии с validateBankCard
+                if (data.delivery.method === DeliveryMethods.PICKUP) {
+                    const { errors: deliveryErrors, isValid } = validateDelivery(data.delivery.address);
+                    if (!isValid) {
+                        newErrors.delivery = deliveryErrors.join(',');
+                    }
                 }
                 break;
 
@@ -134,7 +150,7 @@ export const CheckoutStepper = () => {
         //todo: валидация
         //DONE: сохранение в localstorage
         <>
-            {/* //todo Затипизировать контекст */}
+            {/* //Done Затипизировать контекст */}
             <StepperContext.Provider value={{ data, setData, errors, setErrors }}>
                 {renderStepContent()}
                 <ProgressBar progress={stepper.progress}/>
@@ -142,7 +158,7 @@ export const CheckoutStepper = () => {
                 <div className={cls.controls}>
                     {/*<button onClick={() => stepper.goToStep(CheckoutSteps.CONFIRMATION)}>Пропустить все этапы</button>*/}
                     {!stepper.isFirstStep && <button onClick={stepper.previousStep}>Предыдущий шаг</button>}
-                    {!stepper.isLastStep && <button onClick={nextStepHandler} disabled={!isValidValue}>Следующий шаг</button>}
+                    {!stepper.isLastStep && <button onClick={nextStepHandler}>Следующий шаг</button>}
                     <button onClick={stepper.reset}>Сбросить</button>
                 </div>
             </StepperContext.Provider>

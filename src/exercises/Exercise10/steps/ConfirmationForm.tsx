@@ -19,7 +19,7 @@ export const ConfirmationForm = () => {
                 {
                     data.products.map((product) => {
                         return (
-                            <div className={cls.productItemOrder}>
+                            <div key={product.name} className={cls.productItemOrder}>
                                 <span>{product.name}</span>
                                 <span>{product.quantity}</span>
                                 <span>{product.price}р.</span>

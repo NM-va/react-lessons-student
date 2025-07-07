@@ -45,7 +45,7 @@ export interface Order {
     products: Product[];
     delivery: DeliveryData;
     payment: PaymentData;
-    total: number;
+    orderNumber?: string;
 }
 
 export type ValidationErrors = Record<string, any>
@@ -54,10 +54,14 @@ export enum ErrorsList {
     EMPTYBUSKET = "EMPTYBUSKET",
     ADDRESSEMPTY = "ADDRESSEMPTY",
     CARDEMPTY = "CARDEMPTY",
+    CARDLENGTH = "CARDLENGTH",
+    QUANTITYZERO = "QUANTITYZERO",
 }
 
 export const ErrorDict: Record<ErrorsList, string> = {
     [ErrorsList.EMPTYBUSKET]: "Корзина не может быть пустой",
     [ErrorsList.ADDRESSEMPTY]: "Укажите адрес доставки",
-    [ErrorsList.CARDEMPTY]: "Укажите номер карты"
+    [ErrorsList.CARDEMPTY]: "Номер не может быть пустым",
+    [ErrorsList.CARDLENGTH]: "Номер карты должен состоять из 16 цифр",
+    [ErrorsList.QUANTITYZERO]: "Ни один продукт не выбран",
 }
