@@ -3,6 +3,9 @@
     justify-content: space-between;
     position: relative;
     margin-bottom: 30px;
+    /*display: grid;*/
+    /*grid-auto-flow: column;*/
+    /*grid-auto-columns: 1fr;*/
 }
 
 .stepper-container {
@@ -26,9 +29,29 @@
 
 .step {
     display: flex;
+    justify-content: space-around;
+    position: relative;
+}
+
+.step:first-child {
+    justify-content: flex-start;
+}
+.step:last-child {
+    justify-content: flex-end;
+}
+
+/*.step:not(:last-child):after {*/
+/*    content: '';*/
+/*    position: absolute;*/
+/*    left: 40%;*/
+/*    border-bottom: 2px solid #999;*/
+/*    width: 50%;*/
+/*}*/
+
+.stepContainer {
+    display: flex;
     flex-direction: column;
     align-items: center;
-    z-index: 3;
 }
 
 .stepNumber {
@@ -44,6 +67,7 @@
     font-weight: bold;
     margin-bottom: 8px;
 }
+
 
 .fillStep .stepNumber {
     background-color: var(--page-bg-color);

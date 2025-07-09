@@ -23,7 +23,7 @@ export function validateBankCard(cardNumber: number | string | undefined | null)
 }
 
 export function validateDelivery(address): { errors: string[], isValid: boolean } {
-    let isValid: boolean = false;
+    let isValid: boolean = true;
     const errors: string[] = [];
     
     if (address === '') {
@@ -32,4 +32,38 @@ export function validateDelivery(address): { errors: string[], isValid: boolean 
     }
     
     return {isValid, errors}
-};
+}
+
+export function validateCart(products) {
+    let isValid: boolean = true;
+    const errors: string[] = [];
+
+    if (products.length === 0) {
+        isValid = false;
+        errors.push(ErrorDict.EMPTYBUSKET);
+    }
+    
+    let zeroItem = products.some((item) => item.quantity !== 0);
+    if (!zeroItem) {
+        isValid = false;
+        errors.push(ErrorDict.QUANTITYZERO);
+    }
+    
+    return {isValid, errors};
+}
+
+export function validateConfirmation(products, balance) {
+    let isValidConfirmation: boolean = true;
+    const errors: string[] = [];
+    
+    const totalPriceBasket = products?.reduce(
+        (sum, product) => sum + product.price * product.quantity, 0
+    );
+    
+    if (balance - totalPriceBasket < 0) {
+        isValidConfirmation = false;
+        errors.push(ErrorDict.NOTENOUGHMONEY);
+    }
+    
+    return {isValidConfirmation, errors}
+}

@@ -8,7 +8,7 @@ import { QuantityProduct } from '../components/QuantityProduct';
 export const CartForm = () => {
     const [productList, setProductList] = useState<Product[]>(mockProducts);
 
-    const { data, setData, errors } = useContext(StepperContext);
+    const { data, setData, errors, setErrors } = useContext(StepperContext);
     
     const error = errors?.cart;
     
@@ -31,8 +31,6 @@ export const CartForm = () => {
             }
             return product;
         });
-    
-        console.log('updatedProducts', updatedProducts)
         
         setProductList(updatedProducts);
         setData({...data, products: updatedProducts});
@@ -46,6 +44,7 @@ export const CartForm = () => {
         if (currentQuantity >= product.availableQuantity) return;
 
         updateProductQuantity(productId, currentQuantity + 1);
+        setErrors({});
     };
     
     const removeProduct = (productId: number) => {

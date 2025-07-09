@@ -56,6 +56,7 @@ export enum ErrorsList {
     CARDEMPTY = "CARDEMPTY",
     CARDLENGTH = "CARDLENGTH",
     QUANTITYZERO = "QUANTITYZERO",
+    NOTENOUGHMONEY = "NOTENOUGHMONEY",
 }
 
 export const ErrorDict: Record<ErrorsList, string> = {
@@ -64,4 +65,5 @@ export const ErrorDict: Record<ErrorsList, string> = {
     [ErrorsList.CARDEMPTY]: "Номер не может быть пустым",
     [ErrorsList.CARDLENGTH]: "Номер карты должен состоять из 16 цифр",
     [ErrorsList.QUANTITYZERO]: "Ни один продукт не выбран",
+    [ErrorsList.NOTENOUGHMONEY]: "Не хватает дененг на балансе",
 }
