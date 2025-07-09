@@ -3,8 +3,14 @@ import { StepperContext } from '../CheckoutStepper';
 import cls from '../CheckoutStepper.module.css';
 import { TotalAmount } from '../components/TotalAmount';
 import { DeliveryMethods, ErrorDict } from '../types/checkout';
+import { SuccessOrder } from '../components/SuccessOrder';
 
-export const ConfirmationForm = () => {
+
+interface Props {
+    isCompletedSteps: boolean;
+}
+
+export const ConfirmationForm = ({ isCompletedSteps } : Props) => {
     const { data, setData, setIsCompletedSteps, countOrder, setCountOrder, balance, setBalance } = useContext(StepperContext);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     
@@ -35,6 +41,12 @@ export const ConfirmationForm = () => {
         return (
             <div>Загрузка...</div>
         )
+    }
+
+
+    if(isCompletedSteps) {
+        //todo вернуть SuccessOrder
+        return <SuccessOrder />
     }
     
     return (

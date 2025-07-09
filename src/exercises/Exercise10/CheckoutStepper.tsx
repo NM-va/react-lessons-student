@@ -17,20 +17,20 @@ import { DeliveryForm } from './steps/DeliveryForm';
 import { PaymentForm } from './steps/PaymentForm';
 import { ConfirmationForm } from './steps/ConfirmationForm';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { createContext, useCallback, useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { mockProducts } from './data/mockData';
 import cls from './CheckoutStepper.module.css';
 import { validateBankCard, validateCart, validateConfirmation, validateDelivery } from './validators';
 import { SuccessOrder } from './components/SuccessOrder';
 
-interface InitialStepperData {
+export interface InitialStepperData {
     products: Product[];
     delivery: DeliveryData;
     payment: PaymentData;
     orderNumber?: string;
 }
 
-interface Context {
+export interface StepperContentProps {
     data: Order;
     setData: (data: InitialStepperData | ((prevData: InitialStepperData) => InitialStepperData)) => void;
     errors: ValidationErrors;
@@ -41,7 +41,7 @@ interface Context {
     setBalance: (count: number) => void;
 }
 
-export const StepperContext = createContext<Context | null>(null);
+export const StepperContext = createContext<StepperContentProps>({} as StepperContentProps);
 
 export const CheckoutStepper = () => {
     const initialState: InitialStepperData = {
@@ -149,7 +149,7 @@ export const CheckoutStepper = () => {
             case CheckoutSteps.PAYMENT:
                 return <PaymentForm />;
             case CheckoutSteps.CONFIRMATION:
-                return <ConfirmationForm />;
+                return <ConfirmationForm isCompletedSteps={isCompletedSteps} />;
             default:
                 return null;
         }
@@ -166,7 +166,7 @@ export const CheckoutStepper = () => {
                 <StepIndicator totalSteps={totalSteps} steps={steps} currentStepIndex={stepper.currentStepIndex} indicatorWidth={20} isCompletedSteps={isCompletedSteps} />
                 {
                     isCompletedSteps
-                    ? <SuccessOrder/>
+                    ? null
                     : <div className={cls.controls}>
                           {/*<button onClick={() => stepper.goToStep(CheckoutSteps.CONFIRMATION)}>Пропустить все этапы</button>*/}
                           {!stepper.isFirstStep && <button onClick={stepper.previousStep}>Предыдущий шаг</button>}
