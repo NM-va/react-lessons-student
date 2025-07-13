@@ -3,6 +3,7 @@ import { Suspense, lazy } from 'react'
 import './App.css';
 import './styles.css';
 import { ThemeProvider } from './components/ThemeProvider';
+import { RouterTest } from './RouterTest/RouterTest';
 
 // Ленивая загрузка компонентов упражнений
 const Home = lazy(() => import('./modules/Home'));
@@ -20,6 +21,7 @@ const Exercise10 = lazy(() => import('./exercises/Exercise10/Exercise10'));
 // Добавьте больше упражнений по мере необходимости
 
 function App() {
+    return <RouterTest/>
     return (
         <ThemeProvider>
             <Router>
