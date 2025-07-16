@@ -1,0 +1,15 @@
+.adminLayout {
+    display: grid;
+    grid-template-areas:
+    "header header"
+    "sidebar main";
+    grid-template-columns: auto 1fr;
+    grid-template-rows: 60px 1fr;
+    min-height: 100vh;
+}
+.mainContent {
+    grid-area: main;
+    padding: 20px;
+    background-color: #fff;
+    min-height: calc(100vh - 60px);
+}
