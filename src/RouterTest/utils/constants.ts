@@ -16,7 +16,7 @@ export enum Path {
     ORDERS_CANCELLED = 'orders/cancelled',
     ORDERS_ORDER_ID = 'orders/:orderId',
     SETTINGS = '/settings',
-    ERROR = '/404'
+    ERROR = '/*'
 }
 
 export enum Nav {

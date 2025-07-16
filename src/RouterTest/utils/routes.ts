@@ -9,6 +9,9 @@ import { CreateUser } from '../pages/Users/CreateUser';
 import { UserRoles } from '../pages/Users/UserRoles';
 import { CreateProduct } from '../pages/Products/CreateProduct';
 import { Categories } from '../pages/Products/Categories';
+import { PendingOrders } from '../pages/Orders/PendingOrders';
+import { CompletedOrders } from '../pages/Orders/CompletedOrders';
+import { OrderDetails } from '../pages/Orders/OrderDetails';
 
 export const HeaderNavigationRoutes: RoutesType[] = [
     {path: Path.DASHBOARD, component: Dashboard},
@@ -26,7 +29,7 @@ export const SidebarNavigationRoutes: RoutesType[] = [
     {path: Path.PRODUCTS_CREATE, component: CreateProduct},
     {path: Path.PRODUCTS_CATEGORIES, component: Categories},
     {path: Path.ORDERS, component: OrdersList},
-    {path: Path.ORDERS_PENDING, component: OrdersList},
-    {path: Path.ORDERS_COMPLETED, component: OrdersList},
-    {path: Path.ORDERS_CANCELLED, component: OrdersList},
+    {path: Path.ORDERS_PENDING, component: PendingOrders},
+    {path: Path.ORDERS_COMPLETED, component: CompletedOrders},
+    {path: Path.ORDERS_CANCELLED, component: OrderDetails},
 ];

@@ -22,48 +22,48 @@ const Exercise10 = lazy(() => import('./exercises/Exercise10/Exercise10'));
 
 function App() {
     return <RouterTest/>
-    return (
-        <ThemeProvider>
-            <Router>
-                <div className="app-container">
-                    <nav className="main-nav">
-                        <div className="logo">React Advanced</div>
-                        <ul className="nav-links">
-                            <li><Link to="/">Главная</Link></li>
-                            <li><Link to="/exercise1">Упр 1: Хуки и События</Link></li>
-                            <li><Link to="/exercise2">Упр 2</Link></li>
-                            <li><Link to="/exercise3">Упр 3</Link></li>
-                            <li><Link to="/exercise4">Упр 4</Link></li>
-                            <li><Link to="/exercise5">Упр 5</Link></li>
-                            <li><Link to="/exercise6">Упр 6</Link></li>
-                            <li><Link to="/exercise7">Упр 7</Link></li>
-                            <li><Link to="/exercise8">Упр 8</Link></li>
-                            <li><Link to="/exercise9">Упр 9</Link></li>
-                            <li><Link to="/exercise10">Упр 10</Link></li>
-                        </ul>
-                    </nav>
-                    
-                    <main className="content">
-                        <Suspense fallback={<div className="loading">Загрузка...</div>}>
-                            <Routes>
-                                <Route path="/" element={<Home/>}  />
-                                <Route path="/exercise1" element={<Exercise1/>}/>
-                                <Route path="/exercise2" element={<Exercise2/>}/>
-                                <Route path="/exercise3" element={<Exercise3/>}/>
-                                <Route path="/exercise4" element={<Exercise4/>}/>
-                                <Route path="/exercise5" element={<Exercise5/>}/>
-                                <Route path="/exercise6" element={<Exercise6/>}/>
-                                <Route path="/exercise7" element={<Exercise7/>}/>
-                                <Route path="/exercise8" element={<Exercise8/>}/>
-                                <Route path="/exercise9" element={<Exercise9/>}/>
-                                <Route path="/exercise10" element={<Exercise10/>}/>
-                            </Routes>
-                        </Suspense>
-                    </main>
-                </div>
-            </Router>
-        </ThemeProvider>
-    )
+    // return (
+    //     <ThemeProvider>
+    //         <Router>
+    //             <div className="app-container">
+    //                 <nav className="main-nav">
+    //                     <div className="logo">React Advanced</div>
+    //                     <ul className="nav-links">
+    //                         <li><Link to="/">Главная</Link></li>
+    //                         <li><Link to="/exercise1">Упр 1: Хуки и События</Link></li>
+    //                         <li><Link to="/exercise2">Упр 2</Link></li>
+    //                         <li><Link to="/exercise3">Упр 3</Link></li>
+    //                         <li><Link to="/exercise4">Упр 4</Link></li>
+    //                         <li><Link to="/exercise5">Упр 5</Link></li>
+    //                         <li><Link to="/exercise6">Упр 6</Link></li>
+    //                         <li><Link to="/exercise7">Упр 7</Link></li>
+    //                         <li><Link to="/exercise8">Упр 8</Link></li>
+    //                         <li><Link to="/exercise9">Упр 9</Link></li>
+    //                         <li><Link to="/exercise10">Упр 10</Link></li>
+    //                     </ul>
+    //                 </nav>
+    //
+    //                 <main className="content">
+    //                     <Suspense fallback={<div className="loading">Загрузка...</div>}>
+    //                         <Routes>
+    //                             <Route path="/" element={<Home/>}  />
+    //                             <Route path="/exercise1" element={<Exercise1/>}/>
+    //                             <Route path="/exercise2" element={<Exercise2/>}/>
+    //                             <Route path="/exercise3" element={<Exercise3/>}/>
+    //                             <Route path="/exercise4" element={<Exercise4/>}/>
+    //                             <Route path="/exercise5" element={<Exercise5/>}/>
+    //                             <Route path="/exercise6" element={<Exercise6/>}/>
+    //                             <Route path="/exercise7" element={<Exercise7/>}/>
+    //                             <Route path="/exercise8" element={<Exercise8/>}/>
+    //                             <Route path="/exercise9" element={<Exercise9/>}/>
+    //                             <Route path="/exercise10" element={<Exercise10/>}/>
+    //                         </Routes>
+    //                     </Suspense>
+    //                 </main>
+    //             </div>
+    //         </Router>
+    //     </ThemeProvider>
+    // )
 }
 
 export default App
