@@ -2,6 +2,7 @@ export enum Path {
     DASHBOARD = '/dashboard',
     USERS = '/users',
     USERS_CREATE = '/users/create',
+    USERS_LIST = '/users/list',
     USERS_ROLES = '/users/roles',
     USERS_USER_ID = '/users/:userId',
     USERS_USER_ID_EDIT = '/users/:userId/edit',
@@ -18,6 +19,15 @@ export enum Path {
     SETTINGS = '/settings',
     ERROR = '/*'
 }
+
+//todo поправить enum 
+// export enum NavNames {
+//     USERS = "USERS",
+//     DASHBOARD = "DASHBOARD",
+//     PRODUCTS = "PRODUCTS",
+//     ORDERS = "ORDERS",
+//     SETTINGS = "SETTINGS",
+// }
 
 export enum Nav {
     DASHBOARD = 'Дашборд',

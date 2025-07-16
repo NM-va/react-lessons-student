@@ -3,7 +3,7 @@ import React from 'react';
 export const CompletedOrders = () => {
     return (
         <div>
-            CompletedOrders
+            Завершенные заказы
         </div>
     );
 };

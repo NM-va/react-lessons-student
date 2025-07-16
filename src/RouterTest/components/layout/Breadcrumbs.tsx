@@ -5,9 +5,12 @@ import cls from './Breadcrumb.module.css';
 export const Breadcrumbs = () => {
     let location = useLocation();
     let pathParts = location.pathname.split('/').filter(part => part !== '');
+
+
+
     return (
         <div className={cls.breadcrumbs}>
-    
+            Хлебные крошки: 
             {
                 pathParts.map((item: string, index: number) => {
                 const pathTo = `/${pathParts.slice(0, index + 1).join('/')}`;

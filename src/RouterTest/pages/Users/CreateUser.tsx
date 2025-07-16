@@ -1,9 +1,9 @@
-import React from 'react';
+import 'react';
 
 export const CreateUser = () => {
     return (
         <div>
-            CreateUser
+            Модуль создания  нового пользователя
         </div>
     );
 };

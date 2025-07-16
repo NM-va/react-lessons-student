@@ -1,6 +1,6 @@
 import { RoutesType } from '../types/routes';
 import { Dashboard } from '../pages/Dashboard/Dashboard';
-import { UsersList } from '../pages/Users/UsersList';
+import { UsersList } from '../pages/Users/UsersListLayout';
 import { ProductsList } from '../pages/Products/ProductsList';
 import { OrdersList } from '../pages/Orders/OrdersList';
 import { Settings } from '../pages/Settings/Settings';
@@ -13,6 +13,7 @@ import { PendingOrders } from '../pages/Orders/PendingOrders';
 import { CompletedOrders } from '../pages/Orders/CompletedOrders';
 import { OrderDetails } from '../pages/Orders/OrderDetails';
 
+//todo добавить
 export const HeaderNavigationRoutes: RoutesType[] = [
     {path: Path.DASHBOARD, component: Dashboard},
     {path: Path.USERS, component: UsersList},

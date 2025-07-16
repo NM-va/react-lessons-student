@@ -3,7 +3,7 @@ import React from 'react';
 export const PendingOrders = () => {
     return (
         <div>
-            PendingOrders
+            Заявки в обработке
         </div>
     );
 };

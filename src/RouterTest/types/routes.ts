@@ -1,6 +1,8 @@
-import { ReactNode } from 'react';
+import React  from 'react';
 
 export type RoutesType = {
     path: string,
-    component: ReactNode;
+    label?: string, // русскоязычное название //todo 
+    component: () => React.JSX.Element,
+    index?: boolean;
 }
