@@ -1,9 +1,13 @@
 import 'react';
-import { generatePath, Link, useNavigate } from 'react-router-dom';
+import { generatePath, Link } from 'react-router-dom';
 import { Path } from '../../utils/constants';
 
+//file types.ts
+interface UserPathParams {
+    userId: string;
+}
+
 export const UsersList = () => {
-    const navigate = useNavigate();
     const users = [
         { id: '1', name: 'Иван Петров', email: 'ivan@example.com', role: 'admin', status: 'active' },
         { id: '2', name: 'Мария Сидорова', email: 'maria@example.com', role: 'user', status: 'active' },
@@ -18,11 +22,10 @@ export const UsersList = () => {
         { id: '11', name: 'Наталья Козлова', email: 'natalia@example.com', role: 'user', status: 'inactive' }
     ];
     
-    const handleUserClick = (userId: string) => {
-        //@ts-ignore
-        let newPath = generatePath(Path.USERS_USER_ID_EDIT, { userId } as Record<string, string>)
-        navigate(newPath);
-    };
+    // const handleUserClick = (userId: string) => {
+    //     let newPath = generatePath(Path.USERS_USER_ID_EDIT, { userId } as UserPathParams)
+    //     navigate(newPath);
+    // };
     
     return (
         <div>
@@ -42,10 +45,9 @@ export const UsersList = () => {
                 </thead>
                 <tbody>
                 {users.map(user => {
-                    //@ts-ignore
-                    let newPath = generatePath(Path.USERS_USER_ID_EDIT, { userId: user.id } as Record<string, string>);
+                    let newPath = generatePath(Path.USERS_USER_ID_EDIT, { userId: user.id } as UserPathParams);
                     return (
-                        <tr key={user.id} onClick={() => handleUserClick(user.id)}>
+                        <tr key={user.id}>
                             <td>{user.id}</td>
                             <td>{user.name}</td>
                             <td>{user.email}</td>

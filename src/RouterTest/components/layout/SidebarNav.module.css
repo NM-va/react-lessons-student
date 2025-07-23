@@ -33,3 +33,7 @@
     background-color: #3498db;
     border-left: 4px solid #6bacd7;
 }
+.active:hover {
+    background-color: #3498db;
+    cursor: default;
+}
