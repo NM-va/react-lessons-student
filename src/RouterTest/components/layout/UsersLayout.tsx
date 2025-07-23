@@ -1,7 +1,7 @@
 import _isFunction from 'lodash/isFunction';
 import { RoutesType } from '../../types/routes';
 import { UniversalLayout, UniversalLayoutProps } from '../common/UniversalLayout';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
 export interface UsersLayoutProps extends UniversalLayoutProps {

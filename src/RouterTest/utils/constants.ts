@@ -1,40 +1,54 @@
+export enum RootPaths {
+    DASHBOARD = 'dashboard',
+    USERS = 'users',
+    PRODUCTS = 'products',
+    ORDERS = 'orders',
+    SETTINGS = 'settings'
+}
+
 export enum Path {
-    DASHBOARD = '/dashboard',
-    USERS = '/users',
-    USERS_CREATE = '/users/create',
-    USERS_LIST = '/users/list',
-    USERS_ROLES = '/users/roles',
-    USERS_USER_ID = '/users/:userId',
-    USERS_USER_ID_EDIT = '/users/:userId/edit',
-    PRODUCTS = '/products',
-    PRODUCTS_CREATE = '/products/create',
-    PRODUCTS_CATEGORIES  = '/products/categories',
-    PRODUCTS_PRODUCT_ID = '/products/:productId',
-    PRODUCTS_PRODUCT_ID_EDIT = '/products/:productId/edit',
-    ORDERS = '/orders',
-    ORDERS_PENDING = 'orders/pending',
-    ORDERS_COMPLETED = 'orders/completed',
-    ORDERS_CANCELLED = 'orders/cancelled',
-    ORDERS_ORDER_ID = 'orders/:orderId',
-    SETTINGS = '/settings',
-    NOTFOUND = '/*'
+    DASHBOARD = `/${RootPaths.DASHBOARD}`,
+    USERS = `/${RootPaths.USERS}`,
+    USERS_CREATE = `/${RootPaths.USERS}/create`,
+    USERS_LIST = `/${RootPaths.USERS}/list`,
+    USERS_ROLES = `/${RootPaths.USERS}/roles`,
+    USERS_USER_ID = `/${RootPaths.USERS}/:userId`,
+    USERS_USER_ID_EDIT = `/${RootPaths.USERS}/:userId/edit`,
+    PRODUCTS = `/${RootPaths.PRODUCTS}`,
+    PRODUCTS_CREATE = `/${RootPaths.PRODUCTS}/create`,
+    PRODUCTS_CATEGORIES  = `/${RootPaths.PRODUCTS}/categories`,
+    PRODUCTS_PRODUCT_ID = `/${RootPaths.PRODUCTS}/:productId`,
+    PRODUCTS_PRODUCT_ID_EDIT = `/${RootPaths.PRODUCTS}/:productId/edit`,
+    ORDERS = `/${RootPaths.ORDERS}`,
+    ORDERS_PENDING = `/${RootPaths.ORDERS}/pending`,
+    ORDERS_COMPLETED = `/${RootPaths.ORDERS}/completed`,
+    ORDERS_CANCELLED = `/${RootPaths.ORDERS}/cancelled`,
+    ORDERS_ORDER_ID = `/${RootPaths.ORDERS}/:orderId`,
+    SETTINGS = `/${RootPaths.SETTINGS}`,
+    NOTFOUND = `/*`
 }
 
-//Done поправить enum
-export enum NavNames {
-    USERS = "USERS",
-    DASHBOARD = "DASHBOARD",
-    PRODUCTS = "PRODUCTS",
-    ORDERS = "ORDERS",
-    SETTINGS = "SETTINGS",
-}
 
-export const NavNamesDict: Record<NavNames, string> = {
-    [NavNames.USERS]: "Пользователи",
-    [NavNames.DASHBOARD]: "Дашборд",
-    [NavNames.PRODUCTS]: "Продукты",
-    [NavNames.ORDERS]: "Заказы",
-    [NavNames.SETTINGS]: "Настройки",
+export const AllPathNamesDict: Record<string, string> = {
+    // Корневые пути
+    [RootPaths.USERS]: "Пользователи",
+    [RootPaths.DASHBOARD]: "Дашборд",
+    [RootPaths.PRODUCTS]: "Продукты",
+    [RootPaths.ORDERS]: "Заказы",
+    [RootPaths.SETTINGS]: "Настройки",
+
+    // Дополнительные части пути
+    'create': 'Создать',
+    'list': 'Список',
+    'roles': 'Роли',
+    'edit': 'Редактировать',
+    'categories': 'Категории',
+    'pending': 'В обработке',
+    'completed': 'Выполненные',
+    'cancelled': 'Отмененные',
+
+    // Можно добавить обработку для ID
+    // Эти значения будут использоваться если ID не найден в словаре
 }
 
 export enum SidebarNames {

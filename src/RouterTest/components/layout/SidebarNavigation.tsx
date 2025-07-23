@@ -34,6 +34,7 @@ export const SidebarNavigation = (props: Props) => {
                         key={item.path}
                         className={({ isActive }: { isActive: boolean }) => getNavLinkClass(isActive)}
                         to={pathWithParams}
+                        end
                     >
                         {item.label}
                     </NavLink>

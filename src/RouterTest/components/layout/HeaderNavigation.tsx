@@ -1,6 +1,6 @@
-import React from 'react';
+import 'react';
 import { NavLink } from 'react-router-dom';
-import { NavNamesDict, Path } from '../../utils/constants';
+import { AllPathNamesDict, Path } from '../../utils/constants';
 import cls from './HeaderNavigation.module.css';
 
 export const HeaderNavigation = () => {
@@ -11,19 +11,19 @@ export const HeaderNavigation = () => {
         <nav className={cls.headerNav}>
             <NavLink className={({ isActive }: { isActive: boolean }) => getNavLinkClass(isActive)}
                      to={Path.DASHBOARD}
-            >{NavNamesDict.DASHBOARD}</NavLink>
+            >{AllPathNamesDict.dashboard}</NavLink>
             <NavLink className={({ isActive }: { isActive: boolean }) => getNavLinkClass(isActive)}
                  to={Path.USERS}
-            >{NavNamesDict.USERS}</NavLink>
+            >{AllPathNamesDict.users}</NavLink>
             <NavLink className={({ isActive }: { isActive: boolean }) => getNavLinkClass(isActive)}
                  to={Path.PRODUCTS}
-            >{NavNamesDict.PRODUCTS}</NavLink>
+            >{AllPathNamesDict.products}</NavLink>
             <NavLink className={({ isActive }: { isActive: boolean }) => getNavLinkClass(isActive)}
                  to={Path.ORDERS}
-            >{NavNamesDict.ORDERS}</NavLink>
+            >{AllPathNamesDict.orders}</NavLink>
             <NavLink className={({ isActive }: { isActive: boolean }) => getNavLinkClass(isActive)}
                  to={Path.SETTINGS}
-            >{NavNamesDict.SETTINGS}</NavLink>
+            >{AllPathNamesDict.settings}</NavLink>
         </nav>
     );
 };
