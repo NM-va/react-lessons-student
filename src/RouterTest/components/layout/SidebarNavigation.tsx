@@ -1,31 +1,46 @@
-import { useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
-import { Path, Sidebar } from '../../utils/constants';
+import { generatePath, NavLink, useParams } from 'react-router-dom';
 import cls from './sidebarNav.module.css';
 import { RoutesType } from '../../types/routes';
+import { Path } from '../../utils/constants';
 
 export interface Props {
     menuList: RoutesType[];
 }
 
+const replaceDynamicParams = (path: string, params: Record<string, string | undefined>) => {
+    return path.replace(/:\w+/g, (match) => {
+        const paramName = match.substring(1); // убираем двоеточие
+        return params[paramName] || match; // если параметра нет, оставляем как было
+    });
+};
+
 export const SidebarNavigation = (props: Props) => {
     const { menuList } = props;
-    const [isShowSidebar, setIsShowSidebar] = useState<boolean>(false);
-    let location = useLocation();
+    const params = useParams();
     
-    //todo сделать активным элемент 
-    function isActiveNavLink({isActive}) {
-        return isActive ? 'active' : ''
-    }
+    //Done сделать активным элемент
+    const getNavLinkClass = (isActive: boolean): string =>
+        `${cls.sidebarNavItem} ${isActive ? cls.active : ''}`;
+    
+    const shouldShowItem = (item: RoutesType) => {
+        if (!!params.userId) return true;
+        
+        return !item.path.includes(':userId');
+    };
     
     return (
         <nav className={cls.sidebarNav}>
             {menuList.map((item: RoutesType ) => {
-                //todo сделать активным элемент 
+             
+                if (!shouldShowItem(item)) return null;
+                const pathWithParams = replaceDynamicParams(item.path, params);
+
+                //Done сделать активным элемент
                 return (
                     <NavLink
-                        className={`${cls.sidebarNavItem} ${isActiveNavLink}`}
-                        to={item.path}
+                        key={item.path}
+                        className={({ isActive }: { isActive: boolean }) => getNavLinkClass(isActive)}
+                        to={pathWithParams}
                     >
                         {item.label}
                     </NavLink>

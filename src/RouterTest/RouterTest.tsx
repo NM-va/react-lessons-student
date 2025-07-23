@@ -1,50 +1,57 @@
-import  'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { Suspense } from 'react';
+import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 // import { HeaderNavigationRoutes } from './utils/routes';
 // import { RoutesType } from './types/routes';
 import { AdminLayout } from './components/layout/AdminLayout';
 import { Path } from './utils/constants';
 import { Dashboard } from './pages/Dashboard/Dashboard';
-import { userRoutes, UsersListLayout } from './pages/Users/UsersListLayout';
+import { UsersListLayout } from './pages/Users/UsersListLayout';
 import { ProductsList } from './pages/Products/ProductsList';
 import { OrdersList } from './pages/Orders/OrdersList';
 import { Settings } from './pages/Settings/Settings';
-import { CreateUser } from './pages/Users/CreateUser';
-import { UserRoles } from './pages/Users/UserRoles';
 import { CreateProduct } from './pages/Products/CreateProduct';
 import { Categories } from './pages/Products/Categories';
 import { PendingOrders } from './pages/Orders/PendingOrders';
 import { CompletedOrders } from './pages/Orders/CompletedOrders';
 import { OrderDetails } from './pages/Orders/OrderDetails';
-import { UsersList } from './pages/Users/UsetList';
 import { RoutesType } from './types/routes';
+import { NotFound } from './components/common/NotFound';
+import { LoadingSpinner } from './components/common/LoadingSpinner';
+import { UniversalLayout } from './components/common/UniversalLayout';
+import { ordersRoutes, productsRoutes, userRoutes } from './utils/routes';
 
 export const RouterTest = () => {
     
     return (
         <div>
             <Router>
-                <Routes>
-                    <Route path="/" element={<AdminLayout />}>
-                        <Route path={Path.DASHBOARD} element={<Dashboard />} />
-                        <Route path={Path.USERS} element={<UsersListLayout />}>
-                            
-                            {userRoutes.map((item: RoutesType) => (
-                                <Route path={item.path} element={<item.component />} key={item.path} />
-                            ))}
+                <Suspense fallback={<LoadingSpinner />}>
+                    <Routes>
+                        <Route path="/" element={<AdminLayout />}>
+                            <Route path={Path.DASHBOARD} element={<Dashboard />} />
+                            <Route path={Path.USERS} element={<UniversalLayout routes={userRoutes} />}>
+                                <Route path={Path.USERS} element={<Navigate to={`${Path.USERS_LIST}`} replace />} />
+                                {userRoutes.map((item: RoutesType) => (
+                                    <Route path={item.path} element={<item.element />} key={item.path} />
+                                ))}
+                            </Route>
+                            <Route path={Path.PRODUCTS} element={<UniversalLayout routes={productsRoutes} />}>
+                                <Route path={Path.PRODUCTS} element={<Navigate to={`${Path.PRODUCTS}`} replace />} />
+                                {productsRoutes.map((item: RoutesType) => (
+                                    <Route path={item.path} element={<item.element />} key={item.path} />
+                                ))}
+                            </Route>
+                            <Route path={Path.ORDERS} element={<UniversalLayout routed={ordersRoutes} />}>
+                                <Route path={Path.ORDERS} element={<Navigate to={`${Path.ORDERS}`} replace />} />
+                                {ordersRoutes.map((item: RoutesType) => (
+                                    <Route path={item.path} element={<item.element />} key={item.path} />
+                                ))}
+                            </Route>
+                            <Route path={Path.SETTINGS} element={<Settings />} />
+                            <Route path={Path.NOTFOUND} element={<NotFound />} />
                         </Route>
-                        <Route path={Path.PRODUCTS} element={<ProductsList />}>
-                            <Route path={Path.PRODUCTS_CREATE} element={<CreateProduct />} />
-                            <Route path={Path.PRODUCTS_CATEGORIES} element={<Categories />} />
-                        </Route>
-                        <Route path={Path.ORDERS} element={<OrdersList />}>
-                            <Route path={Path.ORDERS_PENDING} element={<PendingOrders />} />
-                            <Route path={Path.ORDERS_COMPLETED} element={<CompletedOrders />} />
-                            <Route path={Path.ORDERS_CANCELLED} element={<OrderDetails />} />
-                        </Route>
-                        <Route path={Path.SETTINGS} element={<Settings />} />
-                    </Route>
-                </Routes>
+                    </Routes>
+                </Suspense>
             </Router>
         </div>
 

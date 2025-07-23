@@ -1,10 +1,9 @@
 import { RoutesType } from '../types/routes';
 import { Dashboard } from '../pages/Dashboard/Dashboard';
-import { UsersList } from '../pages/Users/UsersListLayout';
 import { ProductsList } from '../pages/Products/ProductsList';
 import { OrdersList } from '../pages/Orders/OrdersList';
 import { Settings } from '../pages/Settings/Settings';
-import { Path } from './constants';
+import { BreadcrumbsDict, Path } from './constants';
 import { CreateUser } from '../pages/Users/CreateUser';
 import { UserRoles } from '../pages/Users/UserRoles';
 import { CreateProduct } from '../pages/Products/CreateProduct';
@@ -12,25 +11,112 @@ import { Categories } from '../pages/Products/Categories';
 import { PendingOrders } from '../pages/Orders/PendingOrders';
 import { CompletedOrders } from '../pages/Orders/CompletedOrders';
 import { OrderDetails } from '../pages/Orders/OrderDetails';
+import { EditUser } from '../pages/Users/EditUser';
+import { UserProfile } from '../pages/Users/UserProfile';
+import { ProductDetails } from '../pages/Products/ProductDetails';
+import { EditProduct } from '../pages/Products/EditProduct';
+import { UsersList } from '../pages/Users/UsersList';
 
 //todo добавить
 export const HeaderNavigationRoutes: RoutesType[] = [
-    {path: Path.DASHBOARD, component: Dashboard},
-    {path: Path.USERS, component: UsersList},
-    {path: Path.PRODUCTS, component: ProductsList},
-    {path: Path.ORDERS, component: OrdersList},
-    {path: Path.SETTINGS, component: Settings},
+    {path: Path.DASHBOARD, element: Dashboard},
+    {path: Path.USERS, element: UsersList},
+    {path: Path.PRODUCTS, element: ProductsList},
+    {path: Path.ORDERS, element: OrdersList},
+    {path: Path.SETTINGS, element: Settings},
 ];
 
 export const SidebarNavigationRoutes: RoutesType[] = [
-    {path: Path.USERS, component: UsersList},
-    {path: Path.USERS_CREATE, component: CreateUser},
-    {path: Path.USERS_ROLES, component: UserRoles},
-    {path: Path.PRODUCTS, component: ProductsList},
-    {path: Path.PRODUCTS_CREATE, component: CreateProduct},
-    {path: Path.PRODUCTS_CATEGORIES, component: Categories},
-    {path: Path.ORDERS, component: OrdersList},
-    {path: Path.ORDERS_PENDING, component: PendingOrders},
-    {path: Path.ORDERS_COMPLETED, component: CompletedOrders},
-    {path: Path.ORDERS_CANCELLED, component: OrderDetails},
+    {path: Path.USERS, element: UsersList},
+    {path: Path.USERS_CREATE, element: CreateUser},
+    {path: Path.USERS_ROLES, element: UserRoles},
+    {path: Path.PRODUCTS, element: ProductsList},
+    {path: Path.PRODUCTS_CREATE, element: CreateProduct},
+    {path: Path.PRODUCTS_CATEGORIES, element: Categories},
+    {path: Path.ORDERS, element: OrdersList},
+    {path: Path.ORDERS_PENDING, element: PendingOrders},
+    {path: Path.ORDERS_COMPLETED, element: CompletedOrders},
+    {path: Path.ORDERS_CANCELLED, element: OrderDetails},
 ];
+
+export const userRoutes: RoutesType[] = [
+    {
+        path: Path.USERS_LIST,
+        label: BreadcrumbsDict.BREADCRUMBS_USERS,
+        element: UsersList,
+    },
+    {
+        path: Path.USERS_CREATE,
+        label: BreadcrumbsDict.BREADCRUMBS_USERS_CREATE,
+        element: CreateUser,
+        index: true,
+    },
+    {
+        path: Path.USERS_ROLES,
+        label: BreadcrumbsDict.BREADCRUMBS_USERS_ROLES,
+        element: UserRoles,
+    },
+    {
+        path: Path.USERS_USER_ID,
+        label: BreadcrumbsDict.BREADCRUMBS_USERS_USER_ID,
+        element: UserProfile,
+    },
+    {
+        path: Path.USERS_USER_ID_EDIT,
+        label: BreadcrumbsDict.BREADCRUMBS_USERS_USER_ID_EDIT,
+        element: EditUser,
+    },
+]
+
+export const productsRoutes: RoutesType[] = [
+    {
+        path: Path.PRODUCTS,
+        label: BreadcrumbsDict.BREADCRUMBS_PRODUCTS,
+        element: ProductsList,
+    },
+    {
+        path: Path.PRODUCTS_CREATE,
+        label: BreadcrumbsDict.BREADCRUMBS_PRODUCTS_CREATE,
+        element: CreateProduct,
+        index: true,
+    },
+    {
+        path: Path.PRODUCTS_CATEGORIES,
+        label: BreadcrumbsDict.BREADCRUMBS_PRODUCTS_CATEGORIES,
+        element: Categories,
+    },
+    {
+        path: Path.PRODUCTS_PRODUCT_ID,
+        label: BreadcrumbsDict.BREADCRUMBS_PRODUCTS_PRODUCT_ID,
+        element: ProductDetails,
+    },
+    {
+        path: Path.PRODUCTS_PRODUCT_ID_EDIT,
+        label: BreadcrumbsDict.BREADCRUMBS_PRODUCTS_PRODUCT_ID_EDIT,
+        element: EditProduct,
+    },
+]
+
+export const ordersRoutes: RoutesType[] = [
+    {
+        path: Path.ORDERS,
+        label: BreadcrumbsDict.BREADCRUMBS_ORDERS,
+        element: OrdersList,
+    },
+    {
+        path: Path.ORDERS_COMPLETED,
+        label: BreadcrumbsDict.BREADCRUMBS_ORDERS_COMPLETED,
+        element: CompletedOrders,
+        index: true,
+    },
+    {
+        path: Path.ORDERS_PENDING,
+        label: BreadcrumbsDict.BREADCRUMBS_ORDERS_PENDING,
+        element: PendingOrders,
+    },
+    {
+        path: Path.ORDERS_ORDER_ID,
+        label: BreadcrumbsDict.BREADCRUMBS_PRODUCTS_CATEGORIES,
+        element: OrderDetails,
+    },
+]
