@@ -1,9 +1,19 @@
 import React from 'react';
+import { orders } from '../../utils/constants';
 
 export const OrdersList = () => {
+    
     return (
         <div>
-            OrdersList
+            {
+                orders.map((order) => {
+                    return (
+                        <div>
+                            {order.id}
+                        </div>
+                    )
+                })
+            }
         </div>
     );
 };

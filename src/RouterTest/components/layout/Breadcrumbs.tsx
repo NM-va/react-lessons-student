@@ -15,7 +15,6 @@ export const Breadcrumbs = () => {
                 pathParts.map((item: string, index: number) => {
                 const pathTo = `/${pathParts.slice(0, index + 1).join('/')}`;
                 const isLast = index === pathParts.length - 1;
-                
                     return (
                         <span key={pathTo} className={cls.breadcrumbItem}>
                             {

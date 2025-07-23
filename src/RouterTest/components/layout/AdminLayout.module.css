@@ -13,3 +13,11 @@
     background-color: #fff;
     min-height: calc(100vh - 60px);
 }
+
+.mainContentBox {
+    display: flex;
+}
+
+.mainContentBox > div:last-child {
+    padding: 20px;
+}
