@@ -12,7 +12,7 @@ export const ProductsList = () => {
         <div>
             {
                 products.map((product) => {
-                    return <div>product.name</div>
+                    return <div>{product.name}</div>
                 })
             }
         </div>

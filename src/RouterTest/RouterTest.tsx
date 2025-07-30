@@ -10,6 +10,7 @@ import { LoadingSpinner } from './components/common/LoadingSpinner';
 import { UniversalLayout } from './components/common/UniversalLayout';
 import { ordersRoutes, productsRoutes, userRoutes } from './utils/routes';
 import { UsersLayout } from './components/layout/UsersLayout';
+import { ProductsLayout } from './components/layout/ProductsLayout';
 
 export const RouterTest = () => {
     
@@ -26,7 +27,7 @@ export const RouterTest = () => {
                                     <Route path={item.path} element={<item.element />} key={item.path} />
                                 ))}
                             </Route>
-                            <Route path={Path.PRODUCTS} element={<UniversalLayout routes={productsRoutes} />}>
+                            <Route path={Path.PRODUCTS} element={<ProductsLayout routes={productsRoutes} />}>
                                 <Route path={Path.PRODUCTS} element={<Navigate to={`${Path.PRODUCTS}`} replace />} />
                                 {productsRoutes.map((item: RoutesType) => (
                                     <Route path={item.path} element={<item.element />} key={item.path} />
