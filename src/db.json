@@ -1,0 +1,21 @@
+{
+  "task_id": 1,
+  "title": "Complete the project",
+  "description": "Finish all remaining tasks for the React course",
+  "is_completed": false,
+  "priority_level": "high",
+  "created_timestamp": "2024-01-15T10:30:00Z",
+  "updated_timestamp": "2024-01-16T15:45:00Z",
+  "due_date_string": "2024-01-20",
+  "tags_csv": "work,urgent,project",
+  "assigned_user": {
+    "user_id": 123,
+    "full_name": "John Doe",
+    "avatar_url": "https://example.com/avatar.jpg"
+  },
+  "category_info": {
+    "category_id": 5,
+    "category_name": "Development",
+    "color_hex": "#3498db"
+  }
+}
