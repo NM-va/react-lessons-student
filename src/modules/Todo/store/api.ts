@@ -1,40 +1,54 @@
-import { api } from '../../../store/api';
-import { BaseResponse, DomainTodolist, TodolistType } from '../types';
+import { api, TAGS } from '../../../store/api';
+import { BaseResponse, FilterValues, RequestStatus, TodoListItemDto, TodoListSchema } from '../types';
+import { fabricaZodTransform } from './utils';
 
+export interface TodoListItem extends TodoListItemDto {
+    filter: FilterValues;
+    entityStatus: RequestStatus;
+}
 
-export const TAGS = {
-    Todolist: 'Todolist',
-} as const;
+const { transformCollection } = fabricaZodTransform<TodoListItemDto>(TodoListSchema);
 
-const todolistApi = api.injectEndpoints({
+const todoListApi = api.injectEndpoints({
     endpoints: (build) => ({
-        getTodolists: build.query<DomainTodolist[], void>({
+        getTodoLists: build.query<TodoListItem[], void>({
             query: () => "todo-lists",
-            transformResponse: (todolists: TodolistType[]): DomainTodolist[] =>
-                todolists.map((todolist) => ({ ...todolist, filter: "all", entityStatus: "idle" })),
-            providesTags: [{type: TAGS.Todolist, id: 'TODOLIST'}]
+            transformResponse: (todoLists: TodoListItemDto[]): TodoListItem[] => processData(transformCollection(todoLists)),
+            providesTags: [{type: TAGS.TodoList, id: 'TODOLIST'}]
         }),
-        createTodolistItem: build.mutation<BaseResponse<{ item: TodolistType }>, string>({
+        createTodoListItem: build.mutation<BaseResponse<{ item: TodoListItemDto }>, string>({
             query: (title) => ({
                 url: '/todo-lists',
                 method: 'POST',
                 body: {title}
             }),
-            invalidationTags: [{type: TAGS.Todolist, id: 'TODOLIST'}]
+            invalidatesTags: [{type: TAGS.TodoList, id: 'TODOLIST'}]
         }),
-        updateTodolistItem: build.mutation<BaseResponse<{ item: TodolistType }>, string>({
+        updateTodoListItem: build.mutation<BaseResponse<{ item: TodoListItemDto }>, TodoListItemDto>({
             query: ({ id, title }) => ({
                 url: `/todo-lists/${id}`,
                 method: 'PUT',
                 body: {title}
             }),
-            invalidationTags: [{type: TAGS.Todolist, id: 'TODOLIST'}]
+            //todo transform request
+            invalidatesTags: [{type: TAGS.TodoList, id: 'TODOLIST'}]
         }),
     })
 });
 
 export const {
-    useGetTodolistsQuery,
-    useCreateTodolistItemMutation,
-    useUpdateTodolistItemMutation
-} = todolistApi;
+    useGetTodoListsQuery,
+    useCreateTodoListItemMutation,
+    useUpdateTodoListItemMutation
+} = todoListApi;
+
+
+export function processData(data: TodoListItemDto[]): TodoListItem[] {
+    return data.map((item) => {
+        return {
+            ...item,
+            filter: "all", 
+            entityStatus: "idle"
+        }
+    })
+}

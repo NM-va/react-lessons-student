@@ -1,12 +1,29 @@
-import React from 'react';
-import { TodolistItem } from './TodolistItem';
-import { useCreateTodolistItemMutation, useGetTodolistsQuery } from '../store/api';
-import { TodolistType } from '../types';
+import 'react';
+import { TodoListItem } from './TodoListItem';
+import { useCreateTodoListItemMutation, useGetTodoListsQuery } from '../store/api';
+import { TodoListItemDto } from '../types';
 import { TodoForm } from './TodoForm';
+import { useEffect } from 'react';
+import { dispatch } from '../../../store';
+import { selectState, setTodoList } from '../store';
+import { useSelector } from 'react-redux';
 
-export const Todolist = () => {
-    const {data: todolists = [], isLoading} = useGetTodolistsQuery();
-    const [createTodolistItem] = useCreateTodolistItemMutation();
+//todo убрать ошибки типов и обработать ошибку zod
+
+export const TodoList = () => {
+    const {data: todoLists = [], isLoading, error} = useGetTodoListsQuery();
+    const [createTodoListItem] = useCreateTodoListItemMutation();
+    const { data } = useSelector(selectState)
+
+
+    //todo ты работаешь с живым поиском и делаешь dispatch для store.ts
+    useEffect(() => {
+        todoLists.length > 0 && dispatch(setTodoList(todoLists));
+    }, [todoLists])
+
+    useEffect(() => {
+        error && console.warn(error);
+    }, [error]);
 
     if (isLoading) {
         return <div>Loading...</div>
@@ -15,11 +32,13 @@ export const Todolist = () => {
     return (
         <div>
             <div style={{'marginBottom': '20px'}}>
-                <TodoForm createTodo={createTodolistItem}/>
+                <TodoForm createTodo={createTodoListItem}/>
             </div>
             <div>
-                {todolists?.map((todo: TodolistType) => {
-                    return <TodolistItem key={todo.id} todolist={todo}/>
+                {/* todo использовать filteredData */}
+                {data?.map((todo: TodoListItemDto) => {
+                    // починить ошибки типов
+                    return <TodoListItem key={todo.id} todoList={todo}/>
                 })}
             </div>
         </div>

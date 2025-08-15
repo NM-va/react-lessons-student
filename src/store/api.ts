@@ -1,11 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { rootReducer } from './reducers';
 
 export const TAGS = {
     Task: 'Task',
     TaskList: 'TaskList',
     Category: 'Category',
-    User: 'User'
+    User: 'User',
+    TodoList: 'TodoList',
 } as const;
 
 export const api = createApi({

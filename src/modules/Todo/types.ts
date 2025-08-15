@@ -1,13 +1,13 @@
 import { z } from 'zod';
 
-const TodolistSchema = z.object({
+export const TodoListSchema = z.object({
     id: z.string(),
     title: z.string(),
     addedDate: z.string(),
     order: z.number()
 });
 
-export type TodolistType = z.infer<typeof TodolistSchema>;
+export type TodoListItemDto = z.infer<typeof TodoListSchema>;
 
 
 const FilterValues = z.enum(['all', 'active', 'completed']);
@@ -19,11 +19,6 @@ export type BaseResponse<T = {}> = {
     data: T
     resultCode: number
     messages: string[]
-}
-
-export type DomainTodolist = TodolistType & {
-    filter: FilterValues
-    entityStatus: RequestStatus
 }
 
 const RequestStatus = z.enum(["idle", "loading", "succeeded", "failed"]);

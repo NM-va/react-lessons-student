@@ -50,7 +50,7 @@ function App() {
     //                             {/*<li><Link to="/exercise8">Упр 8</Link></li>*/}
     //                             {/*<li><Link to="/exercise9">Упр 9</Link></li>*/}
     //                             {/*<li><Link to="/exercise10">Упр 10</Link></li>*/}
-    //                             {/*<li><Link to="/todos">Todolist</Link></li>*/}
+    //                             {/*<li><Link to="/todos">TodoList</Link></li>*/}
     //                         </ul>
     //                     </nav>
     //
@@ -68,7 +68,7 @@ function App() {
     //                                 {/*<Route path="/exercise8" element={<Exercise8/>}/>*/}
     //                                 {/*<Route path="/exercise9" element={<Exercise9/>}/>*/}
     //                                 {/*<Route path="/exercise10" element={<Exercise10/>}/>*/}
-    //                                 {/*<Route path="/todos" element={<Todolists/>}/>*/}
+    //                                 {/*<Route path="/todos" element={<TodoLists/>}/>*/}
     //                             </Routes>
     //
     //                         </Suspense>
