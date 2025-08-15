@@ -1,4 +1,4 @@
-import { api, TAGS } from './baseApi';
+import { api, TAGS } from '../store/api';
 import { TaskDto, TaskDtoSchema } from '../schemas/task/dto';
 import { Task } from '../schemas/task/domain';
 import { createZodTransform } from '../utils/zodHelpers';
