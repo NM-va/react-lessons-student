@@ -1,19 +1,19 @@
 import 'react';
-import { TodoListItem } from './TodoListItem';
-import { useCreateTodoListItemMutation, useGetTodoListsQuery } from '../store/api';
-import { TodoListItemDto } from '../types';
+import { useCreateTodoListItemMutation, useGetTodoListsQuery, useDeleteItemMutation, TodoListItem } from '../store/api';
 import { TodoForm } from './TodoForm';
 import React, { useEffect, useState } from 'react';
 import { dispatch } from '../../../store';
 import { selectState, setSearch, setTodoList } from '../store';
 import { useSelector } from 'react-redux';
 import { Modal } from '../../../components/Modal/Modal';
+import { TodoListItemComponent } from './TodolistItem';
 
 //todo убрать ошибки типов и обработать ошибку zod
 
 export const TodoList:React.FC = () => {
     const {data: todoLists = [], isLoading, error} = useGetTodoListsQuery();
-    const [createTodoListItem] = useCreateTodoListItemMutation();
+    const [createTodoListItem, {error: createError}] = useCreateTodoListItemMutation();
+    const [deleteTodo] = useDeleteItemMutation();
     const { filteredData } = useSelector(selectState);
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,6 +22,10 @@ export const TodoList:React.FC = () => {
     const onCloseModal = () => {
         setIsOpenModal(false);
     }
+
+    useEffect(() => {
+        //здесь обработка ошибок
+    }, [error, createError])
 
 
     //Done ты работаешь с живым поиском и делаешь dispatch для store.ts
@@ -35,6 +39,15 @@ export const TodoList:React.FC = () => {
         }
     }, [error]);
 
+    const onCreateTodo = async ( title : string):Promise<void> => {
+        const resp = await createTodoListItem(title).unwrap();
+        console.log(resp);
+    }
+
+    const onDeleteTodo = async ( id: string):Promise<void> => {
+        await deleteTodo(id).unwrap();
+    }
+
     if (isLoading) {
         return <div>Loading...</div>
     }
@@ -42,7 +55,7 @@ export const TodoList:React.FC = () => {
     return (
         <div>
             <div style={{'marginBottom': '20px'}}>
-                <TodoForm createTodo={createTodoListItem}/>
+                <TodoForm createTodo={onCreateTodo}/>
             </div>
             <div>
                 <input type="search" onChange={handleSearch}/>
@@ -50,9 +63,9 @@ export const TodoList:React.FC = () => {
             </div>
             <div>
                 {/* Done использовать filteredData */}
-                {filteredData?.map((todo: TodoListItemDto) => {
+                {filteredData?.map((todo: TodoListItem) => {
                     // починить ошибки типов
-                    return <TodoListItem key={todo.id} todoList={todo}/>
+                    return <TodoListItemComponent key={todo.id} todo={todo} onDelete={onDeleteTodo}/>
                 })}
             </div>
 

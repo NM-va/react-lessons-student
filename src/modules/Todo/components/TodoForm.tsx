@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { BaseResponse, TodoListItemDto } from '../types';
 
 interface TodoFormProps {
-    createTodo: (title: string) => Promise<BaseResponse<{ item: TodoListItemDto }>>;
+    createTodo: (title: string) => Promise<void>;
 }
 
 export const TodoForm:React.FC<TodoFormProps> = ({createTodo}) => {

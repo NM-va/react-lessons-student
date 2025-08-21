@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const TodoListSchema = z.object({
     id: z.string(),
-    title: z.number(),
+    title: z.string(),
     addedDate: z.string(),
     order: z.number()
 });

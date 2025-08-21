@@ -1,5 +1,5 @@
 import { ZodType } from 'zod';
-import { TodoListItemDto } from '../types';
+import { TodoListItem } from './api';
 
 export function zodParser<T>(schema: ZodType, data: T) {
     const r = schema.safeParse(data);
@@ -15,14 +15,14 @@ export function fabricaZodTransform<T>(schema: ZodType) {
     return { transform, transformCollection };
 }
 
-export function searchFilter(data: TodoListItemDto[], searchText: string): TodoListItemDto[] {
+export function searchFilter(data: TodoListItem[], searchText: string): TodoListItem[] {
     if (!searchText) {
         return data;
     }
 
     let trimSearchText = searchText.trim();
 
-    return data.filter((item: TodoListItemDto) => {
+    return data.filter((item: TodoListItem) => {
         return item.title.includes(trimSearchText);
     })
 }

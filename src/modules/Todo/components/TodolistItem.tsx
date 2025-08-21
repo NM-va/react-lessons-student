@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
+import React  from 'react';
 import TodoHeader from './TodoHeader';
 import { TodoFooter } from './TodoFooter';
-import { useUpdateTodoListItemMutation } from '../store/api';
+import { TodoListItem, useUpdateTodoListItemMutation } from '../store/api';
 
 
-export const TodoListItem:React.FC<TodoListItem> = ({todoList}) => {
+interface Props {
+    todo: TodoListItem;
+    onDelete: (id: string) => Promise<void>;
+}
+
+export const TodoListItemComponent:React.FC<Props> = ({todo, onDelete}) => {
     const [updateTodoListItem] = useUpdateTodoListItemMutation();
+
+    const onUpdateTodo = async (payload: TodoListItem) => {
+        const resp = await updateTodoListItem(payload).unwrap();
+    }
 
     return (
         <div style={{'marginBottom': '20px', 'border': '1px solid #000', 'width': '400px', 'padding': '10px', 'borderRadius': '4px'}}>
-            <TodoHeader todo={todoList} editTodo={updateTodoListItem} />
+            <TodoHeader todo={todo} editTodo={onUpdateTodo} onDelete={onDelete} />
             <TodoFooter/>
         </div>
     );

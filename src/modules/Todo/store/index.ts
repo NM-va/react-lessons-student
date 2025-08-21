@@ -1,20 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TodoListItemDto } from '../types';
 import { rootReducer } from '../../../store/reducers';
 import _cloneDeep from 'lodash/cloneDeep';
 import { searchFilter } from './utils';
+import { TodoListItem } from './api';
 
 export interface TodoState {
-    data: TodoListItemDto[];
-    filteredData: TodoListItemDto[];
+    data: TodoListItem[];
+    filteredData: TodoListItem[];
     searchText: string;
     //Done добавить filteredData
     //Done добавить поле search string по которому живой поиск будет
 }
 
 const initialState: TodoState = {
-    data: [] as TodoListItemDto[],
-    filteredData: [] as TodoListItemDto[],
+    data: [] as TodoListItem[],
+    filteredData: [] as TodoListItem[],
     searchText: '' as string
 }
 
@@ -22,7 +22,7 @@ export const todoSlice = createSlice({
     name: "todo",
     initialState,
     reducers: {
-        setTodoList: (state, action: PayloadAction<TodoListItemDto[]>) => {
+        setTodoList: (state, action: PayloadAction<TodoListItem[]>) => {
             state.data = action.payload;
             //Done добавить логику фильтрации
             //state.filteredData = state.data.filter(....)
@@ -33,8 +33,8 @@ export const todoSlice = createSlice({
             state.filteredData = searchFilter(state.data, action.payload);
         },
         //Done добавить setSearch
-        addTodoList: (state, action: PayloadAction<Omit<TodoListItemDto, 'id' | 'addedDate'>>) => {
-            const NewTodo: TodoListItemDto = {
+        addTodoList: (state, action: PayloadAction<Omit<TodoListItem, 'id' | 'addedDate'>>) => {
+            const NewTodo: TodoListItem = {
                 ...action.payload,
                 id: `${Date.now() }`,
                 addedDate: new Date().toISOString(),
@@ -43,7 +43,7 @@ export const todoSlice = createSlice({
             state.data.push(NewTodo);
         },
         //todo добавить метод setSearch
-        updateTodoList: (state, action: PayloadAction<TodoListItemDto>) => {
+        updateTodoList: (state, action: PayloadAction<TodoListItem>) => {
             const oldData = state.data;
             const newData = oldData.map((item) => {
                 if (item.id === action.payload.id) {

@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
+import { TodoListItem } from '../store/api';
 
-const TodoHeader = ({todo, editTodo}) => {
+interface Props {
+    todo: TodoListItem;
+    editTodo: (payload: TodoListItem) => void;
+    onDelete: (id: string) => Promise<void>;
+}
+
+const TodoHeader = ({todo, editTodo, onDelete}: Props) => {
     const [newTitle, setNewTitle] = useState<string>("");
     const [editMode, setEditMode] = useState<boolean>(false);
 
@@ -23,7 +30,7 @@ const TodoHeader = ({todo, editTodo}) => {
         }
 
         if (trimTitle !== "") {
-            editTodo({id: todo.id, title: trimTitle });
+            editTodo(todo);
             setNewTitle("");
             setEditMode(false);
         }
@@ -35,6 +42,7 @@ const TodoHeader = ({todo, editTodo}) => {
             {editMode && <input type="text" value={newTitle} onChange={changeTitleHandler}
             onBlur={saveNewTitle}/>}
             <button style={{ 'padding': '4px 8px', 'marginLeft': '20px' }} onClick={editTodoItem}>{!editMode? 'Edit' : 'Cancel' }</button>
+            <button style={{ 'padding': '4px 8px', 'marginLeft': '20px' }} onClick={() => onDelete(todo.id)}>{'Delete'}</button>
         </div>
     );
 };

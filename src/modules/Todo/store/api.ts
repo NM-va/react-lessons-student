@@ -7,7 +7,7 @@ export interface TodoListItem extends TodoListItemDto {
     entityStatus: RequestStatus;
 }
 
-const { transformCollection } = fabricaZodTransform<TodoListItemDto>(TodoListSchema);
+const { transform, transformCollection } = fabricaZodTransform<TodoListItemDto>(TodoListSchema) as any;
 
 const todoListApi = api.injectEndpoints({
     endpoints: (build) => ({
@@ -16,27 +16,34 @@ const todoListApi = api.injectEndpoints({
             transformResponse: (todoLists: TodoListItemDto[]): TodoListItem[] => processData(transformCollection(todoLists)),
             providesTags: [{type: TAGS.TodoList, id: 'TODOLIST'}]
         }),
-        createTodoListItem: build.mutation<BaseResponse<{ item: TodoListItemDto }>, string>({
+        createTodoListItem: build.mutation<TodoListItem, string>({
             query: (title) => ({
                 url: '/todo-lists',
                 method: 'POST',
                 body: {title}
             }),
-            invalidatesTags: [{type: TAGS.TodoList, id: 'TODOLIST'}]
+            invalidatesTags: [{type: TAGS.TodoList, id: 'TODOLIST'}],
+            transformResponse: (resp: BaseResponse<{ item: TodoListItemDto }>): TodoListItem => {
+                return processData([transform(resp.data.item)])[0];
+            },
         }),
-        updateTodoListItem: build.mutation<BaseResponse<{ item: TodoListItemDto }>, TodoListItemDto>({
+        updateTodoListItem: build.mutation<BaseResponse<{ item: TodoListItemDto }>, TodoListItem>({
             query: ({ id, title }) => {
                 console.log('query params:', { id, title });
                 return ({
                     url: `/todo-lists/${id}`,
                     method: 'PUT',
-                    body: {title}
+                    body: {title} // todo обратный процессинг processActionData()
                 })
             },
-            //todo transform request
-            transformRequest: (body) => {
-                console.log('body', body)
-
+            invalidatesTags: [{type: TAGS.TodoList, id: 'TODOLIST'}]
+        }),
+        deleteItem: build.mutation<void, string>({
+            query: (id: string) => {
+                return ({
+                    url: `/todo-lists/${id}`,
+                    method: 'DELETE',
+                })
             },
             invalidatesTags: [{type: TAGS.TodoList, id: 'TODOLIST'}]
         }),
@@ -46,7 +53,8 @@ const todoListApi = api.injectEndpoints({
 export const {
     useGetTodoListsQuery,
     useCreateTodoListItemMutation,
-    useUpdateTodoListItemMutation
+    useUpdateTodoListItemMutation,
+    useDeleteItemMutation
 } = todoListApi;
 
 
@@ -58,4 +66,14 @@ export function processData(data: TodoListItemDto[]): TodoListItem[] {
             entityStatus: "idle"
         }
     })
+}
+
+export function processActionData(data: TodoListItem): TodoListItemDto {
+    const {filter, entityStatus, ...dtoData} = data;
+
+    //todo здесь можно преобразовать дату из JS в ISO string
+
+    return {
+        ...dtoData
+    }
 }
