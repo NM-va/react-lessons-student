@@ -4,7 +4,7 @@ import { TodoFooter } from './TodoFooter';
 import { useUpdateTodoListItemMutation } from '../store/api';
 
 
-export const TodoListItem = ({todoList, editTodo}) => {
+export const TodoListItem:React.FC<TodoListItem> = ({todoList}) => {
     const [updateTodoListItem] = useUpdateTodoListItemMutation();
 
     return (

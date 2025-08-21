@@ -25,12 +25,19 @@ const todoListApi = api.injectEndpoints({
             invalidatesTags: [{type: TAGS.TodoList, id: 'TODOLIST'}]
         }),
         updateTodoListItem: build.mutation<BaseResponse<{ item: TodoListItemDto }>, TodoListItemDto>({
-            query: ({ id, title }) => ({
-                url: `/todo-lists/${id}`,
-                method: 'PUT',
-                body: {title}
-            }),
+            query: ({ id, title }) => {
+                console.log('query params:', { id, title });
+                return ({
+                    url: `/todo-lists/${id}`,
+                    method: 'PUT',
+                    body: {title}
+                })
+            },
             //todo transform request
+            transformRequest: (body) => {
+                console.log('body', body)
+
+            },
             invalidatesTags: [{type: TAGS.TodoList, id: 'TODOLIST'}]
         }),
     })

@@ -1,7 +1,7 @@
 import React from 'react';
 import { TodoFilters } from './TodoFilters';
 
-export const TodoFooter = () => {
+export const TodoFooter:React.FC = () => {
     return (
         <div>
             <TodoFilters/>

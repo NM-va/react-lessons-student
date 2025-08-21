@@ -2,15 +2,20 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TodoListItemDto } from '../types';
 import { rootReducer } from '../../../store/reducers';
 import _cloneDeep from 'lodash/cloneDeep';
+import { searchFilter } from './utils';
 
 export interface TodoState {
     data: TodoListItemDto[];
-    // добавить filteredData
-    // добавить поле search string по которому живой поиск будет
+    filteredData: TodoListItemDto[];
+    searchText: string;
+    //Done добавить filteredData
+    //Done добавить поле search string по которому живой поиск будет
 }
 
 const initialState: TodoState = {
     data: [] as TodoListItemDto[],
+    filteredData: [] as TodoListItemDto[],
+    searchText: '' as string
 }
 
 export const todoSlice = createSlice({
@@ -19,10 +24,15 @@ export const todoSlice = createSlice({
     reducers: {
         setTodoList: (state, action: PayloadAction<TodoListItemDto[]>) => {
             state.data = action.payload;
-            //todo добавить логику фильтрации
+            //Done добавить логику фильтрации
             //state.filteredData = state.data.filter(....)
+            state.filteredData = searchFilter(state.data, state.searchText);
         },
-        //todo добавить setSearch
+        setSearch: (state, action: PayloadAction<string>) => {
+            state.searchText = action.payload;
+            state.filteredData = searchFilter(state.data, action.payload);
+        },
+        //Done добавить setSearch
         addTodoList: (state, action: PayloadAction<Omit<TodoListItemDto, 'id' | 'addedDate'>>) => {
             const NewTodo: TodoListItemDto = {
                 ...action.payload,
@@ -32,7 +42,7 @@ export const todoSlice = createSlice({
 
             state.data.push(NewTodo);
         },
-        // добавить метод setSearch
+        //todo добавить метод setSearch
         updateTodoList: (state, action: PayloadAction<TodoListItemDto>) => {
             const oldData = state.data;
             const newData = oldData.map((item) => {
@@ -47,7 +57,6 @@ export const todoSlice = createSlice({
             state.data = newData;
             todoSlice.caseReducers.sortData(state)
         },
-
         resetState: () => _cloneDeep(initialState),
         sortData: (state: TodoState) => {
             state.data = state.data.sort();
@@ -62,6 +71,7 @@ export const { actions } = todoSlice;
 
 export const {
     setTodoList,
+    setSearch,
     addTodoList,
     updateTodoList,
     resetState,
