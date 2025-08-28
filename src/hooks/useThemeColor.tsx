@@ -77,11 +77,11 @@ export const ThemeColorProvider: React.FC<ThemeColorProviderProps> = ({
     const themeMode = isDark ? ThemeMode.DARK : ThemeMode.LIGHT;
 
     const colors = {
-        primary: isDark ? ThemeColorMap[ThemeMode.DARK].primary : ThemeColorMap[ThemeMode.LIGHT].primary,
-        secondary: isDark ? ThemeColorMap[ThemeMode.DARK].secondary : ThemeColorMap[ThemeMode.LIGHT].secondary,
-        background: isDark ? ThemeColorMap[ThemeMode.DARK].background : ThemeColorMap[ThemeMode.LIGHT].background,
-        surface: isDark ? ThemeColorMap[ThemeMode.DARK].surface : ThemeColorMap[ThemeMode.LIGHT].surface,
-        text: isDark ? ThemeColorMap[ThemeMode.DARK].text : ThemeColorMap[ThemeMode.LIGHT].text,
+        primary: ThemeColorMap[themeMode].primary,
+        secondary: ThemeColorMap[themeMode].secondary,
+        background: ThemeColorMap[themeMode].background,
+        surface: ThemeColorMap[themeMode].surface,
+        text: ThemeColorMap[themeMode].text,
     }
 
 
@@ -91,8 +91,9 @@ export const ThemeColorProvider: React.FC<ThemeColorProviderProps> = ({
             primary: { main: colors.primary },
             secondary: { main: colors.secondary },
             background: { default: colors.background },
-            text: { primary: colors.text },
-        }
+            text: { primary: colors.text, secondary: colors.secondary },
+        },
+        spacing: (factor: number) => `${4 * factor}px`,
     })
 
 

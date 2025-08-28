@@ -1,4 +1,4 @@
-import { Grid, Card, CardContent, Typography, Box, Stack } from '@mui/material';
+import { Grid, Card, CardContent, Typography } from '@mui/material';
 import { Assignment, CheckCircle, Schedule, Warning } from '@mui/icons-material';
 
 interface StatsCardProps {

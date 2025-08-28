@@ -1,13 +1,13 @@
 import { 
-  Card, CardContent, List, ListItem, ListItemText, ListItemSecondaryAction,
-  Checkbox, IconButton, Chip, TextField, Box, ToggleButtonGroup, ToggleButton,
+  Card, CardContent,
+  Box,
   CircularProgress,
-  CardHeader
+  CardHeader,
+  LinearProgress
 } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
 import { TaskItem } from '../Tasks/components/TaskItem';
-import { Task } from '../../schemas/task/domain';
-import { useState } from 'react';
+import { TaskType } from '../../schemas/task/domain';
+import { JSX, useState } from 'react';
 import { useGetTasksQuery } from '../../api/tasksApi';
 
 export const TaskList: React.FC = () => {
@@ -16,30 +16,50 @@ export const TaskList: React.FC = () => {
   // TODO: Обработчики действий
     const [filters, setFilters] = useState({});
 
+    //todo сделать фильтр
     const {
-        data: tasks,
+        data: tasks = [],
         error,
         isLoading,
         isFetching,
-        refetch
-    } = useGetTasksQuery(filters);
+    } = useGetTasksQuery('');
 
-    if (isLoading) return <CircularProgress />
     if (error) return <Box component="div">Ошибка</Box>;
     if (!tasks?.length) return <Box component="div">Пусто</Box>;
   
   return (
-    <Card>
+      <Card>
+        {isLoading && <LinearProgress />}
         <CardHeader>Мои задачи ({tasks.length})</CardHeader>
         <CardContent>
-        {/* TODO: Поиск и фильтры */}
-        {/* TODO: Список задач */}
+          {/* TODO: Поиск и фильтры */}
+          {/* TODO: Список задач */}
 
-            {isFetching && <CircularProgress />}
-            {tasks.map((task: Task) => (
-                <TaskItem key={task.id} task={task} />
-            ))}
+          {isFetching && <CircularProgress />}
+          {tasks.map((task: TaskType) => (
+            <TaskItem key={task.taskId} task={task} />
+          ))}
         </CardContent>
-    </Card>
+      </Card>
   );
 };
+
+
+export interface Props {
+  loading?: boolean;
+  children?: JSX.Element | JSX.Element[];
+  style?: React.CSSProperties;
+  className?: string;
+  size?: number;
+}
+
+function Progress(props: Props) {
+    return (
+      <Box>
+        {props.children}
+        <Box className="progress__preloader">
+          <CircularProgress />
+        </Box>
+      </Box>
+    )
+}

@@ -33,9 +33,9 @@ body * {
     box-sizing: border-box;
 }
 
-pre, p, li {
+/* pre, p, li {
     color: var(--book-text-color);
-}
+} */
 
 
 .app-container {

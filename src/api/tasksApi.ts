@@ -1,10 +1,10 @@
 import { api, TAGS } from '../store/api';
-import { TaskDto, TaskDtoSchema } from '../schemas/task/dto';
+import { TaskDto, TaskDtoSchema, TaskDtoSchemaInc, TaskIncDto } from '../schemas/task/dto';
 import { TaskType } from '../schemas/task/domain';
 import { createZodTransform } from '../utils/zodHelpers';
 import { transformTaskDto, transformTaskIncDto, transformToTaskDto } from '../schemas/task/transforms';
 
-const {transform, transformCollection} = createZodTransform(TaskDtoSchema)
+const {transform, transformCollection} = createZodTransform<TaskIncDto>(TaskDtoSchemaInc)
 
 export interface TasksFilter {
     status?: 'pending' | 'completed' | 'overdue';
@@ -16,12 +16,13 @@ export interface TasksFilter {
 
 export const tasksApi = api.injectEndpoints({
     endpoints: (build) => ({
-        getTasks: build.query<TaskType[], TasksFilter>({
+        getTasks: build.query<TaskType[], string>({
             query: (todolistId: string) => ({
                 url: `todo-lists/${todolistId}/tasks`
             }),
-            transformResponse: (response: unknown[]):TaskType[] => {
+            transformResponse: (response: TaskIncDto[]):TaskType[] => {
                 const dtos = transformCollection(response);
+                //todo рефакторинг
                 return dtos.map(transformTaskDto);
             },
             providesTags: (result) => [

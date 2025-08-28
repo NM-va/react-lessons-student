@@ -1,10 +1,9 @@
 
-import { Mail } from '@mui/icons-material';
+import Mail from '@mui/icons-material/Mail';
 import { AppBar, Avatar, Badge, Box, Container, Link, Menu, MenuItem, Stack, Toolbar } from '@mui/material';
 import { useState } from 'react';
 import SitemarkIcon from '../SitemarkIcon';
 import { ThemeToggle } from '../ui/ThemeToggle';
-import { NavLink } from 'react-router-dom';
 
 
 export const Header: React.FC = () => {
@@ -44,7 +43,7 @@ export const Header: React.FC = () => {
                             <MenuItem>Пункт1</MenuItem>
                             <MenuItem>Пункт2</MenuItem>
                         </Menu>
-                        <Box sx={{alignContent: 'center', paddingRight: '10px'}}>
+                        <Box sx={{ alignContent: 'center', pr: 3 }}>
                             <Badge badgeContent={4} color="primary">
                                 <Mail/>
                             </Badge>
