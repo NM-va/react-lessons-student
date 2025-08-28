@@ -1,10 +1,9 @@
 import React from 'react';
+import { TaskList } from '../components/dashboard/TaskList';
 
 const Tasks: React.FC = () => {
   return (
-    <div>
-      Tasks
-    </div>
+    <TaskList/>
   );
 };
 

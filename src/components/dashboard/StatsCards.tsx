@@ -44,7 +44,7 @@ const statsCardsData: StatsCardProps[] = [
 ];
 
 const StatsCard: React.FC<StatsCardProps> = ({ title, value, icon, color }) => {
-// TODO: Реализуйте карточку статистики
+// Done: Реализуйте карточку статистики
     return (
         <Card>
             <CardContent>
@@ -58,8 +58,8 @@ const StatsCard: React.FC<StatsCardProps> = ({ title, value, icon, color }) => {
 
 export const StatsCards: React.FC = () => {
 // TODO: Получите данные статистики
-// TODO: Создайте массив карточек
-// TODO: Отрендерите Grid с карточками
+// Done: Создайте массив карточек
+// Done: Отрендерите Grid с карточками
 
     return (
         <Grid container spacing={2}>

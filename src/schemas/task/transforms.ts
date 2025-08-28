@@ -1,5 +1,5 @@
-import { TaskDto } from './dto';
-import { Task } from './domain';
+import { TaskDto, TaskIncDto } from './dto';
+import { Task, TaskType } from './domain';
 
 export const transformTaskDto = (dtoData: TaskDto): Task => {
     const createdTimestampTransform = new Date(dtoData.created_timestamp);
@@ -41,5 +41,43 @@ export const transformToTaskDto = (task: Partial<Task>):Partial<TaskDto> => {
     if (task.dueDateString) dto.due_date_string = task.dueDate.toISOString().split('T')[0];
     if (task.tags) dto.tags_csv = task.tags.join(',');
     
+    return dto;
+}
+
+
+export const transformTaskIncDto = (dtoData: TaskIncDto): TaskType => {
+    const createdTimestampTransform = new Date(dtoData.startDate);
+    const updatedTimestampTransform = new Date(dtoData.addedDate);
+    const dueDateTransform = new Date(dtoData.deadline);
+
+    
+    return {
+        todoListId: dtoData.todoListId,
+        taskId: dtoData.id,
+        title: dtoData.title,
+        description: dtoData.description,
+        isCompleted: dtoData.completed,
+        priorityLevel: dtoData.priority,
+        createdTimestamp: createdTimestampTransform,
+        updatedTimestamp: updatedTimestampTransform,
+        dueDate: dueDateTransform,
+        status: dtoData.status,
+        order: dtoData.order
+    }
+}
+
+export const transformToTaskIncDto = (task: Partial<TaskType>):Partial<TaskIncDto> => {
+    const dto:Partial<TaskIncDto> = {};
+    if (task.todoListId) dto.todoListId = task.todoListId;
+    if (task.taskId) dto.id = task.taskId;
+    if (task.title) dto.title = task.title;
+    if (task.description) dto.description = task.description;
+    if (task.isCompleted !== undefined) dto.completed = task.isCompleted;
+    if (task.priorityLevel) dto.priority = task.priorityLevel;
+    if (task.dueDate) dto.addedDate = new Date(task.dueDate.toISOString().split('T')[0]);
+    if (task.createdTimestamp) dto.startDate = new Date(task.createdTimestamp.toISOString().split('T')[0]);
+    if (task.updatedTimestamp) dto.deadline = new Date(task.updatedTimestamp.toISOString().split('T')[0]);
+    if (task.status) dto.status = task.status;
+    if (task.order) dto.order = task.order;
     return dto;
 }
