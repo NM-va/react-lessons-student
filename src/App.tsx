@@ -1,16 +1,20 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
-import { Suspense, lazy } from 'react'
-import './App.css';
-import './styles.css';
-import { ThemeProvider } from './components/ThemeProvider';
-import { RouterTest } from './RouterTest/RouterTest';
+import { lazy } from 'react';
 import { Provider } from 'react-redux';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import './App.css';
+import Layout from './components/layout/Layout';
+import { ThemeColorProvider } from './hooks/useThemeColor';
 import { store } from './store';
-import { TodoApp } from './modules/Todo/components/TodoApp';
+import './styles.css';
+
 
 
 // Ленивая загрузка компонентов упражнений
 const Home = lazy(() => import('./modules/Home'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Tasks = lazy(() => import('./pages/Tasks'));
+const Profile = lazy(() => import('./pages/Profile'));
+const Settings = lazy(() => import('./pages/Settings'));
 // const Exercise1 = lazy(() => import('./exercises/Exercise1'));
 // const Exercise2 = lazy(() => import('./exercises/Exercise2'));
 // const Exercise3 = lazy(() => import('./exercises/Exercise3'));
@@ -24,12 +28,26 @@ const Home = lazy(() => import('./modules/Home'));
 
 // Добавьте больше упражнений по мере необходимости
 
+
 function App() {
     // return <RouterTest/>
     return (
+  
         <Provider store={store}>
-            <TodoApp/>
+            <Router>
+                <ThemeColorProvider>
+                    <Routes>
+                        <Route element={<Layout/>}>
+                            <Route path="/dashboard" element={<Dashboard/>}/>
+                            <Route path="/tasks" element={<Tasks/>}/>
+                            <Route path="/profile" element={<Profile/>}/>
+                            <Route path="/settings" element={<Settings/>}/>
+                        </Route>
+                    </Routes>
+                </ThemeColorProvider>
+            </Router>
         </Provider>
+
     )
     // return (
     //     <ThemeProvider>
@@ -50,7 +68,6 @@ function App() {
     //                             {/*<li><Link to="/exercise8">Упр 8</Link></li>*/}
     //                             {/*<li><Link to="/exercise9">Упр 9</Link></li>*/}
     //                             {/*<li><Link to="/exercise10">Упр 10</Link></li>*/}
-    //                             {/*<li><Link to="/todos">TodoList</Link></li>*/}
     //                         </ul>
     //                     </nav>
     //
@@ -68,7 +85,6 @@ function App() {
     //                                 {/*<Route path="/exercise8" element={<Exercise8/>}/>*/}
     //                                 {/*<Route path="/exercise9" element={<Exercise9/>}/>*/}
     //                                 {/*<Route path="/exercise10" element={<Exercise10/>}/>*/}
-    //                                 {/*<Route path="/todos" element={<TodoLists/>}/>*/}
     //                             </Routes>
     //
     //                         </Suspense>

@@ -23,3 +23,20 @@ export const TaskDtoSchema = z.object({
 });
 
 export type TaskDto = z.infer<typeof TaskDtoSchema>;
+
+
+export const TaskDtoSchemaInc = z.object({
+    id: z.number().positive(),
+    todoListId: z.number().positive(),
+    title: z.string(),
+    description: z.string(),
+    completed: z.boolean(),
+    startDate: z.date(),
+    addedDate: z.coerce.date(),
+    deadline: z.date(),
+    order: z.number(),
+    status: z.number(),
+    priority: z.number(),
+});
+
+export type TaskIncDto = z.infer<typeof TaskDtoSchemaInc>;
