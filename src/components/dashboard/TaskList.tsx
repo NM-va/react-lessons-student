@@ -8,17 +8,17 @@ import {
 import { TaskItem } from '../Tasks/components/TaskItem';
 import { TaskType } from '../../schemas/task/domain';
 import { FilterType } from '../../types/index';
-import React, { JSX, useState } from 'react';
+import React, { JSX, useMemo, useState } from 'react';
 import { useGetTasksQuery } from '../../api/tasksApi';
-import { useDispatch } from 'react-redux';
 
 export const TaskList: React.FC = () => {
   // TODO: Состояние задач и фильтров
   // TODO: Функции фильтрации
   // TODO: Обработчики действий
 
+    const [filterTask, setFilterTask] = useState<string>(FilterType.ALL);
     const handleChangeFilter = (FilterType: string) => {
-
+        setFilterTask(FilterType);
     };
 
     //todo сделать фильтр
@@ -33,11 +33,13 @@ export const TaskList: React.FC = () => {
     if (!tasks?.length) return <Box component="div">Пусто</Box>;
 
 
-    const filteredTasks = () => {
-        return tasks.filter((item: TaskType) => {
-            item.isCompleted === filter
-        })
-    };
+    let filteredTasks = useMemo(() => {
+       switch (filterTask) {
+           case ilterType.ACTIVE: return tasks.filter((item: TaskType) => !item.isCompleted);
+           case ilterType.COMPLETED: return tasks.filter((item: TaskType) => item.isCompleted);
+           default: return tasks;
+       }
+    }, [filterTask, tasks]);
   
   return (
       <Card>
@@ -55,7 +57,7 @@ export const TaskList: React.FC = () => {
           {/* TODO: Список задач */}
 
           {isFetching && <CircularProgress />}
-          {tasks.map((task: TaskType) => (
+          {filteredTasks.map((task: TaskType) => (
             <TaskItem key={task.taskId} task={task} />
           ))}
         </CardContent>

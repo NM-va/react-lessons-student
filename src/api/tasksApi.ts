@@ -86,21 +86,6 @@ export const tasksApi = api.injectEndpoints({
                 { type: TAGS.TaskList, id: 'LIST' }
             ]
         }),
-        filteredTask: build.mutation<TaskType, { id: number; updates: Partial<TaskType> }>({
-            query: ({ id, updates }) => ({
-                url: `tasks/${id}`,
-                method: 'PUT',
-                body: transformToTaskIncDto(updates)
-            }),
-            transformResponse: (response: unknown): TaskType => {
-                const dto = transform(response);
-                return transformTaskIncDto(dto);
-            },
-            invalidatesTags: (result, error, { id }) => [
-                { type: TAGS.Task, id },
-                { type: TAGS.TaskList, id: 'LIST' }
-            ]
-        }),
     })
 });
 
