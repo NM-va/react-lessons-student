@@ -27,7 +27,7 @@ export const ThemeColorMap: Record<ThemeMode, ThemeColors> = {
         background: '#ffffff',
         text: '#333333',
         primary: '#4f46e5',
-        secondary: '#6366f1',
+        secondary: '#b9b9f3',
         surface: '#ffffff'
     },
     [ThemeMode.DARK]: {
@@ -82,7 +82,7 @@ export const ThemeColorProvider: React.FC<ThemeColorProviderProps> = ({
         background: ThemeColorMap[themeMode].background,
         surface: ThemeColorMap[themeMode].surface,
         text: ThemeColorMap[themeMode].text,
-    }
+    };
 
 
     const theme = createTheme({
@@ -94,7 +94,53 @@ export const ThemeColorProvider: React.FC<ThemeColorProviderProps> = ({
             text: { primary: colors.text, secondary: colors.secondary },
         },
         spacing: (factor: number) => `${4 * factor}px`,
-    })
+        typography: {
+            defaultProps: {
+                variantMapping: {
+                    h1: 'h2',
+                    h2: 'h2',
+                    h3: 'h2',
+                    h4: 'h2',
+                    h5: 'h2',
+                    h6: 'h2',
+                    subtitle1: 'h2',
+                    subtitle2: 'h2',
+                    body1: 'span',
+                    body2: 'span',
+                },
+            },
+            allVariants: {
+                '& a': {
+                    color: 'primary.main',
+                    textDecoration: 'underline',
+                    '&:hover': {
+                        color: 'primary',
+                    },
+                    '&:visited': {
+                        color: 'primary',
+                    },
+                },
+            },
+            MuiLink: {
+                styleOverrides: {
+                    root: {
+                        color: 'palette.primary.main', // Основной цвет
+                        textDecoration: 'none', // Убрать подчеркивание
+                        '&:hover': {
+                            color: 'palette.primary.dark', // Цвет при наведении
+                            textDecoration: 'underline', // Подчеркивание при наведении
+                        },
+                        '&:visited': {
+                            color: 'palette.secondary.main', // Цвет посещенной ссылки
+                        },
+                        '&:active': {
+                            color: 'palette.error.main', // Цвет при клике
+                        },
+                    },
+                },
+            },
+        }
+    });
 
 
     return (

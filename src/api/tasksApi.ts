@@ -1,10 +1,10 @@
 import { api, TAGS } from '../store/api';
-import { TaskDto, TaskDtoSchema, TaskDtoSchemaInc, TaskIncDto } from '../schemas/task/dto';
+import { TaskDtoSchemaInc, TaskIncDto } from '../schemas/task/dto';
 import { TaskType } from '../schemas/task/domain';
 import { createZodTransform } from '../utils/zodHelpers';
-import { transformTaskDto, transformTaskIncDto, transformToTaskDto } from '../schemas/task/transforms';
+import { transformTaskIncDto } from '../schemas/task/transforms';
 
-const {transform, transformCollection} = createZodTransform<TaskIncDto>(TaskDtoSchemaInc)
+const { transform, transformCollection } = createZodTransform<TaskIncDto>(TaskDtoSchemaInc)
 
 export interface TasksFilter {
     status?: 'pending' | 'completed' | 'overdue';
@@ -17,27 +17,27 @@ export interface TasksFilter {
 export const tasksApi = api.injectEndpoints({
     endpoints: (build) => ({
         getTasks: build.query<TaskType[], string>({
-            query: (todolistId: string) => ({
-                url: `todo-lists/${todolistId}/tasks`
+            query: () => ({
+                url: `todo-lists/08a7be65-255e-4474-8b72-3b5ec30c2dde/tasks`
             }),
-            transformResponse: (response: TaskIncDto[]):TaskType[] => {
-                const dtos = transformCollection(response);
+            transformResponse: (response: TaskIncDto[]): TaskType[] => {
+                const dtos = transformCollection(response.items);
                 //todo рефакторинг
-                return dtos.map(transformTaskDto);
+                return dtos.map(transformTaskIncDto);
             },
             providesTags: (result) => [
-                {type: TAGS.TaskList, id: 'LIST'},
-                ...(result?.map(task => ({type: TAGS.Task, id: task.id})) || [])
+                { type: TAGS.TaskList, id: 'LIST' },
+                ...(result?.map(task => ({ type: TAGS.Task, id: task.id })) || [])
             ]
         }),
-        // getTaskId: build.query<TaskType, number>({
-        //     query: (id) => `tasks/${id}`,
-        //     transformResponse: (response: unknown):TaskType => {
-        //         const dto = transform(response);
-        //         return transformTaskIncDto(dto);
-        //     },
-        //     providesTags: (result, error, id) => [{type: TAGS.TaskList, id: 'LIST'}]
-        // }),
+        getTaskId: build.query<TaskType, number>({
+            query: (id) => `tasks/${id}`,
+            transformResponse: (response: unknown):TaskType => {
+                const dto = transform(response);
+                return transformTaskIncDto(dto);
+            },
+            providesTags: (result, error, id) => [{type: TAGS.TaskList, id: 'LIST'}]
+        }),
         // searchTasks: build.query<TaskType[], string>({
         //     query: (searchTerm) => ({
         //         url: 'tasks/search',
@@ -49,41 +49,56 @@ export const tasksApi = api.injectEndpoints({
         //     },
         //     providesTags: (result) => [{type: TAGS.TaskList, id: 'SEARCH'}]
         // }),
-        // createTask: build.mutation<TaskType[], Partial<TaskType>>({
-        //     query: (newTask) => ({
-        //         url: 'tasks',
-        //         method: 'POST',
-        //         body: transformToTaskIncDto(newTask)
-        //     }),
-        //     transformResponse: (response: unknown):TaskType => {
-        //         const dto = transform(response);
-        //         return transformTaskIncDto(dto);
-        //     },
-        //     invalidatesTags: [{type: TAGS.TaskList, id: 'LIST'}]
-        // }),
-        updateTask: build.mutation<TaskType, {id: number; updates: Partial<TaskType>}>({
-            query: ({id, updates}) => ({
-                url: `tasks/${id}`,
-                method: 'PUT',
-                body: transformToTaskIncDto(updates)
+        createTask: build.mutation<TaskType[], Partial<TaskType>>({
+            query: (newTask) => ({
+                url: 'tasks',
+                method: 'POST',
+                body: transformToTaskIncDto(newTask)
             }),
             transformResponse: (response: unknown):TaskType => {
                 const dto = transform(response);
                 return transformTaskIncDto(dto);
             },
-            invalidatesTags: (result, error, {id}) => [
-                {type: TAGS.Task, id},
-                {type: TAGS.TaskList, id: 'LIST'}
+            invalidatesTags: [{type: TAGS.TaskList, id: 'LIST'}]
+        }),
+        updateTask: build.mutation<TaskType, { id: number; updates: Partial<TaskType> }>({
+            query: ({ id, updates }) => ({
+                url: `tasks/${id}`,
+                method: 'PUT',
+                body: transformToTaskIncDto(updates)
+            }),
+            transformResponse: (response: unknown): TaskType => {
+                const dto = transform(response);
+                return transformTaskIncDto(dto);
+            },
+            invalidatesTags: (result, error, { id }) => [
+                { type: TAGS.Task, id },
+                { type: TAGS.TaskList, id: 'LIST' }
             ]
         }),
         deleteTask: build.mutation<void, number>({
-            query: ({id}) => ({
+            query: ({ id }) => ({
                 url: `tasks/${id}`,
                 method: 'DELETE'
             }),
             invalidatesTags: (result, error, id) => [
-                {type: TAGS.Task, id},
-                {type: TAGS.TaskList, id: 'LIST'}
+                { type: TAGS.Task, id },
+                { type: TAGS.TaskList, id: 'LIST' }
+            ]
+        }),
+        filteredTask: build.mutation<TaskType, { id: number; updates: Partial<TaskType> }>({
+            query: ({ id, updates }) => ({
+                url: `tasks/${id}`,
+                method: 'PUT',
+                body: transformToTaskIncDto(updates)
+            }),
+            transformResponse: (response: unknown): TaskType => {
+                const dto = transform(response);
+                return transformTaskIncDto(dto);
+            },
+            invalidatesTags: (result, error, { id }) => [
+                { type: TAGS.Task, id },
+                { type: TAGS.TaskList, id: 'LIST' }
             ]
         }),
     })
@@ -91,8 +106,8 @@ export const tasksApi = api.injectEndpoints({
 
 export const {
     useGetTasksQuery,
-    // useSearchTasksQuery,
-    // useCreateTaskMutation,
+    useSearchTasksQuery,
+    useCreateTaskMutation,
     useUpdateTaskMutation,
     useDeleteTaskMutation,
 } = tasksApi;

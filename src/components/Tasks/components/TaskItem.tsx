@@ -1,5 +1,5 @@
 import { Delete, Edit } from '@mui/icons-material';
-import { Box, Button, ButtonGroup, Checkbox, Typography } from '@mui/material';
+import { Box, Button, ButtonGroup, Checkbox, Stack, Typography } from '@mui/material';
 import React from 'react';
 import { useDeleteTaskMutation, useUpdateTaskMutation } from '../../../api/tasksApi';
 import { TaskType } from '../../../schemas/task/domain';
@@ -34,23 +34,25 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
     };
     
     return (
-        <Box>
-            <Checkbox
-                checked={task.isCompleted}
-                onChange={handleToggleComplete}
-                disabled={isUpdating}
-            />
-            <Typography variant="body1" component="h3">{task.title}</Typography>
+        <Box sx={{ mb: 2 }}>
+            <Stack direction="row" spacing={2}>
+                <Checkbox
+                    checked={task.isCompleted}
+                    onChange={handleToggleComplete}
+                    disabled={isUpdating}
+                />
+                <Typography variant="body1" component="body1">{task.title}</Typography>
+                <ButtonGroup>
+                    <Button><Edit/></Button>
+                    <Button
+                        onClick={handleDelete}
+                        disabled={isDeleting}
+                    >
+                        <Delete/>
+                    </Button>
+                </ButtonGroup>
+            </Stack>
             <Typography variant="body1" component="p">{task.description}</Typography>
-            <ButtonGroup>
-                <Button><Edit/></Button>
-                <Button
-                    onClick={handleDelete}
-                    disabled={isDeleting}
-                >
-                    <Delete/>
-                </Button>
-            </ButtonGroup>
         </Box>
     );
 };

@@ -29,7 +29,7 @@ export const transformTaskDto = (dtoData: TaskDto): Task => {
             colorHex:  dtoData.category_info.color_hex
         }
     }
-}
+};
 
 export const transformToTaskDto = (task: Partial<Task>):Partial<TaskDto> => {
     const dto:Partial<TaskDto> = {};
@@ -42,7 +42,7 @@ export const transformToTaskDto = (task: Partial<Task>):Partial<TaskDto> => {
     if (task.tags) dto.tags_csv = task.tags.join(',');
     
     return dto;
-}
+};
 
 
 export const transformTaskIncDto = (dtoData: TaskIncDto): TaskType => {
@@ -64,7 +64,7 @@ export const transformTaskIncDto = (dtoData: TaskIncDto): TaskType => {
         status: dtoData.status,
         order: dtoData.order
     }
-}
+};
 
 export const transformToTaskIncDto = (task: Partial<TaskType>):Partial<TaskIncDto> => {
     const dto:Partial<TaskIncDto> = {};
@@ -80,4 +80,4 @@ export const transformToTaskIncDto = (task: Partial<TaskType>):Partial<TaskIncDt
     if (task.status) dto.status = task.status;
     if (task.order) dto.order = task.order;
     return dto;
-}
+};
