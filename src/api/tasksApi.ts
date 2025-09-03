@@ -14,6 +14,11 @@ export interface TasksFilter {
     assignedTo?: number;
 }
 
+export interface TaskInc extends TaskIncDto {
+    internalId: number;
+    internalTodoListId: number;
+}
+
 export const tasksApi = api.injectEndpoints({
     endpoints: (build) => ({
         getTasks: build.query<TaskType[], string>({
@@ -21,7 +26,7 @@ export const tasksApi = api.injectEndpoints({
                 url: `todo-lists/08a7be65-255e-4474-8b72-3b5ec30c2dde/tasks`
             }),
             transformResponse: (response: TaskIncDto[]): TaskType[] => {
-                const dtos = transformCollection(response.items);
+                const dtos = transformCollection(response.items); //todo исправить ошибки типов
                 //todo рефакторинг
                 return dtos.map(transformTaskIncDto);
             },
@@ -96,3 +101,5 @@ export const {
     useUpdateTaskMutation,
     useDeleteTaskMutation,
 } = tasksApi;
+
+//todo добавить processData TaskIncDto преобразуем в TaskInc ( TaskInc идёт в модуль, модуль ничего не знает о TaskIncDto)

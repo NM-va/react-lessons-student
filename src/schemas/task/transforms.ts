@@ -46,17 +46,17 @@ export const transformToTaskDto = (task: Partial<Task>):Partial<TaskDto> => {
 
 
 export const transformTaskIncDto = (dtoData: TaskIncDto): TaskType => {
-    const createdTimestampTransform = new Date(dtoData.startDate);
-    const updatedTimestampTransform = new Date(dtoData.addedDate);
-    const dueDateTransform = new Date(dtoData.deadline);
+    const createdTimestampTransform = dtoData.startDate ? new Date(dtoData.startDate) : null;
+    const updatedTimestampTransform = dtoData.addedDate ? new Date(dtoData.addedDate): null;
+    const dueDateTransform = dtoData.deadline ? new Date(dtoData.deadline) : null;
 
     
     return {
-        todoListId: dtoData.todoListId,
-        taskId: dtoData.id,
+        todoListId: Number(dtoData.todoListId),
+        taskId: Number(dtoData.id),
         title: dtoData.title,
-        description: dtoData.description,
-        isCompleted: dtoData.completed,
+        description: dtoData.description || '',
+        isCompleted: Boolean(dtoData.completed),
         priorityLevel: dtoData.priority,
         createdTimestamp: createdTimestampTransform,
         updatedTimestamp: updatedTimestampTransform,

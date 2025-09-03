@@ -29,17 +29,21 @@ export const TaskList: React.FC = () => {
         isFetching,
     } = useGetTasksQuery('');
 
-    if (error) return <Box component="div">Ошибка</Box>;
-    if (!tasks?.length) return <Box component="div">Пусто</Box>;
+
+    //todo dispatch tasks to store and filteredData and searchValue string
+    //todo dispatch searchValue
 
 
     let filteredTasks = useMemo(() => {
        switch (filterTask) {
-           case ilterType.ACTIVE: return tasks.filter((item: TaskType) => !item.isCompleted);
-           case ilterType.COMPLETED: return tasks.filter((item: TaskType) => item.isCompleted);
+           case FilterType.ACTIVE: return tasks.filter((item: TaskType) => !item.isCompleted);
+           case FilterType.COMPLETED: return tasks.filter((item: TaskType) => item.isCompleted);
            default: return tasks;
        }
     }, [filterTask, tasks]);
+
+  if (error) return <Box component="div">Ошибка</Box>;
+  if (!tasks?.length) return <Box component="div">Пусто</Box>;
   
   return (
       <Card>
