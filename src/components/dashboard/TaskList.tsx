@@ -1,20 +1,25 @@
-import { 
-  Card, CardContent,
-  Box,
-  CircularProgress,
-  CardHeader,
-  LinearProgress
+import {
+    Card, CardContent,
+    Box,
+    CircularProgress,
+    CardHeader,
+    LinearProgress, Button, ButtonGroup
 } from '@mui/material';
 import { TaskItem } from '../Tasks/components/TaskItem';
 import { TaskType } from '../../schemas/task/domain';
-import { JSX, useState } from 'react';
+import { FilterType } from '../../types/index';
+import React, { JSX, useMemo, useState } from 'react';
 import { useGetTasksQuery } from '../../api/tasksApi';
 
 export const TaskList: React.FC = () => {
   // TODO: Состояние задач и фильтров
   // TODO: Функции фильтрации
   // TODO: Обработчики действий
-    const [filters, setFilters] = useState({});
+
+    const [filterTask, setFilterTask] = useState<string>(FilterType.ALL);
+    const handleChangeFilter = (FilterType: string) => {
+        setFilterTask(FilterType);
+    };
 
     //todo сделать фильтр
     const {
@@ -26,17 +31,33 @@ export const TaskList: React.FC = () => {
 
     if (error) return <Box component="div">Ошибка</Box>;
     if (!tasks?.length) return <Box component="div">Пусто</Box>;
+
+
+    let filteredTasks = useMemo(() => {
+       switch (filterTask) {
+           case ilterType.ACTIVE: return tasks.filter((item: TaskType) => !item.isCompleted);
+           case ilterType.COMPLETED: return tasks.filter((item: TaskType) => item.isCompleted);
+           default: return tasks;
+       }
+    }, [filterTask, tasks]);
   
   return (
       <Card>
         {isLoading && <LinearProgress />}
-        <CardHeader>Мои задачи ({tasks.length})</CardHeader>
+        <CardHeader>
+            Мои задачи ({tasks.length})
+            <ButtonGroup>
+                <Button onClick={() => handleChangeFilter(FilterType.ALL)}>{FilterType.ALL}</Button>
+                <Button onClick={() => handleChangeFilter(FilterType.ACTIVE)}>{FilterType.ACTIVE}</Button>
+                <Button onClick={() => handleChangeFilter(FilterType.COMPLETED)}>{FilterType.COMPLETED}</Button>
+            </ButtonGroup>
+        </CardHeader>
         <CardContent>
           {/* TODO: Поиск и фильтры */}
           {/* TODO: Список задач */}
 
           {isFetching && <CircularProgress />}
-          {tasks.map((task: TaskType) => (
+          {filteredTasks.map((task: TaskType) => (
             <TaskItem key={task.taskId} task={task} />
           ))}
         </CardContent>

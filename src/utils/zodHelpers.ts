@@ -5,7 +5,7 @@ export function zodParser<T>(schema: z.ZodSchema<T>, data: unknown): T {
     const result = schema.safeParse(data);
     if (!result.success) {
         const errors = result.error.errors
-                             .map(err => `${err.path.join('.')}: ${err.message}`)
+                             .forEach(err => `${err.path.join('.')}: ${err.message}`)
                              .join(', ');
         throw new Error(`Validation failed: ${errors}`);
     }
