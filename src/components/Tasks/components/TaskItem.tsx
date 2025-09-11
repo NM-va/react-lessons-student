@@ -15,7 +15,8 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
     const handleToggleComplete = async () => {
         try {
             await updateTask({
-                id: task.id,
+                ...task,
+                id: task.taskId,
                 updates: { isCompleted: !task.isCompleted }
             }).unwrap();
         } catch (error) {
@@ -27,7 +28,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
         if (!confirm('Удалить задачу?')) return;
         
         try {
-            await deleteTask(task.id).unwrap();
+            await deleteTask(task.taskId).unwrap();
         } catch (error) {
             console.error('Ошибка удаления задачи:', error);
         }
@@ -41,7 +42,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
                     onChange={handleToggleComplete}
                     disabled={isUpdating}
                 />
-                <Typography variant="body1" component="body1">{task.title}</Typography>
+                <Typography variant="body1" component="p">{task.title}</Typography>
                 <ButtonGroup>
                     <Button><Edit/></Button>
                     <Button
