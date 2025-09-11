@@ -45,39 +45,39 @@ export const transformToTaskDto = (task: Partial<Task>):Partial<TaskDto> => {
 };
 
 
-export const transformTaskIncDto = (dtoData: TaskIncDto): TaskType => {
-    const createdTimestampTransform = dtoData.startDate ? new Date(dtoData.startDate) : null;
-    const updatedTimestampTransform = dtoData.addedDate ? new Date(dtoData.addedDate): null;
-    const dueDateTransform = dtoData.deadline ? new Date(dtoData.deadline) : null;
+export const transformTaskIncDto = (dtoIncData: TaskIncDto): TaskType => {
+    const createdTimestampTransform = dtoIncData.startDate ? new Date(dtoIncData.startDate).toISOString() : null;
+    const updatedTimestampTransform = dtoIncData.addedDate ? new Date(dtoIncData.addedDate).toISOString() : null;
+    const dueDateTransform = dtoIncData.deadline ? new Date(dtoIncData.deadline).toISOString() : null;
 
     
     return {
-        todoListId: Number(dtoData.todoListId),
-        taskId: Number(dtoData.id),
-        title: dtoData.title,
-        description: dtoData.description || '',
-        isCompleted: Boolean(dtoData.completed),
-        priorityLevel: dtoData.priority,
+        todoListId: dtoIncData.todoListId,
+        taskId: dtoIncData.id,
+        title: dtoIncData.title,
+        description: dtoIncData.description || '',
+        isCompleted: Boolean(dtoIncData.completed),
+        priorityLevel: dtoIncData.priority,
         createdTimestamp: createdTimestampTransform,
         updatedTimestamp: updatedTimestampTransform,
         dueDate: dueDateTransform,
-        status: dtoData.status,
-        order: dtoData.order
+        status: dtoIncData.status,
+        order: dtoIncData.order
     }
 };
 
 export const transformToTaskIncDto = (task: Partial<TaskType>):Partial<TaskIncDto> => {
-    const dto:Partial<TaskIncDto> = {};
-    if (task.todoListId) dto.todoListId = task.todoListId;
-    if (task.taskId) dto.id = task.taskId;
-    if (task.title) dto.title = task.title;
-    if (task.description) dto.description = task.description;
-    if (task.isCompleted !== undefined) dto.completed = task.isCompleted;
-    if (task.priorityLevel) dto.priority = task.priorityLevel;
-    if (task.dueDate) dto.addedDate = new Date(task.dueDate.toISOString().split('T')[0]);
-    if (task.createdTimestamp) dto.startDate = new Date(task.createdTimestamp.toISOString().split('T')[0]);
-    if (task.updatedTimestamp) dto.deadline = new Date(task.updatedTimestamp.toISOString().split('T')[0]);
-    if (task.status) dto.status = task.status;
-    if (task.order) dto.order = task.order;
-    return dto;
+    const dtoInc:Partial<TaskIncDto> = {};
+    if (task.todoListId) dtoInc.todoListId = task.todoListId;
+    if (task.taskId) dtoInc.id = task.taskId;
+    if (task.title) dtoInc.title = task.title;
+    if (task.description) dtoInc.description = task.description;
+    if (task.isCompleted !== undefined) dtoInc.completed = task.isCompleted;
+    if (task.priorityLevel) dtoInc.priority = task.priorityLevel;
+    if (task.dueDate) dtoInc.addedDate = new Date(task.dueDate.toISOString().split('T')[0]);
+    if (task.createdTimestamp) dtoInc.startDate = new Date(task.createdTimestamp.toISOString().split('T')[0]);
+    if (task.updatedTimestamp) dtoInc.deadline = new Date(task.updatedTimestamp.toISOString().split('T')[0]);
+    if (task.status) dtoInc.status = task.status;
+    if (task.order) dtoInc.order = task.order;
+    return dtoInc;
 };
