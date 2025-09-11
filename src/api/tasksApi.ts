@@ -61,14 +61,14 @@ export const tasksApi = api.injectEndpoints({
         //todo createTask на интерфейсе
         createTask: build.mutation<TaskType[], Partial<TaskType>>({
             query: (newTask) => ({
-                url: 'tasks',
+                url: 'todo-lists/08a7be65-255e-4474-8b72-3b5ec30c2dde/tasks',
                 method: 'POST',
                 body: transformToTaskIncDto(newTask)
             }),
             //todo избавиться от типа response unknown
-            transformResponse: (response: unknown):TaskType => {
+            transformResponse: (response: any):TaskType => {
                 console.log(response);
-                const dto = transform(response);
+                const dto = transform(response?.data?.item);
                 return transformTaskIncDto(dto);
             },
             invalidatesTags: [{type: TAGS.TaskList, id: 'LIST'}]

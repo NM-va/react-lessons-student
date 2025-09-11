@@ -59,10 +59,9 @@ export const TaskList: React.FC = () => {
 		try {
 			await createTask(
 				{
-					"todoListId": "08a7be65-255e-4474-8b72-3b5ec30c2dde",
-					"taskId": "51da55e7-2610-410a-ad96-32bfe9336f54",
-					"title": "task3",
+					"title": "task12",
 					"priorityLevel": 1,
+					"todoListId": "08a7be65-255e-4474-8b72-3b5ec30c2dde",
 					"order": 2
 				}
 			).unwrap();
