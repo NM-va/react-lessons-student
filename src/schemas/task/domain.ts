@@ -6,8 +6,8 @@ const TaskSchema = z.object({
     description: z.string(),
     isCompleted: z.boolean(),
     priorityLevel: z.enum(['low', 'medium', 'high']),
-    createdTimestamp: z.date(),
-    updatedTimestamp: z.date(),
+    createdTimestamp: z.string(),
+    updatedTimestamp: z.string(),
     dueDate: z.date(),
     tagsCsv: z.array(z.string()),
     assignedUser: {
@@ -25,8 +25,8 @@ const TaskSchema = z.object({
 export type Task = z.infer<typeof TaskSchema>;
 
 const TaskSchemaInc = z.object({
-    taskId: z.number().positive(),
-    todoListId: z.number().positive(),
+    taskId: z.string(),
+    todoListId: z.string(),
     title: z.string(),
     description: z.string(),
     isCompleted: z.boolean(),

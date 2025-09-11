@@ -1,5 +1,5 @@
 import { api, TAGS } from '../store/api';
-import { TaskDtoSchemaInc, TaskIncDto } from '../schemas/task/dto';
+import { TaskDtoSchemaInc, TaskIncDto, TaskResponseDto, TaskResponseDtoSchema } from '../schemas/task/dto';
 import { TaskType } from '../schemas/task/domain';
 import { createZodTransform } from '../utils/zodHelpers';
 import { transformTaskIncDto, transformToTaskIncDto } from '../schemas/task/transforms';
@@ -21,18 +21,22 @@ export interface TaskInc extends TaskIncDto {
 
 export const tasksApi = api.injectEndpoints({
     endpoints: (build) => ({
-        getTasks: build.query<TaskType[], string>({
+        getTasks: build.query<TaskType[], void>({
             query: () => ({
                 url: `todo-lists/08a7be65-255e-4474-8b72-3b5ec30c2dde/tasks`
             }),
-            transformResponse: (response: TaskIncDto[]): TaskType[] => {
-                const dtos = transformCollection(response.items); //todo исправить ошибки типов
+            transformResponse: (response: TaskResponseDto): TaskType[] => {
+                const dtos = transformCollection(response.items);
                 //todo рефакторинг
                 return dtos.map(transformTaskIncDto);
             },
+            forceRefetch: ({ currentArg, previousArg }) => {
+                // Принудительное обновление только при изменении аргументов
+                return currentArg !== previousArg;
+            },
             providesTags: (result) => [
                 { type: TAGS.TaskList, id: 'LIST' },
-                ...(result?.map(task => ({ type: TAGS.Task, id: task.id })) || [])
+                ...(result?.map(task => ({ type: TAGS.Task, id: task.taskId })) || [])
             ]
         }),
         getTaskId: build.query<TaskType, number>({
@@ -41,7 +45,7 @@ export const tasksApi = api.injectEndpoints({
                 const dto = transform(response);
                 return transformTaskIncDto(dto);
             },
-            providesTags: (result, error, id) => [{type: TAGS.TaskList, id: 'LIST'}]
+            providesTags: () => [{type: TAGS.TaskList, id: 'LIST'}]
         }),
         searchTasks: build.query<TaskType[], string>({
             query: (searchTerm) => ({
@@ -52,37 +56,41 @@ export const tasksApi = api.injectEndpoints({
              const dtos = transformCollection(response);
              return dtos.map(transformTaskIncDto);
             },
-            providesTags: (result) => [{type: TAGS.TaskList, id: 'SEARCH'}]
+            providesTags: () => [{type: TAGS.TaskList, id: 'SEARCH'}]
         }),
+        //todo createTask на интерфейсе
         createTask: build.mutation<TaskType[], Partial<TaskType>>({
             query: (newTask) => ({
                 url: 'tasks',
                 method: 'POST',
                 body: transformToTaskIncDto(newTask)
             }),
+            //todo избавиться от типа response unknown
             transformResponse: (response: unknown):TaskType => {
+                console.log(response);
                 const dto = transform(response);
                 return transformTaskIncDto(dto);
             },
             invalidatesTags: [{type: TAGS.TaskList, id: 'LIST'}]
         }),
-        updateTask: build.mutation<TaskType, { id: number; updates: Partial<TaskType> }>({
-            query: ({ id, updates }) => ({
-                url: `todo-lists/08a7be65-255e-4474-8b72-3b5ec30c2dde/tasks/${id}`,
+        updateTask: build.mutation<TaskType, TaskType>({
+            query: (item: TaskType) => ({
+                url: `todo-lists/08a7be65-255e-4474-8b72-3b5ec30c2dde/tasks/${item.taskId}`,
                 method: 'PUT',
-                body: transformToTaskIncDto(updates)
+                body: transformToTaskIncDto(item)
             }),
             transformResponse: (response: unknown): TaskType => {
                 const dto = transform(response);
                 return transformTaskIncDto(dto);
             },
-            invalidatesTags: (result, error, { id }) => [
+            //todo проверить инвалидацию
+            invalidatesTags: (result, error, { taskId: id }) => [
                 { type: TAGS.Task, id },
                 { type: TAGS.TaskList, id: 'LIST' }
             ]
         }),
-        deleteTask: build.mutation<void, number>({
-            query: ({ id }) => ({
+        deleteTask: build.mutation<void, string>({
+            query: (id: string) => ({
                 url: `todo-lists/08a7be65-255e-4474-8b72-3b5ec30c2dde/tasks/${id}`,
                 method: 'DELETE'
             }),

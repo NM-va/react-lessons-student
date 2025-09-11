@@ -19,5 +19,6 @@ export const api = createApi({
         }
     }),
     tagTypes: Object.values(TAGS),
+    keepUnusedDataFor: 3, // cache time
     endpoints: () => ({})
 });

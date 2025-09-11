@@ -1,9 +1,9 @@
 import React from 'react';
-import { Task } from '../../schemas/task/domain';
+import { TaskType } from '../../schemas/task/domain';
 import { useUpdateTaskMutation, useDeleteTaskMutation } from '../../api/tasksApi';
 
 interface TaskItemProps {
-    task: Task;
+    task: TaskType;
 }
 
 export const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
@@ -12,10 +12,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
     
     const handleToggleComplete = async () => {
         try {
-            await updateTask({
-                id: task.id,
-                updates: { isCompleted: !task.isCompleted }
-            }).unwrap();
+            await updateTask(task).unwrap();
         } catch (error) {
             console.error('Ошибка обновления задачи:', error);
         }
@@ -25,29 +22,50 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
         if (!confirm('Удалить задачу?')) return;
         
         try {
-            await deleteTask(task.id).unwrap();
+            await deleteTask(task.taskId).unwrap();
         } catch (error) {
             console.error('Ошибка удаления задачи:', error);
         }
     };
     
-    const getPriorityColor = (priority: Task['priority']) => {
+    const getPriorityColor = (priority: number) => {
         const colors = {
             low: '#28a745',
             medium: '#ffc107',
             high: '#dc3545'
         };
-        return colors[priority];
+        switch (priority) {
+            case 1:
+                return colors.low
+            case 2:
+                return colors.medium
+            case 3:
+                return colors.high
+            default:
+                return colors.low;
+            
+        }
     };
     
-    const getStatusColor = (status: Task['status']) => {
+    const getStatusColor = (status: number) => {
         const colors = {
             pending: '#6c757d',
             urgent: '#fd7e14',
             overdue: '#dc3545',
             completed: '#28a745'
         };
-        return colors[status];
+
+        switch (status) {
+            case 0:
+                return colors.pending
+            case 1:
+                return colors.urgent
+            case 2:
+                return colors.overdue
+            default:
+                return colors.completed;
+
+        }
     };
     
     return (
@@ -64,9 +82,9 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
                 <div className="task-badges">
                     <span
                         className="priority-badge"
-                        style={{ backgroundColor: getPriorityColor(task.priority) }}
+                        style={{ backgroundColor: getPriorityColor(task.priorityLevel) }}
                     >
-                        {task.displayPriority}
+                        {task.priorityLevel}
                     </span>
                     <span
                         className="status-badge"

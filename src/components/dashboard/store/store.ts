@@ -1,10 +1,10 @@
 //todo взять из прошлой ДЗ
-import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { TaskType } from '../../../schemas/task/domain';
-import { searchFilter } from './utils';
 import { rootReducer } from '../../../store/reducers';
 import { FilterType } from '../../../types';
+import { searchFilter } from '../../../utils/search';
 
 
 export interface TaskState {
@@ -22,7 +22,7 @@ const initialState: TaskState = {
 };
 
 
-function filteredTasks(state) {
+function filteredTasks(state: TaskState) {
     console.log('state', state);
     if (!state) return;
     const {filter, data: tasks} = state;
@@ -39,18 +39,19 @@ export const taskSlice = createSlice({
     reducers: {
         setTasks: (state, action: PayloadAction<TaskType[]>) => {
             state.data = action.payload;
+            state.filteredData = searchFilter<TaskType>(state.data, 'title', state.searchText);
         },
         changeTasksFilter: (state, action: PayloadAction<FilterType>) => {
             state.filter = action.payload;
         },
         setSearch: (state, action: PayloadAction<string>) => {
             state.searchText = action.payload;
-            state.filteredData = searchFilter(state.data, action.payload);
+            state.filteredData = searchFilter<TaskType>(state.data, 'title', action.payload);
         },
     },
     selectors: {
         selectState: state => state,
-        selectFilteredTasks: filteredTasks
+        selectFilteredTasks: state => state.filteredData,
     },
 });
 

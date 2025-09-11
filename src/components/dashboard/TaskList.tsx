@@ -12,52 +12,78 @@ import {
 import { TaskItem } from '../Tasks/components/TaskItem';
 import { TaskType } from '../../schemas/task/domain';
 import { FilterType } from '../../types/index';
-import React, { JSX, useEffect, useState } from 'react';
-import { useGetTasksQuery } from '../../api/tasksApi';
+import React, { JSX, useEffect, useRef, useState } from 'react';
+import { useCreateTaskMutation, useGetTasksQuery } from '../../api/tasksApi';
 import { useAppDispatch } from '../../store/hooks';
-import { setTasks, changeTasksFilter, selectFilteredTasks, setSearch } from './store/store';
+import { setTasks, changeTasksFilter, selectFilteredTasks, setSearch, selectState } from './store/store';
 import { useSelector } from 'react-redux';
 
 
 export const TaskList: React.FC = () => {
     const [searchValue, setSearchValue] = useState<string>("");
-    const [taskStatus, setTaskStatus] = useState<FilterType>(FilterType.ALL);
+    // const [taskStatus, setTaskStatus] = useState<FilterType>(FilterType.ALL);
+	const filteredTasks = useSelector(selectFilteredTasks);
+	const state = useSelector(selectState);
+	const isInitializedRef = useRef<boolean>(false);
+	const [createTask] = useCreateTaskMutation();
+
+	console.log('%csrc/components/dashboard/TaskList.tsx:28 state', 'color: #007acc;', state);
+
+	//todo сделать фильтр
+    const {
+      data: tasks = [],
+      error,
+      isLoading,
+      isFetching,
+    } = useGetTasksQuery();
+
+	console.log(tasks);
 
     // Done: Состояние задач и фильтров
     // TODO: Функции фильтрации
     // Done: Обработчики действий
 
+	useEffect(() => {
+		console.log('%csrc/components/dashboard/TaskList.tsx:47 error', 'color: #007acc;', error);
+	}, [error])
+
 
     const handleChangeFilter = (filter: FilterType) => {
         dispatch(changeTasksFilter(filter));
     };
-    const changeSearchTask = (e: ChangeEvent<HTMLInputElement>) => {
+    const changeSearchTask = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchValue(e.target.value);
+    };
+
+    const handleCreateTask = async() => {
+		try {
+			await createTask(
+				{
+					"todoListId": "08a7be65-255e-4474-8b72-3b5ec30c2dde",
+					"taskId": "51da55e7-2610-410a-ad96-32bfe9336f54",
+					"title": "task3",
+					"priorityLevel": 1,
+					"order": 2
+				}
+			).unwrap();
+		} catch (err) {
+			console.error('Ошибка Создания задачи:', err);
+		}
     };
 
     const handleSearchTask = () => {
         dispatch(setSearch(searchValue));
     };
 
-    //todo сделать фильтр
-    const {
-        data: tasks = [],
-        error,
-        isLoading,
-        isFetching,
-    } = useGetTasksQuery('');
-
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(setTasks(tasks));
-    }, [tasks]);
-
-    //todo dispatch tasks to store and filteredData and searchValue string
-    //todo dispatch searchValue
-
-    const filteredTask = useSelector(selectFilteredTasks);
-
+		//todo разобраться почему происходит бесконечный re-render
+		if(!isInitializedRef.current && tasks.length > 0) {
+			dispatch(setTasks(tasks));
+			isInitializedRef.current = true;
+		}
+	}, [tasks, dispatch, isInitializedRef]);
 
     if (error) return <Box component="div">Ошибка</Box>;
     if (!tasks?.length) return <Box component="div">Пусто</Box>;
@@ -82,13 +108,14 @@ export const TaskList: React.FC = () => {
                 <Box sx={{ mb: 3 }}>
                     <TextField id="outlined-basic" label="Search task" variant="outlined" onChange={changeSearchTask} value={searchValue}/>
                     <Button onClick={handleSearchTask}>Найти</Button>
+                    <Button onClick={handleCreateTask}>Создать</Button>
                 </Box>
 
                 {/* TODO: Поиск и фильтры */}
                 {/* TODO: Список задач */}
 
                 {isFetching && <CircularProgress/>}
-                {filteredTask.map((task: TaskType) => (
+                {filteredTasks.map((task: TaskType) => (
                     <TaskItem key={task.taskId} task={task}/>
                 ))}
             </CardContent>

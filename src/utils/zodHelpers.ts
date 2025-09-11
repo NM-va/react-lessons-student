@@ -4,9 +4,7 @@ import * as z from 'zod';
 export function zodParser<T>(schema: z.ZodSchema<T>, data: unknown): T {
     const result = schema.safeParse(data);
     if (!result.success) {
-        const errors = result.error.errors
-                             .forEach(err => `${err.path.join('.')}: ${err.message}`)
-                             .join(', ');
+        const errors = result.error;
         throw new Error(`Validation failed: ${errors}`);
     }
     return result.data;
