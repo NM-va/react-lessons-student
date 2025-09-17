@@ -10,7 +10,7 @@ export const TaskDtoSchemaInc = z.object({
     addedDate: z.coerce.date(),
     deadline: z.coerce.string().nullable(),
     order: z.number(),
-    status: z.enum(TaskStatus),
+    status: z.enum(TaskStatus), 
     priority: z.number(),
 });
 
