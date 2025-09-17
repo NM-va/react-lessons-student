@@ -34,12 +34,12 @@ export const taskSlice = createSlice({
 
             switch (state.filter) {
                 case FilterType.ACTIVE:
-                    state.filteredData = state.data.filter((item: T) =>
+                    state.filteredData = state.data.filter((item: TaskType) =>
                         item.status !== TaskStatus.COMPLETED
                     );
                     break;
                 case FilterType.COMPLETED:
-                    state.filteredData = state.data.filter((item: T) =>
+                    state.filteredData = state.data.filter((item: TaskType) =>
                         item.status === TaskStatus.COMPLETED
                     );
                     break;
