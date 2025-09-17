@@ -55,19 +55,6 @@ export const tasksApi = api.injectEndpoints({
                 { type: TAGS.TaskList, id: 'LIST' }
             ]
         }),
-
-        // searchTasks: build.query<TaskType[], string>({
-        //     query: (searchTerm) => ({
-        //         url: 'todo-lists/08a7be65-255e-4474-8b72-3b5ec30c2dde/tasks',
-        //         params: { search: searchTerm }
-        //     }),
-        //     transformResponse: (response: TaskResponseDto): TaskType[] => {
-        //         const dtos = transformCollection(response.items);
-        //         return dtos.map(transformTaskIncDto);
-        //     },
-        //     providesTags: () => [{ type: TAGS.TaskList, id: 'SEARCH' }]
-        // }),
-
         createTask: build.mutation<TaskType, Partial<TaskType>>({
             query: (newTask) => ({
                 url: 'todo-lists/08a7be65-255e-4474-8b72-3b5ec30c2dde/tasks',
