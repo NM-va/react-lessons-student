@@ -30,8 +30,6 @@ export const TaskList: React.FC = () => {
     const dispatch = useAppDispatch();
 
 
-    console.log('filteredTasks', filteredTasks);
-
     const [titleTask, setTitleTask] = useState<string>('');
     const changeTitleTask = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitleTask(e.target.value);
@@ -72,6 +70,7 @@ export const TaskList: React.FC = () => {
 					"order": 2
 				}
 			).unwrap();
+            setTitleTask('');
 		} catch (err) {
 			console.error('Ошибка Создания задачи:', err);
 		}

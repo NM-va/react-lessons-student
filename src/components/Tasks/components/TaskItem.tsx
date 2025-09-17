@@ -1,6 +1,8 @@
-import { Delete, Edit } from '@mui/icons-material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
 import { Box, Button, ButtonGroup, Checkbox, Stack, TextField, Typography } from '@mui/material';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useDeleteTaskMutation, useUpdateTaskMutation } from '../../../api/tasksApi';
 import { TaskType } from '../../../schemas/task/domain';
 import { TaskStatus } from '../../../types';
@@ -12,16 +14,15 @@ interface TaskItemProps {
 export const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
     const [updateTask, { isLoading: isUpdating }] = useUpdateTaskMutation();
     const [deleteTask, { isLoading: isDeleting }] = useDeleteTaskMutation();
-    const [newTitle, setNewTitle] = useState<string>("");
+    const [newTitle, setNewTitle] = useState<string>(task.title);
     const [editMode, setEditMode] = useState<boolean>(false);
+
+    useEffect(() => {
+        setNewTitle(task.title);
+    }, [task.title]);
 
     const changeTitleHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewTitle(e.currentTarget.value);
-    };
-
-    const editTask = () => {
-        setEditMode(prev => !prev);
-        setNewTitle(editMode ? task.title : '');
     };
 
     const saveNewTitle = () => {
@@ -56,7 +57,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
         }
     };
 
-    const handleChangeTask = async () => {
+    const saveTask = async () => {
         saveNewTitle();
         try {
             await updateTask({
@@ -67,7 +68,12 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
         } catch (error) {
             console.error('Ошибка обновления задачи:', error);
         }
-    }
+    };
+
+    const editTask = () => {
+        setEditMode(prev => !prev);
+        setNewTitle(editMode ? task.title : '');
+    };
 
     const handleDelete = async () => {
         if (!confirm('Удалить задачу?')) return;
@@ -88,15 +94,17 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
                     disabled={isUpdating}
                 />
                 {!editMode && <Typography variant="body1" component="p">{task.title}</Typography> }
-                {editMode && <TextField value={newTitle} onChange={changeTitleHandler} onBlur={handleChangeTask}/>}
+                {editMode && <TextField value={newTitle} onChange={changeTitleHandler} />}
 
                 <ButtonGroup>
-                    <Button onClick={editTask}><Edit/></Button>
+                    { !editMode
+                        ? <Button onClick={editTask}><EditIcon/></Button>
+                        : <Button onClick={saveTask}><SaveIcon/></Button> }
                     <Button
                         onClick={handleDelete}
                         disabled={isDeleting}
                     >
-                        <Delete/>
+                        <DeleteIcon/>
                     </Button>
                 </ButtonGroup>
             </Stack>
