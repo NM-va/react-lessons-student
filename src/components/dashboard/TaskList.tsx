@@ -15,7 +15,7 @@ import { FilterType } from '../../types/index';
 import React, { JSX, useEffect, useRef, useState } from 'react';
 import { useCreateTaskMutation, useGetTasksQuery } from '../../api/tasksApi';
 import { useAppDispatch } from '../../store/hooks';
-import { setTasks, changeTasksFilter, selectFilteredTasks, setSearch, selectState } from './store/store';
+import { setTasks, changeTasksFilter, selectFilteredTasks, setSearch, selectState, selectFilter } from './store/store';
 import { useSelector } from 'react-redux';
 
 
@@ -24,12 +24,20 @@ export const TaskList: React.FC = () => {
     // const [taskStatus, setTaskStatus] = useState<FilterType>(FilterType.ALL);
 	const filteredTasks = useSelector(selectFilteredTasks);
 	const state = useSelector(selectState);
+	const filter = useSelector(selectFilter);
 	const isInitializedRef = useRef<boolean>(false);
 	const [createTask] = useCreateTaskMutation();
 
+    console.log('filteredTasks', filteredTasks);
+
+    const [titleTask, setTitleTask] = useState<string>('');
+    const changeTitleTask = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTitleTask(e.target.value);
+    };
+
 	console.log('%csrc/components/dashboard/TaskList.tsx:28 state', 'color: #007acc;', state);
 
-	//todo сделать фильтр
+	//Done сделать фильтр
     const {
       data: tasks = [],
       error,
@@ -59,7 +67,7 @@ export const TaskList: React.FC = () => {
 		try {
 			await createTask(
 				{
-					"title": "task12",
+					"title": `${titleTask}`,
 					"priorityLevel": 1,
 					"todoListId": "08a7be65-255e-4474-8b72-3b5ec30c2dde",
 					"order": 2
@@ -85,7 +93,7 @@ export const TaskList: React.FC = () => {
 	}, [tasks, dispatch, isInitializedRef]);
 
     if (error) return <Box component="div">Ошибка</Box>;
-    if (!tasks?.length) return <Box component="div">Пусто</Box>;
+
 
     return (
         <Card>
@@ -97,16 +105,19 @@ export const TaskList: React.FC = () => {
                     </Typography>
                     <ButtonGroup>
                         <Button onClick={() => handleChangeFilter(FilterType.ALL)}
-                        >{FilterType.ALL}</Button>
+                        variant={filter === FilterType.ALL ? 'contained' : "outline"}>{FilterType.ALL}</Button>
                         <Button onClick={() => handleChangeFilter(FilterType.ACTIVE)}
-                        >{FilterType.ACTIVE}</Button>
+                        variant={filter === FilterType.ACTIVE ? 'contained' : "outline"}>{FilterType.ACTIVE}</Button>
                         <Button onClick={() => handleChangeFilter(FilterType.COMPLETED)}
-                        >{FilterType.COMPLETED}</Button>
+                        variant={filter === FilterType.COMPLETED ? 'contained' : "outline"}>{FilterType.COMPLETED}</Button>
                     </ButtonGroup>
                 </Box>
                 <Box sx={{ mb: 3 }}>
                     <TextField id="outlined-basic" label="Search task" variant="outlined" onChange={changeSearchTask} value={searchValue}/>
                     <Button onClick={handleSearchTask}>Найти</Button>
+                </Box>
+                <Box sx={{ mb: 3 }}>
+                    <TextField id="outlined-basic" label="Create task" variant="outlined" onChange={changeTitleTask} value={titleTask}/>
                     <Button onClick={handleCreateTask}>Создать</Button>
                 </Box>
 
@@ -114,7 +125,10 @@ export const TaskList: React.FC = () => {
                 {/* TODO: Список задач */}
 
                 {isFetching && <CircularProgress/>}
-                {filteredTasks.map((task: TaskType) => (
+
+                {
+                    (!tasks?.length) ? <Box component="div">Пусто</Box>
+                    : filteredTasks.map((task: TaskType) => (
                     <TaskItem key={task.taskId} task={task}/>
                 ))}
             </CardContent>

@@ -1,5 +1,12 @@
 import { api, TAGS } from '../store/api';
-import { TaskDtoSchemaInc, TaskIncDto, TaskResponseDto, TaskResponseDtoSchema } from '../schemas/task/dto';
+import {
+    TaskCreateResponseDto,
+    TaskCreateResponseDtoSchema,
+    TaskDtoSchemaInc,
+    TaskIncDto,
+    TaskResponseDto,
+    TaskResponseDtoSchema
+} from '../schemas/task/dto';
 import { TaskType } from '../schemas/task/domain';
 import { createZodTransform } from '../utils/zodHelpers';
 import { transformTaskIncDto, transformToTaskIncDto } from '../schemas/task/transforms';
@@ -47,18 +54,18 @@ export const tasksApi = api.injectEndpoints({
             },
             providesTags: () => [{type: TAGS.TaskList, id: 'LIST'}]
         }),
-        searchTasks: build.query<TaskType[], string>({
-            query: (searchTerm) => ({
-                url: 'tasks/search',
-                params: {q: searchTerm}
-            }),
-            transformResponse: (response: unknown[]):TaskType[] => {
-             const dtos = transformCollection(response);
-             return dtos.map(transformTaskIncDto);
-            },
-            providesTags: () => [{type: TAGS.TaskList, id: 'SEARCH'}]
-        }),
-        //todo createTask на интерфейсе
+        // searchTasks: build.query<TaskType[], string>({
+        //     query: (searchTerm) => ({
+        //         url: 'tasks/search',
+        //         params: {q: searchTerm}
+        //     }),
+        //     transformResponse: (response: unknown[]):TaskType[] => {
+        //      const dtos = transformCollection(response);
+        //      return dtos.map(transformTaskIncDto);
+        //     },
+        //     providesTags: () => [{type: TAGS.TaskList, id: 'SEARCH'}]
+        // }),
+        //Done createTask на интерфейсе
         createTask: build.mutation<TaskType[], Partial<TaskType>>({
             query: (newTask) => ({
                 url: 'todo-lists/08a7be65-255e-4474-8b72-3b5ec30c2dde/tasks',
@@ -66,14 +73,14 @@ export const tasksApi = api.injectEndpoints({
                 body: transformToTaskIncDto(newTask)
             }),
             //todo избавиться от типа response unknown
-            transformResponse: (response: any):TaskType => {
+            transformResponse: (response: TaskCreateResponseDto):TaskType => {
                 console.log(response);
                 const dto = transform(response?.data?.item);
                 return transformTaskIncDto(dto);
             },
             invalidatesTags: [{type: TAGS.TaskList, id: 'LIST'}]
         }),
-        updateTask: build.mutation<TaskType, TaskType>({
+        updateTask: build.mutation<TaskCreateResponseDto, TaskType>({
             query: (item: TaskType) => ({
                 url: `todo-lists/08a7be65-255e-4474-8b72-3b5ec30c2dde/tasks/${item.taskId}`,
                 method: 'PUT',

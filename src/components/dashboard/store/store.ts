@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { TaskType } from '../../../schemas/task/domain';
 import { rootReducer } from '../../../store/reducers';
-import { FilterType } from '../../../types';
+import { FilterType, TaskStatus } from '../../../types';
 import { searchFilter } from '../../../utils/search';
 
 
@@ -21,18 +21,6 @@ const initialState: TaskState = {
     searchText: '' as string
 };
 
-
-function filteredTasks(state: TaskState) {
-    console.log('state', state);
-    if (!state) return;
-    const {filter, data: tasks} = state;
-    switch (filter) {
-        case FilterType.ACTIVE: return tasks.filter((item: TaskType) => !item.isCompleted);
-        case FilterType.COMPLETED: return tasks.filter((item: TaskType) => item.isCompleted);
-        default: return tasks;
-    }
-}
-
 export const taskSlice = createSlice({
     name: "task",
     initialState,
@@ -43,6 +31,21 @@ export const taskSlice = createSlice({
         },
         changeTasksFilter: (state, action: PayloadAction<FilterType>) => {
             state.filter = action.payload;
+
+            switch (state.filter) {
+                case FilterType.ACTIVE:
+                    state.filteredData = state.data.filter((item: T) =>
+                        item.status !== TaskStatus.COMPLETED
+                    );
+                    break;
+                case FilterType.COMPLETED:
+                    state.filteredData = state.data.filter((item: T) =>
+                        item.status === TaskStatus.COMPLETED
+                    );
+                    break;
+                default:
+                    state.filteredData = state.data;
+            }
         },
         setSearch: (state, action: PayloadAction<string>) => {
             state.searchText = action.payload;
@@ -52,6 +55,7 @@ export const taskSlice = createSlice({
     selectors: {
         selectState: state => state,
         selectFilteredTasks: state => state.filteredData,
+        selectFilter: state => state.filter,
     },
 });
 
@@ -65,4 +69,4 @@ export const {
 } = actions;
 
 const injectedSlice = taskSlice.injectInto(rootReducer);
-export const { selectState, selectFilteredTasks } = injectedSlice.selectors;
+export const { selectState, selectFilteredTasks, selectFilter } = injectedSlice.selectors;
