@@ -3,6 +3,7 @@ import { rootReducer } from '../../../store/reducers';
 import _cloneDeep from 'lodash/cloneDeep';
 import { searchFilter } from './utils';
 import { TodoListItem } from './api';
+import { TaskType } from '../../../schemas/task/domain';
 
 export interface TodoState {
     data: TodoListItem[];
@@ -23,6 +24,7 @@ export const todoSlice = createSlice({
     initialState,
     reducers: {
         setTodoList: (state, action: PayloadAction<TodoListItem[]>) => {
+            console.log('state +', state)
             state.data = action.payload;
             //Done добавить логику фильтрации
             //state.filteredData = state.data.filter(....)

@@ -5,7 +5,12 @@ import { rootReducer } from './reducers';
 export const store = configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) => (
-        getDefaultMiddleware().concat(api.middleware)
+        getDefaultMiddleware({
+            serializableCheck: {
+                ignoredActions: ['api/executeQuery/fulfilled'],
+                ignoredPaths: ['api.queries.getTasks.data'],
+            },
+        }).concat(api.middleware)
     )
 });
 

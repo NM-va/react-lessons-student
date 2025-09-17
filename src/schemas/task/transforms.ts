@@ -13,7 +13,6 @@ export const transformTaskIncDto = (dtoIncData: TaskIncDto): TaskType => {
         taskId: dtoIncData.id,
         title: dtoIncData.title,
         description: dtoIncData.description || '',
-        isCompleted: Boolean(dtoIncData.completed),
         priorityLevel: dtoIncData.priority,
         createdTimestamp: createdTimestampTransform,
         updatedTimestamp: updatedTimestampTransform,
@@ -30,7 +29,6 @@ export const transformToTaskIncDto = (task: Partial<TaskType>):Partial<TaskIncDt
     if (task.taskId) dtoInc.id = `${task.taskId}`;
     if (task.title) dtoInc.title = task.title;
     if (task.description) dtoInc.description = task.description;
-    if (task.isCompleted !== undefined) dtoInc.completed = task.isCompleted;
     if (task.priorityLevel) dtoInc.priority = task.priorityLevel;
     if (task.dueDate) dtoInc.addedDate = new Date(task.dueDate.toISOString().split('T')[0]);
     if (task.createdTimestamp) dtoInc.startDate = new Date(task?.createdTimestamp?.toISOString().split('T')[0]);
