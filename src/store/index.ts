@@ -4,14 +4,10 @@ import { rootReducer } from './reducers';
 
 export const store = configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => (
+    middleware: getDefaultMiddleware =>
         getDefaultMiddleware({
-            serializableCheck: {
-                ignoredActions: ['api/executeQuery/fulfilled'],
-                ignoredPaths: ['api.queries.getTasks.data'],
-            },
-        }).concat(api.middleware)
-    )
+            serializableCheck: false,
+        }).concat(api.middleware /*, rtkQueryErrorLogger*/),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

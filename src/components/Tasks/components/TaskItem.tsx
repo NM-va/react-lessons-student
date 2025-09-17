@@ -70,9 +70,9 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
         }
     };
 
-    const editTask = () => {
-        setEditMode(prev => !prev);
-        setNewTitle(editMode ? task.title : '');
+    const editTask = (data: TaskType) => {
+        setEditMode(true);
+        setNewTitle(data.title);
     };
 
     const handleDelete = async () => {
@@ -84,6 +84,12 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
             console.error('Ошибка удаления задачи:', error);
         }
     };
+
+    useEffect(() => {
+        if(editMode) {
+            console.log('%csrc/components/Tasks/components/TaskItem.tsx:90 newTitle', 'color: #007acc;', newTitle);
+        }
+    }, [newTitle, editMode])
     
     return (
         <Box sx={{ mb: 2 }}>
@@ -98,7 +104,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
 
                 <ButtonGroup>
                     { !editMode
-                        ? <Button onClick={editTask}><EditIcon/></Button>
+                        ? <Button onClick={() => editTask(task)}><EditIcon/></Button>
                         : <Button onClick={saveTask}><SaveIcon/></Button> }
                     <Button
                         onClick={handleDelete}

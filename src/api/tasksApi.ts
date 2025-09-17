@@ -28,7 +28,7 @@ export const tasksApi = api.injectEndpoints({
     endpoints: (build) => ({
         getTasks: build.query<TaskType[], void>({
             query: () => ({
-                url: `todo-lists/08a7be65-255e-4474-8b72-3b5ec30c2dde/tasks`
+                url: `todo-lists/08a7be65-255e-4474-8b72-3b5ec30c2dde/tasks`,
             }),
             transformResponse: (response: TaskResponseDto): TaskType[] => {
                 const dtos = transformCollection(response.items);

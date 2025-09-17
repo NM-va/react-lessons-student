@@ -41,7 +41,7 @@ export const TaskList: React.FC = () => {
       error,
       isLoading,
       isFetching,
-    } = useGetTasksQuery();
+    } = useGetTasksQuery(undefined, {skip: false});
 
 
     // Done: Состояние задач и фильтров
@@ -62,6 +62,10 @@ export const TaskList: React.FC = () => {
 
     const handleCreateTask = async() => {
 		try {
+            if(!`${titleTask}`.trim()) {
+                return;
+            }
+
 			await createTask(
 				{
 					"title": `${titleTask}`,
@@ -95,6 +99,7 @@ export const TaskList: React.FC = () => {
             <CardContent>
                 <Box sx={{ mb: 3 }}>
                     <Typography variant="h5" component="h5" sx={{ mb: 3 }}>
+                        {/* todo потом сделать пагинацию */}
                         Мои задачи ({tasks.length})
                     </Typography>
                     <ButtonGroup>

@@ -9,6 +9,7 @@ export const transformTaskIncDto = (dtoIncData: TaskIncDto): TaskType => {
 
     
     return {
+        ...dtoIncData,
         todoListId: dtoIncData.todoListId,
         taskId: dtoIncData.id,
         title: dtoIncData.title,
@@ -18,7 +19,7 @@ export const transformTaskIncDto = (dtoIncData: TaskIncDto): TaskType => {
         updatedTimestamp: updatedTimestampTransform,
         dueDate: dueDateTransform,
         status: dtoIncData.status,
-        order: dtoIncData.order
+        order: dtoIncData.order,
     }
 };
 

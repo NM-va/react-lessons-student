@@ -8,7 +8,7 @@ export const TaskDtoSchemaInc = z.object({
     description: z.string().nullable(),
     startDate: z.coerce.date().nullable(),
     addedDate: z.coerce.date(),
-    deadline: z.coerce.string().nullable(),
+    deadline: z.coerce.date().nullable(),
     order: z.number(),
     status: z.enum(TaskStatus), 
     priority: z.number(),
@@ -34,7 +34,7 @@ export const TaskCreateResponseDtoSchema = z.object({
         message: z.string()
     })),
     messages: z.array(z.string()),
-    resultCode: z.number()
+    resultCode: z.number(),
 });
 
 export type TaskCreateResponseDto = z.infer<typeof TaskCreateResponseDtoSchema>;
