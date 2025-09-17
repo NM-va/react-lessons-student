@@ -12,11 +12,12 @@ import {
 import { TaskItem } from '../Tasks/components/TaskItem';
 import { TaskType } from '../../schemas/task/domain';
 import { FilterType } from '../../types/index';
-import React, { JSX, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCreateTaskMutation, useGetTasksQuery } from '../../api/tasksApi';
 import { useAppDispatch } from '../../store/hooks';
 import { setTasks, changeTasksFilter, selectFilteredTasks, setSearch, selectState, selectFilter } from './store/store';
 import { useSelector } from 'react-redux';
+import { isEqual } from 'lodash';
 
 
 export const TaskList: React.FC = () => {
@@ -25,8 +26,9 @@ export const TaskList: React.FC = () => {
 	const filteredTasks = useSelector(selectFilteredTasks);
 	const state = useSelector(selectState);
 	const filter = useSelector(selectFilter);
-	const isInitializedRef = useRef<boolean>(false);
 	const [createTask] = useCreateTaskMutation();
+    const dispatch = useAppDispatch();
+
 
     console.log('filteredTasks', filteredTasks);
 
@@ -34,8 +36,6 @@ export const TaskList: React.FC = () => {
     const changeTitleTask = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitleTask(e.target.value);
     };
-
-	console.log('%csrc/components/dashboard/TaskList.tsx:28 state', 'color: #007acc;', state);
 
 	//Done сделать фильтр
     const {
@@ -45,7 +45,6 @@ export const TaskList: React.FC = () => {
       isFetching,
     } = useGetTasksQuery();
 
-	console.log(tasks);
 
     // Done: Состояние задач и фильтров
     // TODO: Функции фильтрации
@@ -81,16 +80,12 @@ export const TaskList: React.FC = () => {
     const handleSearchTask = () => {
         dispatch(setSearch(searchValue));
     };
-
-    const dispatch = useAppDispatch();
-
+    
     useEffect(() => {
-		//todo разобраться почему происходит бесконечный re-render
-		if(!isInitializedRef.current && tasks.length > 0) {
+        if(!isEqual(tasks, state.data)) {
 			dispatch(setTasks(tasks));
-			isInitializedRef.current = true;
-		}
-	}, [tasks, dispatch, isInitializedRef]);
+        }
+	}, [tasks, dispatch, state.data]);
 
     if (error) return <Box component="div">Ошибка</Box>;
 
@@ -105,11 +100,11 @@ export const TaskList: React.FC = () => {
                     </Typography>
                     <ButtonGroup>
                         <Button onClick={() => handleChangeFilter(FilterType.ALL)}
-                        variant={filter === FilterType.ALL ? 'contained' : "outline"}>{FilterType.ALL}</Button>
+                        variant={filter === FilterType.ALL ? 'contained' : "outlined"}>{FilterType.ALL}</Button>
                         <Button onClick={() => handleChangeFilter(FilterType.ACTIVE)}
-                        variant={filter === FilterType.ACTIVE ? 'contained' : "outline"}>{FilterType.ACTIVE}</Button>
+                        variant={filter === FilterType.ACTIVE ? 'contained' : "outlined"}>{FilterType.ACTIVE}</Button>
                         <Button onClick={() => handleChangeFilter(FilterType.COMPLETED)}
-                        variant={filter === FilterType.COMPLETED ? 'contained' : "outline"}>{FilterType.COMPLETED}</Button>
+                        variant={filter === FilterType.COMPLETED ? 'contained' : "outlined"}>{FilterType.COMPLETED}</Button>
                     </ButtonGroup>
                 </Box>
                 <Box sx={{ mb: 3 }}>
@@ -135,23 +130,3 @@ export const TaskList: React.FC = () => {
         </Card>
     );
 };
-
-
-export interface Props {
-    loading?: boolean;
-    children?: JSX.Element | JSX.Element[];
-    style?: React.CSSProperties;
-    className?: string;
-    size?: number;
-}
-
-function Progress(props: Props) {
-    return (
-        <Box>
-            {props.children}
-            <Box className="progress__preloader">
-                <CircularProgress/>
-            </Box>
-        </Box>
-    )
-}
